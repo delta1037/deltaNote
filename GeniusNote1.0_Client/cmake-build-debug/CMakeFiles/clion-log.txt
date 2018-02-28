@@ -1,0 +1,4 @@
+/home/geniusrabbit/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/173.4301.33/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/geniusrabbit/home/GeniusNote1.0_Client
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/geniusrabbit/home/GeniusNote1.0_Client/cmake-build-debug

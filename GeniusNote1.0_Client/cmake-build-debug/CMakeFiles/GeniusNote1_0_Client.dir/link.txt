@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/GeniusNote1_0_Client.dir/source/SocketClient.cpp.o CMakeFiles/GeniusNote1_0_Client.dir/ClientSocketTest.cpp.o  -o GeniusNote1_0_Client 

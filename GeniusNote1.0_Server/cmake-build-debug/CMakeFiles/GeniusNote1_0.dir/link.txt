@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o  -o GeniusNote1_0 

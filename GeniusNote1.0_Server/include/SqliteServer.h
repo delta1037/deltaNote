@@ -1,0 +1,8 @@
+//
+// Created by geniusrabbit on 18-2-27.
+//
+
+#ifndef GENIUSNOTE1_0_SQLITESERVER_H
+#define GENIUSNOTE1_0_SQLITESERVER_H
+
+#endif //GENIUSNOTE1_0_SQLITESERVER_H
