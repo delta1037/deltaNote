@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/geniusrabbit/home/GeniusNote1.0_Client/ClientSocketTest.cpp" "/home/geniusrabbit/home/GeniusNote1.0_Client/cmake-build-debug/CMakeFiles/GeniusNote1_0_Client.dir/ClientSocketTest.cpp.o"
-  "/home/geniusrabbit/home/GeniusNote1.0_Client/source/SocketClient.cpp" "/home/geniusrabbit/home/GeniusNote1.0_Client/cmake-build-debug/CMakeFiles/GeniusNote1_0_Client.dir/source/SocketClient.cpp.o"
+  "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/ClientSocketTest.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/cmake-build-debug/CMakeFiles/GeniusNote1_0_Client.dir/ClientSocketTest.cpp.o"
+  "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/source/SocketClient.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/cmake-build-debug/CMakeFiles/GeniusNote1_0_Client.dir/source/SocketClient.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

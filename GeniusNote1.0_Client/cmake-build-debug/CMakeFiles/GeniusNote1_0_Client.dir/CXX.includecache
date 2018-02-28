@@ -6,19 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/home/geniusrabbit/home/GeniusNote1.0_Client/ClientSocketTest.cpp
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/ClientSocketTest.cpp
 cstring
 -
 include/SocketClient.h
-/home/geniusrabbit/home/GeniusNote1.0_Client/include/SocketClient.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/include/SocketClient.h
 
-/home/geniusrabbit/home/GeniusNote1.0_Client/include/Log.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/include/Log.h
 cstdio
 -
 cerrno
 -
 
-/home/geniusrabbit/home/GeniusNote1.0_Client/include/SocketClient.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/include/SocketClient.h
 string
 -
 netdb.h
@@ -26,7 +26,7 @@ netdb.h
 sys/socket.h
 -
 
-/home/geniusrabbit/home/GeniusNote1.0_Client/source/SocketClient.cpp
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/source/SocketClient.cpp
 arpa/inet.h
 -
 cstring
@@ -34,7 +34,7 @@ cstring
 zconf.h
 -
 ../include/SocketClient.h
-/home/geniusrabbit/home/GeniusNote1.0_Client/include/SocketClient.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/include/SocketClient.h
 ../include/Log.h
-/home/geniusrabbit/home/GeniusNote1.0_Client/include/Log.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/include/Log.h
 

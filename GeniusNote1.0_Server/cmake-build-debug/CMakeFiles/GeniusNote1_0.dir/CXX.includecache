@@ -6,19 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/ServerSocetTest.cpp
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSocetTest.cpp
 cstring
 -
 include/SocketServer.h
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/SocketServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/Log.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
 cstdio
 -
 cerrno
 -
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/SocketServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
 string
 -
 netdb.h
@@ -26,15 +26,15 @@ netdb.h
 sys/socket.h
 -
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/SqliteServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/ThreadServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/ThreadServer.h
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/source/SocketServer.cpp
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SocketServer.cpp
 ../include/SocketServer.h
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/SocketServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
 ../include/Log.h
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/Log.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
 unistd.h
 -
 arpa/inet.h
@@ -42,11 +42,11 @@ arpa/inet.h
 cstring
 -
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/source/SqliteServer.cpp
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SqliteServer.cpp
 ../include/SqliteServer.h
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/SqliteServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
 
-/home/geniusrabbit/home/GeniusNote1.0_Server/source/ThreadServer.cpp
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/ThreadServer.cpp
 ../include/ThreadServer.h
-/home/geniusrabbit/home/GeniusNote1.0_Server/include/ThreadServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/ThreadServer.h
 

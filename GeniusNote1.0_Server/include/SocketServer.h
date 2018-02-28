@@ -9,10 +9,7 @@
 #include <netdb.h>
 #include <sys/socket.h>
 
-#define CHECK(x,m,handle) if((x)==(m)){\
-                           handle;\
-                           return -1;\
-                         }
+
 #define SOCKET_ERROR (-1)
 
 enum SocketState {

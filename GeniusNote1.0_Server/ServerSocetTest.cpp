@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include "include/SocketServer.h"
+
 typedef struct{
   int id;
   char name[8];
@@ -25,7 +26,7 @@ int main(){
 
   memcpy(&newNode, buf,StructSize);
   printf("%d--%s\n",newNode->id,newNode->name);
-  memcpy(buf,newNode, sizeof(ID_Name)+1);
+  memcpy(buf,newNode, StructSize);
 
   int sendSize=server.Send(buf, StructSize);
   server.Close();

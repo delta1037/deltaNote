@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include "include/SocketClient.h"
+
 //#include "include/Log.h"
 //#include <iostream>
 
@@ -41,9 +42,11 @@ int main(){
   int sendSize=client.Send(buf, StructSize);
   memset(buf,0, StructSize);
   int recvSize=client.Recv(buf, StructSize);
-  memcpy(newNode,buf, StructSize);
 
-  printf("%d--%s\n",newNode->id,newNode->name);
+  ID_Name* newNode1=(ID_Name*)malloc(sizeof(ID_Name));
+  memcpy(newNode1,buf, StructSize);
+
+  printf("%d--%s\n",newNode1->id,newNode1->name);
 
   int clo=client.Close();
 

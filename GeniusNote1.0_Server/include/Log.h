@@ -29,4 +29,8 @@
                           printf(__VA_ARGS__);  \
                           printf(NEW_LINE); \
                         }
+#define CHECK(x,m,handle) if((x)==(m)){\
+                           handle;\
+                           return -1;\
+                         }
 #endif //GENIUSNOTE1_0_LOG_H

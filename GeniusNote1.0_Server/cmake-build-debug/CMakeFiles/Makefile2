@@ -54,10 +54,10 @@ RM = /home/geniusrabbit/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/173.4301.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/geniusrabbit/home/GeniusNote1.0_Server
+CMAKE_SOURCE_DIR = /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/geniusrabbit/home/GeniusNote1.0_Server/cmake-build-debug
+CMAKE_BINARY_DIR = /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug
 
 #=============================================================================
 # Target rules for target CMakeFiles/GeniusNote1_0.dir
@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/geniusrabbit/home/GeniusNote1.0_Server/cmake-build-debu
 CMakeFiles/GeniusNote1_0.dir/all:
 	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/depend
 	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/geniusrabbit/home/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target GeniusNote1_0"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target GeniusNote1_0"
 .PHONY : CMakeFiles/GeniusNote1_0.dir/all
 
 # Include target in all.
@@ -76,9 +76,9 @@ all: CMakeFiles/GeniusNote1_0.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/GeniusNote1_0.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/geniusrabbit/home/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/GeniusNote1_0.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/geniusrabbit/home/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/GeniusNote1_0.dir/rule
 
 # Convenience name for target.
