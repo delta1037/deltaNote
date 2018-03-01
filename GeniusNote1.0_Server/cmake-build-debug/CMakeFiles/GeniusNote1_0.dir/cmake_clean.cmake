@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o"
   "CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o"
   "CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o"
+  "CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o"
   "GeniusNote1_0.pdb"
   "GeniusNote1_0"
 )

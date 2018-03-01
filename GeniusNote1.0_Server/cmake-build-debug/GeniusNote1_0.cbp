@@ -87,6 +87,9 @@
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSocetTest.cpp">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
+		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSqliteTest.cpp">
+			<Option target="GeniusNote1_0"/>
+		</Unit>
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h">
 			<Option target="GeniusNote1_0"/>
 		</Unit>

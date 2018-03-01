@@ -3,29 +3,25 @@
 //
 
 #include <cstdio>
-#include <string>
 #include "../include/SqliteServer.h"
 #include "../include/Log.h"
 
-//#include <sqlite3.h>
-
 
 sqlite3 *db = nullptr;
-char *zErrMsg=NULL;
+char *zErrMsg= nullptr;
 int ret=0;
-char *s=sqlite3_mprintf(".db");
 
+const char* SqlInit="CREATE TABLE NOTE(NOTEMESSAGE  TEXT   NOT NULL );";
+const char* SqlAdd="INSERT INTO NOTE (NOTEMESSAGE) VALUES(%Q);";
+const char* SqlDel="DELETE from NOTE where NOTEMESSAGE=%Q ;SELECT * from NOTE";
+const char* SqlRe="SELECT * from NOTE";
 
-using namespace std;
-
+//char *s=sqlite3_mprintf(".db");
 //char **bufout=(char**)malloc(200*sizeof(char*));
 
 namespace GeniusNote{
 int callback(void *NotUsed,int argc,char **argv,char **azColName){
-  int i;
-  //using namespace GeniusNote;
-
-  for(i=0;i<argc;i++){
+  for(int i=0;i<argc;i++){
     printf("%s\n",argv[i]);
     //bufout[i]=(char*)malloc(10*sizeof(char));
     //strcpy(bufout[i],argv[i]);
@@ -33,24 +29,22 @@ int callback(void *NotUsed,int argc,char **argv,char **azColName){
   return 0;
 }
 
-int Sqlite::sqinit(char* name){
+int Sqlite::SqlInit(char* name){
   LOG_INFO("Create Database...")
 
-  *name << *s ;
   ret = sqlite3_open((const char*)name,&db);
 
-  char* sql=NULL;
-  sql = sqlite3_mprintf("CREATE TABLE NOTE(NOTEMESSAGE  TEXT   NOT NULL );");
+  //char* sql= nullptr;
+  //sql = sqlite3_mprintf("CREATE TABLE NOTE(NOTEMESSAGE  TEXT   NOT NULL );");
 
-  ret =sqlite3_exec(db,sql,callback,0,&zErrMsg);
+  ret =sqlite3_exec(db,SqlInit,callback,0,&zErrMsg);
 
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
 
   return 1;
-
 }
-int Sqlite::open(char* name){
-  *name << *s ;
+
+int Sqlite::OpenDB(char* name){
   this->name=name;
 
   ret = sqlite3_open((const char*)name,&db);
@@ -58,27 +52,25 @@ int Sqlite::open(char* name){
 
   return 1;
 }
-int Sqlite::addNote(void* bufin){
+int Sqlite::AddNote(void* bufin){
   ret = sqlite3_open((const char*)this->name,&db);
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
 
-  char *sql = sqlite3_mprintf("INSERT INTO NOTE (NOTEMESSAGE) VALUES(%Q);",bufin);
-
-  ret =sqlite3_exec(db,sql,0,0,&zErrMsg);
+  char *sql = sqlite3_mprintf(SqlAdd,bufin);
+  ret =sqlite3_exec(db,SqlAdd, nullptr, nullptr,&zErrMsg);
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
 
   sqlite3_free(sql);
   sqlite3_close(db);
 
 }
-int Sqlite::deleteNote(void* bufin){
+int Sqlite::DeleteNote(void* bufin){
   ret = sqlite3_open((const char*)this->name,&db);
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
 
-  char *sql= sqlite3_mprintf("DELETE from NOTE where NOTEMESSAGE=%Q ;" \
-            "SELECT * from NOTE",bufin);
+  char *sql= sqlite3_mprintf(SqlDel,bufin);
 
-  ret =sqlite3_exec(db,sql,callback,0,&zErrMsg);
+  ret =sqlite3_exec(db,sql,callback, nullptr,&zErrMsg);
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
 
   sqlite3_free(sql);
@@ -86,16 +78,14 @@ int Sqlite::deleteNote(void* bufin){
 
   return 1;
 }
-int Sqlite::reNote(){
+int Sqlite::ReloadNote(){
   ret=sqlite3_open((const char*)this->name,&db);
 
-  char* sql = sqlite3_mprintf("SELECT * from NOTE");
+  char* sql = sqlite3_mprintf(SqlRe);
 
-  ret = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+  ret = sqlite3_exec(db, sql, callback, nullptr, &zErrMsg);
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
 
-  //this->bufout=bufout;
-  //关闭数据库
   sqlite3_close(db);
 
   return 1;

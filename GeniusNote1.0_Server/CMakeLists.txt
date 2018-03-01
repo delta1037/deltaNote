@@ -8,4 +8,4 @@ add_executable(GeniusNote1_0 source/SocketServer.cpp include/SocketServer.h
         source/SqliteServer.cpp include/SqliteServer.h
         source/ThreadServer.cpp include/ThreadServer.h
         include/Log.h
-        ServerSocetTest.cpp)
+        ServerSocetTest.cpp ServerSqliteTest.cpp)

@@ -150,6 +150,33 @@ ServerSocetTest.cpp.s:
 	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.s
 .PHONY : ServerSocetTest.cpp.s
 
+ServerSqliteTest.o: ServerSqliteTest.cpp.o
+
+.PHONY : ServerSqliteTest.o
+
+# target to build an object file
+ServerSqliteTest.cpp.o:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o
+.PHONY : ServerSqliteTest.cpp.o
+
+ServerSqliteTest.i: ServerSqliteTest.cpp.i
+
+.PHONY : ServerSqliteTest.i
+
+# target to preprocess a source file
+ServerSqliteTest.cpp.i:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.i
+.PHONY : ServerSqliteTest.cpp.i
+
+ServerSqliteTest.s: ServerSqliteTest.cpp.s
+
+.PHONY : ServerSqliteTest.s
+
+# target to generate assembly for a file
+ServerSqliteTest.cpp.s:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.s
+.PHONY : ServerSqliteTest.cpp.s
+
 source/SocketServer.o: source/SocketServer.cpp.o
 
 .PHONY : source/SocketServer.o
@@ -243,6 +270,9 @@ help:
 	@echo "... ServerSocetTest.o"
 	@echo "... ServerSocetTest.i"
 	@echo "... ServerSocetTest.s"
+	@echo "... ServerSqliteTest.o"
+	@echo "... ServerSqliteTest.i"
+	@echo "... ServerSqliteTest.s"
 	@echo "... source/SocketServer.o"
 	@echo "... source/SocketServer.i"
 	@echo "... source/SocketServer.s"

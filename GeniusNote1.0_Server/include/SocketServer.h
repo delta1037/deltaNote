@@ -19,7 +19,7 @@ enum SocketState {
   Error=3
 };
 
-namespace GeniusNoteSocket{
+namespace GeniusNote{
 class SocketServer{
  public:
   int init(int port);

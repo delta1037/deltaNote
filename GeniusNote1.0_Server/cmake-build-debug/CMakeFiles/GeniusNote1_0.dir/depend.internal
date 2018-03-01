@@ -9,6 +9,7 @@ CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SocketServer.cpp
 CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o
+ /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SqliteServer.cpp
 CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o

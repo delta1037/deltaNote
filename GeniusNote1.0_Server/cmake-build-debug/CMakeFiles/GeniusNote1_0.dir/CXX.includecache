@@ -27,6 +27,10 @@ sys/socket.h
 -
 
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
+string
+-
+sqlite3.h
+-
 
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/ThreadServer.h
 
@@ -43,8 +47,12 @@ cstring
 -
 
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SqliteServer.cpp
+cstdio
+-
 ../include/SqliteServer.h
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
+../include/Log.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
 
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/ThreadServer.cpp
 ../include/ThreadServer.h

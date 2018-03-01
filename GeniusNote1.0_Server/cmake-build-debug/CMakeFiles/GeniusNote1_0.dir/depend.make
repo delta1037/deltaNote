@@ -8,6 +8,7 @@ CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o: ../include/Log.h
 CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o: ../include/SocketServer.h
 CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o: ../source/SocketServer.cpp
 
+CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o: ../include/Log.h
 CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o: ../include/SqliteServer.h
 CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o: ../source/SqliteServer.cpp
 

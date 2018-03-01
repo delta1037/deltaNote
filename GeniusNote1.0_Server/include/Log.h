@@ -8,7 +8,6 @@
 #include <cstdio>
 #include <cerrno>
 
-//#define None   "\e[0m"
 #define RED    "\e[0;31m"
 #define GREEN  "\e[0;32m"
 
@@ -29,8 +28,10 @@
                           printf(__VA_ARGS__);  \
                           printf(NEW_LINE); \
                         }
+
 #define CHECK(x,m,handle) if((x)==(m)){\
                            handle;\
                            return -1;\
                          }
+
 #endif //GENIUSNOTE1_0_LOG_H

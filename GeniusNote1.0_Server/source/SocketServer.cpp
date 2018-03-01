@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #include <cstring>
 
-namespace GeniusNoteSocket {
+namespace GeniusNote {
 int SocketServer::init(int port) {
   LOG_INFO("Server init")
   int sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
