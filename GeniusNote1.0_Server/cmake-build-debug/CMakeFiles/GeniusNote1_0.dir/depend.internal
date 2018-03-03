@@ -4,6 +4,9 @@
 CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSocetTest.cpp
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
+CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o
+ /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSqliteTest.cpp
+ /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
 CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
  /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h

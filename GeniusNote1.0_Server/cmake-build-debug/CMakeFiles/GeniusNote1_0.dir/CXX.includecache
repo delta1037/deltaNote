@@ -12,6 +12,10 @@ cstring
 include/SocketServer.h
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
 
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSqliteTest.cpp
+include/SqliteServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
+
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
 cstdio
 -

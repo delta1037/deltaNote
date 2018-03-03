@@ -10,6 +10,9 @@
 using namespace std;
 
 namespace GeniusNote{
+class ServerSqlite{
+
+};
 class Sqlite {
  public:
   //int callback(void *NotUsed,int argc,char **argv,char **azColName);
