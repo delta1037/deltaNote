@@ -30,7 +30,20 @@
 #include "../include/SqliteServer.h"
 #include "../include/Log.h"
 
-sqlite3 *db = nullptr;
+#define MAXLINE 10
+#define MAXRETURN 50
+
+typedef struct {
+  char Time_Tag[128];
+  char Type[3];
+}NoteStruct;
+enum SqliteState {
+  Deleted 2
+  Sync  1
+  UnSync 0
+};
+
+sqlite3 *db= nullptr;
 char *zErrMsg= nullptr;
 int ret=0;
 
@@ -38,8 +51,6 @@ namespace GeniusNote{
 int callback(void *NotUsed,int argc,char **argv,char **azColName){
   for(int i=0;i<argc;i++){
     printf("%s\n",argv[i]);
-    //bufout[i]=(char*)malloc(10*sizeof(char));
-    //strcpy(bufout[i],argv[i]);
   }
   return 0;
 }
@@ -72,89 +83,41 @@ int ServerSqlite::SqlTableIint(char* UserName){
   ret =sqlite3_exec(db,SqlInit,callback,0,&zErrMsg);
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
 }
-int ServerSqlite::ServerTableUpdate(char* name,char* type,char array[][]){
-  const char* Update="";
+/**
+  * 更新数据库中的值
+  * （假设从客户端传递过来的都是服务器端未同步的）
+  * １．客户端新建的条目：此时需要在服务器端新建该条目
+  * ２．客户端删除的条目：将客户端做出已删除的状态标识
+  */
+int ServerSqlite::ServerTableUpdate(char* UserName,const char* terminal,NoteStruct* Note){
+  int type;
+  if(terminal=="Android"){
+    type=2;
+  }else if(terminal=="client"){
+    type=1;
+  }else{
+    LOG_ERROR("Uknow types...")
+  }
+
+  const char* SqlUpdate="UPDATE (%Q) SET ServerState=(%Q) WHERE TimeTag==(%Q)";
+
+  for(int i=0;i<MAXLINE;i++){
+    if(Note[i].Type[type]==Deleted){
+      char* SqlDel=sqlite3_mprintf(SqlUpdate,UserName,Deleted,Note[i].Time_Tag);
+      ret =sqlite3_exec(db,SqlDel,callback,nullptr,&zErrMsg);
+      CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
+    }else if(Note[i].Type[type]==UnSync){
+      char* SqlSync=sqlite3_mprintf(SqlUpdate,UserName,Sync,Note[i].Time_Tag);
+      ret =sqlite3_exec(db,SqlSync,callback,0,&zErrMsg);
+      CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
+    }else{
+      LOG_ERROR("Unknow sqlite state type...")
+    }
+  }
 }
-int ServerSqlite::ServerTableReturn(char* name){
-
-}
-}
-
-
-
-
-
-const char* SqlAdd="INSERT INTO NOTE (NOTEMESSAGE) VALUES(%Q);";
-const char* SqlDel="DELETE from NOTE where NOTEMESSAGE=%Q ;SELECT * from NOTE";
-const char* SqlRe="SELECT * from NOTE";
-
-//char *s=sqlite3_mprintf(".db");
-//char **bufout=(char**)malloc(200*sizeof(char*));
-
-
-namespace GeniusNote{
-
-int Sqlite::SqlInit(char* name){
-  LOG_INFO("Create Database...")
-
-  ret = sqlite3_open((const char*)name,&db);
-
-  //char* sql= nullptr;
-  //sql = sqlite3_mprintf("CREATE TABLE NOTE(NOTEMESSAGE  TEXT   NOT NULL );");
-
-  ret =sqlite3_exec(db,SqlInit,callback,0,&zErrMsg);
-
+int ServerSqlite::ServerTableReturn(char* UserName,NoteStruct* Note,char* terminal){
+  const char* SqlReturn=sqlite3_mprintf("SELECT FROM (%Q) WHERE (%Q)==(%Q)",UserName,terminal);
+  ret =sqlite3_exec(db,SqlReturn,callback, nullptr,&zErrMsg);
   CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
-
-  return 1;
 }
-
-int Sqlite::OpenDB(char* name){
-  this->name=name;
-
-  ret = sqlite3_open((const char*)name,&db);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
-
-  return 1;
-}
-int Sqlite::AddNote(void* bufin){
-  ret = sqlite3_open((const char*)this->name,&db);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
-
-  char *sql = sqlite3_mprintf(SqlAdd,bufin);
-  ret =sqlite3_exec(db,SqlAdd, nullptr, nullptr,&zErrMsg);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
-
-  sqlite3_free(sql);
-  sqlite3_close(db);
-
-}
-int Sqlite::DeleteNote(void* bufin){
-  ret = sqlite3_open((const char*)this->name,&db);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
-
-  char *sql= sqlite3_mprintf(SqlDel,bufin);
-
-  ret =sqlite3_exec(db,sql,callback, nullptr,&zErrMsg);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
-
-  sqlite3_free(sql);
-  sqlite3_close(db);
-
-  return 1;
-}
-int Sqlite::ReloadNote(){
-  ret=sqlite3_open((const char*)this->name,&db);
-
-  char* sql = sqlite3_mprintf(SqlRe);
-
-  ret = sqlite3_exec(db, sql, callback, nullptr, &zErrMsg);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR(stderr,"SQL error:%s\n",zErrMsg)})
-
-  sqlite3_close(db);
-
-  return 1;
-}
-
-
 }

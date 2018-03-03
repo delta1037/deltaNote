@@ -7,26 +7,25 @@
 
 #include <string>
 #include <sqlite3.h>
+
+typedef struct {
+  char Time_Tag[128];
+  char Type[3];
+}NoteStruct;
+
 using namespace std;
 
 namespace GeniusNote{
 class ServerSqlite{
 
 };
-class Sqlite {
+class ServerSqlite {
  public:
-  //int callback(void *NotUsed,int argc,char **argv,char **azColName);
-
-  int SqlInit(char* name);
-  int OpenDB(char* name);
-  int AddNote(void* bufin);
-  int DeleteNote(void* bufin);
-  int ReloadNote();
-
-  //char **bufout=(char**)malloc(sizeof(char*));
-
+  bool SqlTableOpen(char* UserName,char* paswd);
+  int SqlTableIint(char* UserName);
+  int ServerTableUpdate(char* UserName,char* terminal,NoteStruct* Note);
+  int ServerTableReturn(char* UserName,NoteStruct* Note,char* terminal);
  private:
-  const char* name;
 };
 }
 
