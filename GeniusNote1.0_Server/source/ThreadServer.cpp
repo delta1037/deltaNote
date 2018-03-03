@@ -3,3 +3,8 @@
 //
 
 #include "../include/ThreadServer.h"
+namespace GeniusNote{
+class ServerThread{
+
+};
+}

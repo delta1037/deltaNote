@@ -9,7 +9,7 @@ typedef struct{
   int id;
   char name[8];
 }ID_Name;
-using namespace GeniusNoteSocket;
+using namespace GeniusNote;
 
 int main(){
 

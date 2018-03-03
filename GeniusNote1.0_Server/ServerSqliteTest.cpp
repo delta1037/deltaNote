@@ -6,8 +6,15 @@
 #include "include/SqliteServer.h"
 
 using namespace GeniusNote;
+int callback(void *NotUsed,int argc,char **argv,char **azColName){
+  for(int i=0;i<argc;i++){
+    printf("%s\n",argv[i]);
+  }
+  return 0;
+}
 
 int main(){
-  Sqlite test{};
+  ServerSqlite test{};
+
 
 }

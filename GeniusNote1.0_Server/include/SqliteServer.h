@@ -13,20 +13,13 @@ typedef struct {
   char Type[3];
 }NoteStruct;
 
-using namespace std;
-
 namespace GeniusNote{
-class ServerSqlite{
-
-};
 class ServerSqlite {
  public:
   bool SqlTableOpen(char* UserName,char* paswd);
   int SqlTableIint(char* UserName);
-  int ServerTableUpdate(char* UserName,char* terminal,NoteStruct* Note);
-  int ServerTableReturn(char* UserName,NoteStruct* Note,char* terminal);
- private:
+  int ServerTableUpdate(char* UserName,const char* terminal,NoteStruct* Note);
+  int ServerTableReturn(char* UserName,NoteStruct* Note,char* terminal,int (*callback)(void *, int, char **, char **));
 };
 }
-
 #endif //GENIUSNOTE1_0_SQLITESERVER_H
