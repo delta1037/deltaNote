@@ -37,6 +37,7 @@ int SocketServer::init(int port) {
   return state;
 }
 int SocketServer::StartSocket() {
+  state=Running;
   LOG_INFO("Start Listen")
   int flag=listen(this->sockfd,this->port);
   CHECK(flag,SOCKET_ERROR,{LOG_ERROR("Start(Listen) error") state=Error;})
@@ -44,6 +45,7 @@ int SocketServer::StartSocket() {
 }
 
 int SocketServer::AcCon() {
+  state=Running;
   LOG_INFO("Connect...")
   struct sockaddr_in clnt_addr;
   socklen_t clnt_addr_size= sizeof(clnt_addr);

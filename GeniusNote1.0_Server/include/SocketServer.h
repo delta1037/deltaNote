@@ -13,10 +13,10 @@
 #define SOCKET_ERROR (-1)
 
 enum SocketState {
-  Uninitialized=0,
+  Uninitialized=3,
   Running=1,
   Stopped=2,
-  Error=3
+  Error=0
 };
 
 namespace GeniusNote{
