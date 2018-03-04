@@ -1,8 +1,0 @@
-//
-// Created by geniusrabbit on 18-2-27.
-//
-
-#ifndef GENIUSNOTE1_0_THREADSERVER_H
-#define GENIUSNOTE1_0_THREADSERVER_H
-
-#endif //GENIUSNOTE1_0_THREADSERVER_H

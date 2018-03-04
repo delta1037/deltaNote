@@ -93,9 +93,6 @@
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
-		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/ThreadServer.h">
-			<Option target="GeniusNote1_0"/>
-		</Unit>
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/sqlite3.h">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
@@ -106,9 +103,6 @@
 			<Option target="GeniusNote1_0"/>
 		</Unit>
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SqliteServer.cpp">
-			<Option target="GeniusNote1_0"/>
-		</Unit>
-		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/ThreadServer.cpp">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp">

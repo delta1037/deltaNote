@@ -1,7 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o"
   "CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o"
-  "CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o"
   "CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o"
   "CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o"
   "CMakeFiles/GeniusNote1_0.dir/main.cpp.o"

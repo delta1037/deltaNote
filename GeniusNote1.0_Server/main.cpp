@@ -9,7 +9,7 @@
 #include <iostream>
 #include <cstring>
 
-#define NUM_THREADS 5
+#define NUM_THREADS 1024
 
 using namespace GeniusNote;
 
@@ -17,6 +17,7 @@ typedef struct {
   int id;
   char name[8];
 }ID_Name;
+ID_Name Node[10];
 typedef struct {
   char* UserName;
   char* Paswd;
@@ -25,34 +26,31 @@ typedef struct {
 
 void* buf;
 
-
 int callback(void *NotUsed,int argc,char **argv,char **azColName){
-  for(int i=0;i<argc;i++){
-    printf("%s\n",argv[i]);
-  }
+  memcpy(buf,*argv, sizeof(*argv));
   return 0;
 }
+static void * DataHandle(SocketServer socketserver) {
+  User_Paswd *user_paswd;
+  size_t UserPaswdSize = sizeof(User_Paswd);
 
-void * SoSqTh(void *pVoid){
-  SocketServer socketServer{};
-  User_Paswd* user_paswd;
-  int rc;
-  size_t UserPaswdSize= sizeof(User_Paswd);
-  if(socketServer.AcCon()==1){
-    LOG_INFO("Socket is accept connection...")
-    socketServer.Recv(buf, UserPaswdSize);
-    memcpy(&user_paswd, buf,UserPaswdSize);
+  socketserver.Recv(buf, UserPaswdSize);
+  memcpy(&user_paswd, buf, UserPaswdSize);
 
-    if(strcmp(user_paswd->Type,"register")){
+  if (!strcmp(user_paswd->Type, "register")) {
+    ServerSqlite serverSqlite{};
+    serverSqlite.SqlTableIint(user_paswd->UserName);
+    //如果用户名存在，则回馈用户名存在信号
+    serverSqlite.SqlTableOpen(user_paswd->UserName, user_paswd->Paswd);
+  } else if (!strcmp(user_paswd->Type, "client") || !strcmp(user_paswd->Type, "android")) {
+    ServerSqlite serverSqlite{};
+    serverSqlite.SqlTableOpen(user_paswd->UserName, user_paswd->Paswd);
+    serverSqlite.ServerTableUpdate(user_paswd->UserName, user_paswd->Type, Node);
+    serverSqlite.ServerTableReturn(user_paswd->UserName, Node, user_paswd->Type, callback);
+    socketserver.Send(buf, sizeof(buf));
+  } else {
+    LOG_ERROR("身份验证失败。。。")
 
-    }else if(strcmp(user_paswd->Type,"client")||strcmp(user_paswd->Type,"android")){
-
-    }else{
-      LOG_ERROR("身份验证失败。。。")
-    }
-
-  }else{
-    LOG_ERROR("Connection fault!!!")
   }
 }
 /**
@@ -64,22 +62,22 @@ void * SoSqTh(void *pVoid){
  */
 
 int main(){
+  int i=0;
   SocketServer socketServer{};
-
-  pthread_t threads[NUM_THREADS];
-  int indexes[NUM_THREADS];// 用数组来保存i的值
-  int rc;
-  int i;
-  for( i=0; i < NUM_THREADS; i++ ){
-    LOG_INFO("main() : 创建线程, ")
-    indexes[i] = i; //先保存i的值
-    // 传入的时候必须强制转换为void* 类型，即无类型指针
-    rc = pthread_create(&threads[i], NULL,SoSqTh,(void *)&(indexes[i]));
-    if (rc){
-      LOG_INFO("Error:无法创建线程,")
-      exit(-1);
+  socketServer.init(2333);
+  socketServer.StartSocket();
+  while(i<NUM_THREADS){
+    LOG_INFO("waiting for new connection...")
+    pthread_t thread_id;
+    if(socketServer.AcCon()){
+      LOG_ERROR("Accept connection error")
     }
+    LOG_INFO("A new connection occurs")
+    if (pthread_create(&thread_id, NULL, reinterpret_cast<void *(*)(void *)>(DataHandle), &socketServer)) {
+      LOG_ERROR("Pthread create error...")
+      break;
+    }
+
+    i++;
   }
-  pthread_exit(NULL);
-  return 1;
 }

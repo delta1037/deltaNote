@@ -7,7 +7,6 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/main.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/GeniusNote1_0.dir/main.cpp.o"
   "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SocketServer.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o"
   "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SqliteServer.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o"
-  "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/ThreadServer.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o"
   "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o"
   "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSqliteTest.cpp" "/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o"
   )

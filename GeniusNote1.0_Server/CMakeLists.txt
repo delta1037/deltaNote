@@ -8,7 +8,6 @@ find_library(Sqlite sqlite3 /lib)
 
 add_executable(GeniusNote1_0 source/SocketServer.cpp include/SocketServer.h
         source/SqliteServer.cpp include/SqliteServer.h
-        source/ThreadServer.cpp include/ThreadServer.h
         include/Log.h
         include/sqlite3.h
         test/ServerSocetTest.cpp test/ServerSqliteTest.cpp main.cpp)

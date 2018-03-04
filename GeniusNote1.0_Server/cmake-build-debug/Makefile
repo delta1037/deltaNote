@@ -204,33 +204,6 @@ source/SqliteServer.cpp.s:
 	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.s
 .PHONY : source/SqliteServer.cpp.s
 
-source/ThreadServer.o: source/ThreadServer.cpp.o
-
-.PHONY : source/ThreadServer.o
-
-# target to build an object file
-source/ThreadServer.cpp.o:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o
-.PHONY : source/ThreadServer.cpp.o
-
-source/ThreadServer.i: source/ThreadServer.cpp.i
-
-.PHONY : source/ThreadServer.i
-
-# target to preprocess a source file
-source/ThreadServer.cpp.i:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.i
-.PHONY : source/ThreadServer.cpp.i
-
-source/ThreadServer.s: source/ThreadServer.cpp.s
-
-.PHONY : source/ThreadServer.s
-
-# target to generate assembly for a file
-source/ThreadServer.cpp.s:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.s
-.PHONY : source/ThreadServer.cpp.s
-
 test/ServerSocetTest.o: test/ServerSocetTest.cpp.o
 
 .PHONY : test/ServerSocetTest.o
@@ -303,9 +276,6 @@ help:
 	@echo "... source/SqliteServer.o"
 	@echo "... source/SqliteServer.i"
 	@echo "... source/SqliteServer.s"
-	@echo "... source/ThreadServer.o"
-	@echo "... source/ThreadServer.i"
-	@echo "... source/ThreadServer.s"
 	@echo "... test/ServerSocetTest.o"
 	@echo "... test/ServerSocetTest.i"
 	@echo "... test/ServerSocetTest.s"
