@@ -3,7 +3,7 @@
 //
 
 
-#include "include/SqliteServer.h"
+#include "../include/SqliteServer.h"
 
 using namespace GeniusNote;
 int callback(void *NotUsed,int argc,char **argv,char **azColName){
@@ -12,9 +12,6 @@ int callback(void *NotUsed,int argc,char **argv,char **azColName){
   }
   return 0;
 }
-
-int main(){
-  ServerSqlite test{};
-
-
+int testmain(){
+  return 1;
 }

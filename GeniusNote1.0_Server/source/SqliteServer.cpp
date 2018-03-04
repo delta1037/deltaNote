@@ -55,7 +55,7 @@ bool ServerSqlite::SqlTableOpen(char* name,char* paswd){
       "Name KEY NOTNULL,"\
       "Paswd CHAR(256) NOTNULL);";
   ret =sqlite3_exec(db,Name_paswd, nullptr, nullptr,&zErrMsg);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf(stderr,"SQL error:%s\n",zErrMsg))})
+  CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
 
   //查找用户名，对比密码
   LOG_INFO("Name and password selecting...")
@@ -63,7 +63,7 @@ bool ServerSqlite::SqlTableOpen(char* name,char* paswd){
       "WHERE Name=(%Q) AND Paswd=(%Q)";
   char* SqlFind=sqlite3_mprintf(Find_name,name,paswd);
   ret =sqlite3_exec(db,SqlFind,nullptr, nullptr,&zErrMsg);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR((const char*)sqlite3_mprintf(stderr,"SQL error:%s\n",zErrMsg))})
+  CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
   return ret==SQLITE_OK;
 }
 int ServerSqlite::SqlTableIint(char* UserName){
@@ -74,7 +74,7 @@ int ServerSqlite::SqlTableIint(char* UserName){
       "AndroidState   CHAR(1)   NOTNULL);";
   char* SqlInit=sqlite3_mprintf(CreateTable,UserName);
   ret =sqlite3_exec(db,SqlInit, nullptr, nullptr,&zErrMsg);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR((const char*)sqlite3_mprintf(stderr,"SQL error:%s\n",zErrMsg))})
+  CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
   LOG_INFO("User create success~")
 }
 
@@ -99,7 +99,7 @@ int ServerSqlite::ServerTableUpdate(char* UserName,const char* terminal,NoteStru
       const char* SqlUpdate="UPDATE (%Q) SET ServerState=(%Q) WHERE TimeTag==(%Q)";
       char* SqlDel=sqlite3_mprintf(SqlUpdate,UserName,Deleted,Note[i].Time_Tag);
       ret =sqlite3_exec(db,SqlDel, nullptr,nullptr,&zErrMsg);
-      CHECK(ret,SQLITE_OK,{LOG_ERROR((const char*)sqlite3_mprintf(stderr,"SQL error:%s\n",zErrMsg))})
+      CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
     }else if(Note[i].Type[type]==UnSync){
       //const char* SqlUpdate="UPDATE (%Q) SET ServerState=(%Q) WHERE TimeTag==(%Q)";
       //char* SqlSync=sqlite3_mprintf(SqlUpdate,UserName,Sync,Note[i].Time_Tag);
@@ -107,7 +107,7 @@ int ServerSqlite::ServerTableUpdate(char* UserName,const char* terminal,NoteStru
                                       "VALUES((%Q),(%Q),(%Q),(%Q))";
       char* SqlSync=sqlite3_mprintf(SqlUpdate,UserName,Note[i].Time_Tag,1,((char)(type==1)),((char)(type != 1)));
       ret =sqlite3_exec(db,SqlSync,nullptr,nullptr,&zErrMsg);
-      CHECK(ret,SQLITE_OK,{LOG_ERROR((const char*)sqlite3_mprintf(stderr,"SQL error:%s\n",zErrMsg))})
+      CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
     }else if(Note[i].Type[type]==Sync){
       LOG_ERROR("This note is Sync...")
     } else{
@@ -128,7 +128,7 @@ int ServerSqlite::ServerTableReturn(char* UserName,NoteStruct* Note,char* termin
                                     int (*callback)(void *, int, char **, char **)){
   const char* SqlReturn=sqlite3_mprintf("SELECT FROM (%Q) WHERE (%Q)==(%Q)",UserName,terminal);
   ret =sqlite3_exec(db,SqlReturn,callback, nullptr,&zErrMsg);
-  CHECK(ret,SQLITE_OK,{LOG_ERROR((const char*)sqlite3_mprintf(stderr,"SQL error:%s\n",zErrMsg))})
+  CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
   LOG_INFO("Return success~")
 }
 }

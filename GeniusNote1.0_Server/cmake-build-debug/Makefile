@@ -123,59 +123,32 @@ GeniusNote1_0/fast:
 	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/build
 .PHONY : GeniusNote1_0/fast
 
-ServerSocetTest.o: ServerSocetTest.cpp.o
+main.o: main.cpp.o
 
-.PHONY : ServerSocetTest.o
-
-# target to build an object file
-ServerSocetTest.cpp.o:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o
-.PHONY : ServerSocetTest.cpp.o
-
-ServerSocetTest.i: ServerSocetTest.cpp.i
-
-.PHONY : ServerSocetTest.i
-
-# target to preprocess a source file
-ServerSocetTest.cpp.i:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.i
-.PHONY : ServerSocetTest.cpp.i
-
-ServerSocetTest.s: ServerSocetTest.cpp.s
-
-.PHONY : ServerSocetTest.s
-
-# target to generate assembly for a file
-ServerSocetTest.cpp.s:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.s
-.PHONY : ServerSocetTest.cpp.s
-
-ServerSqliteTest.o: ServerSqliteTest.cpp.o
-
-.PHONY : ServerSqliteTest.o
+.PHONY : main.o
 
 # target to build an object file
-ServerSqliteTest.cpp.o:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o
-.PHONY : ServerSqliteTest.cpp.o
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-ServerSqliteTest.i: ServerSqliteTest.cpp.i
+main.i: main.cpp.i
 
-.PHONY : ServerSqliteTest.i
+.PHONY : main.i
 
 # target to preprocess a source file
-ServerSqliteTest.cpp.i:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.i
-.PHONY : ServerSqliteTest.cpp.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-ServerSqliteTest.s: ServerSqliteTest.cpp.s
+main.s: main.cpp.s
 
-.PHONY : ServerSqliteTest.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-ServerSqliteTest.cpp.s:
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.s
-.PHONY : ServerSqliteTest.cpp.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 source/SocketServer.o: source/SocketServer.cpp.o
 
@@ -258,6 +231,60 @@ source/ThreadServer.cpp.s:
 	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.s
 .PHONY : source/ThreadServer.cpp.s
 
+test/ServerSocetTest.o: test/ServerSocetTest.cpp.o
+
+.PHONY : test/ServerSocetTest.o
+
+# target to build an object file
+test/ServerSocetTest.cpp.o:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o
+.PHONY : test/ServerSocetTest.cpp.o
+
+test/ServerSocetTest.i: test/ServerSocetTest.cpp.i
+
+.PHONY : test/ServerSocetTest.i
+
+# target to preprocess a source file
+test/ServerSocetTest.cpp.i:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.i
+.PHONY : test/ServerSocetTest.cpp.i
+
+test/ServerSocetTest.s: test/ServerSocetTest.cpp.s
+
+.PHONY : test/ServerSocetTest.s
+
+# target to generate assembly for a file
+test/ServerSocetTest.cpp.s:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.s
+.PHONY : test/ServerSocetTest.cpp.s
+
+test/ServerSqliteTest.o: test/ServerSqliteTest.cpp.o
+
+.PHONY : test/ServerSqliteTest.o
+
+# target to build an object file
+test/ServerSqliteTest.cpp.o:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o
+.PHONY : test/ServerSqliteTest.cpp.o
+
+test/ServerSqliteTest.i: test/ServerSqliteTest.cpp.i
+
+.PHONY : test/ServerSqliteTest.i
+
+# target to preprocess a source file
+test/ServerSqliteTest.cpp.i:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.i
+.PHONY : test/ServerSqliteTest.cpp.i
+
+test/ServerSqliteTest.s: test/ServerSqliteTest.cpp.s
+
+.PHONY : test/ServerSqliteTest.s
+
+# target to generate assembly for a file
+test/ServerSqliteTest.cpp.s:
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.s
+.PHONY : test/ServerSqliteTest.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -267,12 +294,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... GeniusNote1_0"
-	@echo "... ServerSocetTest.o"
-	@echo "... ServerSocetTest.i"
-	@echo "... ServerSocetTest.s"
-	@echo "... ServerSqliteTest.o"
-	@echo "... ServerSqliteTest.i"
-	@echo "... ServerSqliteTest.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 	@echo "... source/SocketServer.o"
 	@echo "... source/SocketServer.i"
 	@echo "... source/SocketServer.s"
@@ -282,6 +306,12 @@ help:
 	@echo "... source/ThreadServer.o"
 	@echo "... source/ThreadServer.i"
 	@echo "... source/ThreadServer.s"
+	@echo "... test/ServerSocetTest.o"
+	@echo "... test/ServerSocetTest.i"
+	@echo "... test/ServerSocetTest.s"
+	@echo "... test/ServerSqliteTest.o"
+	@echo "... test/ServerSqliteTest.i"
+	@echo "... test/ServerSqliteTest.s"
 .PHONY : help
 
 

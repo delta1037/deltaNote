@@ -129,52 +129,76 @@ CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o.provides: CMakeFiles/Geni
 CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o.provides.build: CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o
 
 
-CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o: CMakeFiles/GeniusNote1_0.dir/flags.make
-CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o: ../ServerSocetTest.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o -c /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSocetTest.cpp
+CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o: CMakeFiles/GeniusNote1_0.dir/flags.make
+CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o: ../test/ServerSocetTest.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o -c /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp
 
-CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSocetTest.cpp > CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.i
+CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp > CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.i
 
-CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSocetTest.cpp -o CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.s
+CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp -o CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.s
 
-CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.requires:
+CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.requires:
 
-.PHONY : CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.requires
+.PHONY : CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.requires
 
-CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.provides: CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.requires
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.provides.build
-.PHONY : CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.provides
+CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.provides: CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.requires
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.provides.build
+.PHONY : CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.provides
 
-CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.provides.build: CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o
+CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.provides.build: CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o
 
 
-CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o: CMakeFiles/GeniusNote1_0.dir/flags.make
-CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o: ../ServerSqliteTest.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o -c /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSqliteTest.cpp
+CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o: CMakeFiles/GeniusNote1_0.dir/flags.make
+CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o: ../test/ServerSqliteTest.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o -c /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSqliteTest.cpp
 
-CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSqliteTest.cpp > CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.i
+CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSqliteTest.cpp > CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.i
 
-CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSqliteTest.cpp -o CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.s
+CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSqliteTest.cpp -o CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.s
 
-CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.requires:
+CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.requires:
 
-.PHONY : CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.requires
+.PHONY : CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.requires
 
-CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.provides: CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.requires
-	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.provides.build
-.PHONY : CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.provides
+CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.provides: CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.requires
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.provides.build
+.PHONY : CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.provides
 
-CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.provides.build: CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o
+CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.provides.build: CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o
+
+
+CMakeFiles/GeniusNote1_0.dir/main.cpp.o: CMakeFiles/GeniusNote1_0.dir/flags.make
+CMakeFiles/GeniusNote1_0.dir/main.cpp.o: ../main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/GeniusNote1_0.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GeniusNote1_0.dir/main.cpp.o -c /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/main.cpp
+
+CMakeFiles/GeniusNote1_0.dir/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GeniusNote1_0.dir/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/main.cpp > CMakeFiles/GeniusNote1_0.dir/main.cpp.i
+
+CMakeFiles/GeniusNote1_0.dir/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GeniusNote1_0.dir/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/main.cpp -o CMakeFiles/GeniusNote1_0.dir/main.cpp.s
+
+CMakeFiles/GeniusNote1_0.dir/main.cpp.o.requires:
+
+.PHONY : CMakeFiles/GeniusNote1_0.dir/main.cpp.o.requires
+
+CMakeFiles/GeniusNote1_0.dir/main.cpp.o.provides: CMakeFiles/GeniusNote1_0.dir/main.cpp.o.requires
+	$(MAKE) -f CMakeFiles/GeniusNote1_0.dir/build.make CMakeFiles/GeniusNote1_0.dir/main.cpp.o.provides.build
+.PHONY : CMakeFiles/GeniusNote1_0.dir/main.cpp.o.provides
+
+CMakeFiles/GeniusNote1_0.dir/main.cpp.o.provides.build: CMakeFiles/GeniusNote1_0.dir/main.cpp.o
 
 
 # Object files for target GeniusNote1_0
@@ -182,8 +206,9 @@ GeniusNote1_0_OBJECTS = \
 "CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o" \
 "CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o" \
 "CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o" \
-"CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o" \
-"CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o"
+"CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o" \
+"CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o" \
+"CMakeFiles/GeniusNote1_0.dir/main.cpp.o"
 
 # External object files for target GeniusNote1_0
 GeniusNote1_0_EXTERNAL_OBJECTS =
@@ -191,11 +216,12 @@ GeniusNote1_0_EXTERNAL_OBJECTS =
 GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o
 GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o
 GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o
-GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o
-GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o
+GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o
+GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o
+GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/main.cpp.o
 GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/build.make
 GeniusNote1_0: CMakeFiles/GeniusNote1_0.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable GeniusNote1_0"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable GeniusNote1_0"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GeniusNote1_0.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -206,8 +232,9 @@ CMakeFiles/GeniusNote1_0.dir/build: GeniusNote1_0
 CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o.requires
 CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o.requires
 CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/source/ThreadServer.cpp.o.requires
-CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/ServerSocetTest.cpp.o.requires
-CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/ServerSqliteTest.cpp.o.requires
+CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/test/ServerSocetTest.cpp.o.requires
+CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/test/ServerSqliteTest.cpp.o.requires
+CMakeFiles/GeniusNote1_0.dir/requires: CMakeFiles/GeniusNote1_0.dir/main.cpp.o.requires
 
 .PHONY : CMakeFiles/GeniusNote1_0.dir/requires
 

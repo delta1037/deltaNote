@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSocetTest.cpp
-cstring
--
-include/SocketServer.h
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
-
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/ServerSqliteTest.cpp
-include/SqliteServer.h
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
-
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
 cstdio
 -
@@ -37,6 +27,8 @@ sqlite3.h
 -
 
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/ThreadServer.h
+
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/main.cpp
 
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SocketServer.cpp
 ../include/SocketServer.h
@@ -61,4 +53,14 @@ cstdio
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/ThreadServer.cpp
 ../include/ThreadServer.h
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/ThreadServer.h
+
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp
+cstring
+-
+../include/SocketServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
+
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSqliteTest.cpp
+../include/SqliteServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
 

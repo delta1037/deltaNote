@@ -203,6 +203,12 @@ ProcessorCount_cmd_sysctl:FILEPATH=/sbin/sysctl
 //Path to a library.
 SQLITELIB:FILEPATH=SQLITELIB-NOTFOUND
 
+//Path to a library.
+Sqlite:FILEPATH=/usr/local/lib/libsqlite3.so
+
+//Path to a library.
+Sqlitelib:FILEPATH=Sqlitelib-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

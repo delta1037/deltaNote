@@ -3,7 +3,7 @@
 //
 
 #include <cstring>
-#include "include/SocketServer.h"
+#include "../include/SocketServer.h"
 
 typedef struct{
   int id;
@@ -11,7 +11,7 @@ typedef struct{
 }ID_Name;
 using namespace GeniusNote;
 
-int main(){
+int socketmain(){
 
   char* buf=(char*)malloc(sizeof(ID_Name));
   ID_Name* newNode=(ID_Name*)malloc(sizeof(ID_Name));
