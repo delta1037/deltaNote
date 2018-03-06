@@ -16,8 +16,10 @@ typedef struct {
 namespace GeniusNote{
 class ServerSqlite {
  public:
+  NoteStruct Note[100];
   bool SqlTableOpen(char* UserName,char* paswd);
-  int SqlTableIint(char* UserName);
+  int SqlTableInit(char* UserName);
+  int SqlAddUser(char* UserName,char* Paswd);
   int ServerTableUpdate(char* UserName,const char* terminal,NoteStruct* Note);
   int ServerTableReturn(char* UserName,NoteStruct* Note,char* terminal,int (*callback)(void *, int, char **, char **));
 };

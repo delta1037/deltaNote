@@ -30,23 +30,36 @@ int callback(void *NotUsed,int argc,char **argv,char **azColName){
   memcpy(buf,*argv, sizeof(*argv));
   return 0;
 }
+
 static void * DataHandle(SocketServer socketserver) {
   User_Paswd *user_paswd;
   size_t UserPaswdSize = sizeof(User_Paswd);
 
   socketserver.Recv(buf, UserPaswdSize);
   memcpy(&user_paswd, buf, UserPaswdSize);
+  ServerSqlite serverSqlite{};
 
   if (!strcmp(user_paswd->Type, "register")) {
-    ServerSqlite serverSqlite{};
-    serverSqlite.SqlTableIint(user_paswd->UserName);
+    //添加新用户
+    serverSqlite.SqlAddUser(user_paswd->UserName,user_paswd->Paswd);
+    //初始化用户表
+    serverSqlite.SqlTableInit(user_paswd->UserName);
     //如果用户名存在，则回馈用户名存在信号
     serverSqlite.SqlTableOpen(user_paswd->UserName, user_paswd->Paswd);
   } else if (!strcmp(user_paswd->Type, "client") || !strcmp(user_paswd->Type, "android")) {
-    ServerSqlite serverSqlite{};
-    serverSqlite.SqlTableOpen(user_paswd->UserName, user_paswd->Paswd);
+
+    if(serverSqlite.SqlTableOpen(user_paswd->UserName, user_paswd->Paswd)){
+      //返回用户名密码错误
+      exit(0);
+    }
+
+    //更新数据
     serverSqlite.ServerTableUpdate(user_paswd->UserName, user_paswd->Type, Node);
+
+    //返回数据
     serverSqlite.ServerTableReturn(user_paswd->UserName, Node, user_paswd->Type, callback);
+
+    //将数据发送给客户端
     socketserver.Send(buf, sizeof(buf));
   } else {
     LOG_ERROR("身份验证失败。。。")
@@ -73,7 +86,7 @@ int main(){
       LOG_ERROR("Accept connection error")
     }
     LOG_INFO("A new connection occurs")
-    if (pthread_create(&thread_id, NULL, reinterpret_cast<void *(*)(void *)>(DataHandle), &socketServer)) {
+    if (pthread_create(&thread_id, nullptr, reinterpret_cast<void *(*)(void *)>(DataHandle), &socketServer)) {
       LOG_ERROR("Pthread create error...")
       break;
     }

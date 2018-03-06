@@ -25,6 +25,7 @@
  */
 
 #include <cstdio>
+#include <cstring>
 #include "../include/SqliteServer.h"
 #include "../include/Log.h"
 
@@ -49,6 +50,10 @@ int callback(void *NotUsed,int argc,char **argv,char **azColName){
   return 0;
 }
 */
+int callback(void *NotUsed,int argc,char **argv,char **azColName){
+  return 0;
+}
+
 bool ServerSqlite::SqlTableOpen(char* name,char* paswd){
   //创建用户密码表
   const char* Name_paswd="CRREATE TABLE IF NOT EXITS GeniusNote.Name_paswd("\
@@ -66,7 +71,15 @@ bool ServerSqlite::SqlTableOpen(char* name,char* paswd){
   CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
   return ret==SQLITE_OK;
 }
-int ServerSqlite::SqlTableIint(char* UserName){
+int ServerSqlite::SqlAddUser(char* UserName,char* Paswd){
+  LOG_INFO("Add user...")
+  const char* Add="INSERT INTO GeniusNote.Name_paswd(Name,Paswd) VALUES((%Q),(%Q))";
+  const char* AddUser=sqlite3_mprintf(Add,UserName,Paswd);
+
+  ret =sqlite3_exec(db,AddUser,nullptr, nullptr,&zErrMsg);
+  CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
+}
+int ServerSqlite::SqlTableInit(char* UserName){
   const char *CreateTable="CREATE TABLE GeniusNote.(%Q)("\
       "Time_Tag       KEY       NOTNULL,"\
       "ServerState    CHAR(1)   NOTNULL,"\
@@ -101,9 +114,7 @@ int ServerSqlite::ServerTableUpdate(char* UserName,const char* terminal,NoteStru
       ret =sqlite3_exec(db,SqlDel, nullptr,nullptr,&zErrMsg);
       CHECK(ret,SQLITE_OK,{LOG_ERROR(sqlite3_mprintf("SQL error:%s\n",zErrMsg))})
     }else if(Note[i].Type[type]==UnSync){
-      //const char* SqlUpdate="UPDATE (%Q) SET ServerState=(%Q) WHERE TimeTag==(%Q)";
-      //char* SqlSync=sqlite3_mprintf(SqlUpdate,UserName,Sync,Note[i].Time_Tag);
-      const char*SqlUpdate="INSERT INTO (%Q)(Time_tag,ServerState,ClientState,AndroidState)"\
+      const char*SqlUpdate="INSERT INTO GeniusNote.(%Q)(Time_tag,ServerState,ClientState,AndroidState)"\
                                       "VALUES((%Q),(%Q),(%Q),(%Q))";
       char* SqlSync=sqlite3_mprintf(SqlUpdate,UserName,Note[i].Time_Tag,1,((char)(type==1)),((char)(type != 1)));
       ret =sqlite3_exec(db,SqlSync,nullptr,nullptr,&zErrMsg);

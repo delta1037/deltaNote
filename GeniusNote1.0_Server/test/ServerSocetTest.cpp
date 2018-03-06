@@ -11,7 +11,7 @@ typedef struct{
 }ID_Name;
 using namespace GeniusNote;
 
-int socketmain(){
+int smain(){
 
   char* buf=(char*)malloc(sizeof(ID_Name));
   ID_Name* newNode=(ID_Name*)malloc(sizeof(ID_Name));
