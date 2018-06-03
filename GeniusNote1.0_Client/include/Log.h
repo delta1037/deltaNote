@@ -2,13 +2,12 @@
 // Created by geniusrabbit on 18-2-27.
 //
 
-#ifndef GENIUSNOTE1_0_CLIENT_LOG_H
-#define GENIUSNOTE1_0_CLIENT_LOG_H
+#ifndef GENIUSNOTE1_0_LOG_H
+#define GENIUSNOTE1_0_LOG_H
 
 #include <cstdio>
 #include <cerrno>
 
-//#define None   "\e[0m"
 #define RED    "\e[0;31m"
 #define GREEN  "\e[0;32m"
 
@@ -30,4 +29,9 @@
                           printf(NEW_LINE); \
                         }
 
-#endif //GENIUSNOTE1_0_CLIENT_LOG_H
+#define CHECK(x,m,handle) if((x)==(m)){\
+                           handle;\
+                           return -1;\
+                         }
+
+#endif //GENIUSNOTE1_0_LOG_H

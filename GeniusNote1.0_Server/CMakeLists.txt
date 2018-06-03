@@ -4,12 +4,16 @@ project(GeniusNote1_0)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(/usr/include)
-find_library(Sqlite sqlite3 /lib)
+find_library(Sqlite sqlite3 /usr/lib)
 
-add_executable(GeniusNote1_0 source/SocketServer.cpp include/SocketServer.h
+add_executable(GeniusNote1_0
+        source/SocketServer.cpp include/SocketServer.h
         source/SqliteServer.cpp include/SqliteServer.h
         include/Log.h
         include/sqlite3.h
-        test/ServerSocetTest.cpp test/ServerSqliteTest.cpp main.cpp)
+        #ServerSocetTest.cpp
+        #test/ServerSqliteTest.cpp
+        test/main.cpp
+        )
 
-target_link_libraries(GeniusNote1_0 sqlite3)
+target_link_libraries(GeniusNote1_0 ${Sqlite})

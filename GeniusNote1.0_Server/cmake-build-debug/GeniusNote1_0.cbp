@@ -96,19 +96,13 @@
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/sqlite3.h">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
-		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/main.cpp">
-			<Option target="GeniusNote1_0"/>
-		</Unit>
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SocketServer.cpp">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SqliteServer.cpp">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
-		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp">
-			<Option target="GeniusNote1_0"/>
-		</Unit>
-		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSqliteTest.cpp">
+		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/main.cpp">
 			<Option target="GeniusNote1_0"/>
 		</Unit>
 		<Unit filename="/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/CMakeLists.txt">

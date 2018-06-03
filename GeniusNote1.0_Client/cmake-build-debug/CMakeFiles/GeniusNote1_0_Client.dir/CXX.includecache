@@ -31,7 +31,7 @@ arpa/inet.h
 -
 cstring
 -
-zconf.h
+unistd.h
 -
 ../include/SocketClient.h
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Client/include/SocketClient.h

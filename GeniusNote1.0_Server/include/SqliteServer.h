@@ -6,7 +6,7 @@
 #define GENIUSNOTE1_0_SQLITESERVER_H
 
 #include <string>
-#include <sqlite3.h>
+#include "sqlite3.h"
 
 typedef struct {
   char Time_Tag[128];

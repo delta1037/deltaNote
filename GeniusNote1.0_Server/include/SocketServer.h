@@ -22,21 +22,14 @@ enum SocketState {
 namespace GeniusNote{
 class SocketServer{
  public:
-  int init(int port);
-  int StartSocket();
-  int AcCon();
-
+  int Init(char* ClientIP,int ClientPort,char* ServerIP,int ServerPort);
   int Send(void* buf,size_t size);
   int Recv(void* buf,size_t size);
-
   int Close();
-
  private:
   SocketState state;
-  int port;
-  int sockfd;
-  sockaddr_in ServerAddr;
-
+  int serSock;
+  int cliSock;
 };
 }
 

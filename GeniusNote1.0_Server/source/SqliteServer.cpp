@@ -28,6 +28,7 @@
 #include <cstring>
 #include "../include/SqliteServer.h"
 #include "../include/Log.h"
+#include <sqlite3.h>
 
 #define MAXLINE 10
 

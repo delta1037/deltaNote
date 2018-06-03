@@ -24,20 +24,10 @@ sys/socket.h
 string
 -
 sqlite3.h
--
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/sqlite3.h
 
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/main.cpp
-include/SqliteServer.h
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
-include/SocketServer.h
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
-include/Log.h
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
-pthread.h
--
-iostream
--
-cstring
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/sqlite3.h
+stdarg.h
 -
 
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SocketServer.cpp
@@ -55,18 +45,26 @@ cstring
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/source/SqliteServer.cpp
 cstdio
 -
+cstring
+-
 ../include/SqliteServer.h
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
 ../include/Log.h
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
-
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSocetTest.cpp
-cstring
+sqlite3.h
 -
-../include/SocketServer.h
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
 
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/ServerSqliteTest.cpp
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/test/main.cpp
 ../include/SqliteServer.h
 /home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SqliteServer.h
+../include/SocketServer.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/SocketServer.h
+../include/Log.h
+/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/include/Log.h
+pthread.h
+-
+iostream
+-
+cstring
+-
 

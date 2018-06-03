@@ -5,12 +5,10 @@
 #include <cstring>
 #include "include/SocketClient.h"
 
-//#include "include/Log.h"
-//#include <iostream>
-
-typedef struct {
+using namespace std;
+typedef struct{
   int id;
-  char name[8];
+  char name[10];
 }ID_Name;
 
 using namespace GeniusNoteSocket;
@@ -20,36 +18,23 @@ int main(){
   int flag=0;
   size_t StructSize= sizeof(ID_Name);
 
-  char* buf=(char*)malloc(sizeof(ID_Name));
+  char buf[20]="teat";
+  ID_Name* bufNode=(ID_Name*)malloc(sizeof(ID_Name));
 
+  //生成结构体对象并拷贝到buf
   ID_Name* newNode=(ID_Name*)malloc(sizeof(ID_Name));
   newNode->id=666;
-  strcpy(newNode->name,"lll");
+  strcpy(newNode->name,"liubo");
 
-  memcpy(buf,newNode, StructSize);
+  memcpy(buf,&(*newNode), StructSize);
+  client.Init("127.0.0.1",6666,"127.0.0.1",6667);
 
-  /*
-  ID_Name* newNode1=(ID_Name*)malloc(sizeof(ID_Name));
-  memcpy(newNode1,buf, sizeof(ID_Name));
-  printf("%d--%s\n",newNode1->id,newNode1->name);
-
-  */
-  //fgets((void*)&buf, sizeof(stdin),stdin);
-
-  int init=client.init(2336);
-  int con=client.ConSer("127.0.0.1",2332);
-
-  int sendSize=client.Send(buf, StructSize);
-  memset(buf,0, StructSize);
+  int sendSize=client.Send(&buf, StructSize);
   int recvSize=client.Recv(buf, StructSize);
+  memcpy(bufNode,buf,StructSize);
+  printf("%d-%s\n",bufNode->id,bufNode->name);
 
-  ID_Name* newNode1=(ID_Name*)malloc(sizeof(ID_Name));
-  memcpy(newNode1,buf, StructSize);
-
-  printf("%d--%s\n",newNode1->id,newNode1->name);
-
-  int clo=client.Close();
-
+  client.Close();
 }
 
 

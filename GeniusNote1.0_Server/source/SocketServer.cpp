@@ -10,72 +10,52 @@
 #include <cstring>
 
 namespace GeniusNote {
-int SocketServer::init(int port) {
-  LOG_INFO("Server init")
-  int sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+int SocketServer::Init(char* ClientIP,int ClientPort,char* ServerIP,int ServerPort) {
+  LOG_INFO("Server start success~")
+  int flag;
+  int serSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+  CHECK(serSock, SOCKET_ERROR, { LOG_ERROR("Server socket init failed")state = Error; })
+  this->serSock=serSock;
 
-  CHECK(sockfd, SOCKET_ERROR, { LOG_ERROR("Server socket init failed")state = Error; })
+  struct sockaddr_in servAddr;
+  memset(&servAddr,0, sizeof(servAddr));
 
-  struct sockaddr_in serv_addr;
-  memset(&serv_addr,0, sizeof(serv_addr));
+  servAddr.sin_family=AF_INET;
+  servAddr.sin_port=htons(static_cast<uint16_t>(ServerPort));
+  servAddr.sin_addr.s_addr=inet_addr(ServerIP);
 
-  serv_addr.sin_family=AF_INET;
-  serv_addr.sin_addr.s_addr=inet_addr("127.0.0.1");
-  serv_addr.sin_port=htons(static_cast<uint16_t>(port));
-
-  this->port=port;
-  this->sockfd=sockfd;
-  this->ServerAddr=serv_addr;
-
-  int flag=bind(sockfd,(
-  struct sockaddr*)&serv_addr, sizeof(sockaddr));
-
+  flag=bind(serSock,(struct sockaddr*)&servAddr, sizeof(servAddr));
   CHECK(flag,SOCKET_ERROR,{LOG_ERROR("Server bind error") state=Error;})
 
-  state=Running;
-
-  return state;
-}
-int SocketServer::StartSocket() {
-  state=Running;
-  LOG_INFO("Start Listen")
-  int flag=listen(this->sockfd,this->port);
+  flag=listen(serSock,20);
   CHECK(flag,SOCKET_ERROR,{LOG_ERROR("Start(Listen) error") state=Error;})
-  return state;
-}
 
-int SocketServer::AcCon() {
-  state=Running;
-  LOG_INFO("Connect...")
-  struct sockaddr_in clnt_addr;
-  socklen_t clnt_addr_size= sizeof(clnt_addr);
+  struct sockaddr_in cliAddr;
+  socklen_t clnt_addr_size= sizeof(cliAddr);
 
-  int clientfd=accept(this->sockfd,(
-  struct sockaddr*)&clnt_addr,&clnt_addr_size);
+  int cliSock=accept(serSock,(struct sockaddr*)&cliAddr,&clnt_addr_size);
+  this->cliSock=cliSock;
 
-  CHECK(clientfd,SOCKET_ERROR,{LOG_ERROR("Accept fault") state=Error;})
+  CHECK(flag,SOCKET_ERROR,{LOG_ERROR("Accept fault") state=Error;})
 
   return state;
-
 }
-
 int SocketServer::Send(void *buf, size_t size) {
   LOG_INFO("Send message...")
-  ssize_t sendSize=send(this->sockfd,buf,size,0);
+  ssize_t sendSize=send(this->serSock,buf,size,0);
   CHECK(sendSize,0,{LOG_ERROR("Send Size is NULL") state=Error;})
-
   return (int)sendSize;
 }
 int SocketServer::Recv(void *buf, size_t size) {
   LOG_INFO("Receive message...")
-  ssize_t recvSize=recv(this->sockfd,buf,size,0);
+  ssize_t recvSize=read(this->cliSock,buf,size);
   CHECK(recvSize,0,{LOG_ERROR("Receive Size is NULL") state=Error;})
-
   return (int)recvSize;
 }
 int SocketServer::Close() {
-  LOG_INFO("Close Socket")
-  close(this->sockfd);
+  LOG_INFO("Close Socket~")
+  close(this->cliSock);
+  close(this->serSock);
   return 1;
 }
 }
