@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/delta/deltaNote/deltaNote_Server/include/Log.h
+cstdio
+-
+cerrno
+-
+
+/home/delta/deltaNote/deltaNote_Server/include/pack.h
+
+/home/delta/deltaNote/deltaNote_Server/include/sqlite.h
+string
+-
+vector
+-
+cstring
+-
+sqlite3.h
+/home/delta/deltaNote/deltaNote_Server/include/sqlite3.h
+pack.h
+/home/delta/deltaNote/deltaNote_Server/include/pack.h
+
+/home/delta/deltaNote/deltaNote_Server/include/sqlite3.h
+stdarg.h
+-
+
+/home/delta/deltaNote/deltaNote_Server/src/sqlite.cpp
+cstdio
+-
+../include/sqlite.h
+/home/delta/deltaNote/deltaNote_Server/include/sqlite.h
+../include/Log.h
+/home/delta/deltaNote/deltaNote_Server/include/Log.h
+

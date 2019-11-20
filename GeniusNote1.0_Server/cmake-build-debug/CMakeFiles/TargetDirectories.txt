@@ -1,3 +1,0 @@
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/geniusrabbit/home/GeniusNote1.0/GeniusNote1.0_Server/cmake-build-debug/CMakeFiles/GeniusNote1_0.dir

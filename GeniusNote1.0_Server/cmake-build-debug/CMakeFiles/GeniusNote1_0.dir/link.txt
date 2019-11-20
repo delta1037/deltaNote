@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/GeniusNote1_0.dir/source/SocketServer.cpp.o CMakeFiles/GeniusNote1_0.dir/source/SqliteServer.cpp.o CMakeFiles/GeniusNote1_0.dir/test/main.cpp.o  -o GeniusNote1_0  -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lsqlite3 
