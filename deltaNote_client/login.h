@@ -2,6 +2,7 @@
 #define LOGIN_H
 
 #include <QDialog>
+#include <QColorDialog>
 #include <QMessageBox>
 #include "newuser.h"
 
@@ -23,6 +24,14 @@ private slots:
     void on_Login_clicked();
 
     void on_creteNewUser_clicked();
+
+    void on_chooseFontColor_clicked();
+
+    void on_chooseIconColor_clicked();
+
+    void on_transparent_sliderMoved(int position);
+
+    void on_clearData_clicked();
 
 private:
     Ui::login *ui;

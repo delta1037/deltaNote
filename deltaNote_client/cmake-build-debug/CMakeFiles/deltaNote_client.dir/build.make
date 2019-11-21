@@ -61,13 +61,25 @@ ui_mainwindow.h: ../mainwindow.ui
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ui_mainwindow.h"
 	/install/Qt5.13.0/5.13.0/gcc_64/bin/uic -o /home/delta/deltaNote/deltaNote_client/cmake-build-debug/ui_mainwindow.h /home/delta/deltaNote/deltaNote_client/mainwindow.ui
 
+ui_todolistitem.h: ../todolistitem.ui
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating ui_todolistitem.h"
+	/install/Qt5.13.0/5.13.0/gcc_64/bin/uic -o /home/delta/deltaNote/deltaNote_client/cmake-build-debug/ui_todolistitem.h /home/delta/deltaNote/deltaNote_client/todolistitem.ui
+
+ui_newuser.h: ../newuser.ui
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating ui_newuser.h"
+	/install/Qt5.13.0/5.13.0/gcc_64/bin/uic -o /home/delta/deltaNote/deltaNote_client/cmake-build-debug/ui_newuser.h /home/delta/deltaNote/deltaNote_client/newuser.ui
+
+ui_userinfo.h: ../userinfo.ui
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating ui_userinfo.h"
+	/install/Qt5.13.0/5.13.0/gcc_64/bin/uic -o /home/delta/deltaNote/deltaNote_client/cmake-build-debug/ui_userinfo.h /home/delta/deltaNote/deltaNote_client/userinfo.ui
+
 ui_login.h: ../login.ui
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating ui_login.h"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Generating ui_login.h"
 	/install/Qt5.13.0/5.13.0/gcc_64/bin/uic -o /home/delta/deltaNote/deltaNote_client/cmake-build-debug/ui_login.h /home/delta/deltaNote/deltaNote_client/login.ui
 
 CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
 CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.o: deltaNote_client_autogen/mocs_compilation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.o -c /home/delta/deltaNote/deltaNote_client/cmake-build-debug/deltaNote_client_autogen/mocs_compilation.cpp
 
 CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.i: cmake_force
@@ -80,7 +92,7 @@ CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.s:
 
 CMakeFiles/deltaNote_client.dir/main.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
 CMakeFiles/deltaNote_client.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/deltaNote_client.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/deltaNote_client.dir/main.cpp.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/main.cpp.o -c /home/delta/deltaNote/deltaNote_client/main.cpp
 
 CMakeFiles/deltaNote_client.dir/main.cpp.i: cmake_force
@@ -93,7 +105,7 @@ CMakeFiles/deltaNote_client.dir/main.cpp.s: cmake_force
 
 CMakeFiles/deltaNote_client.dir/mainwindow.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
 CMakeFiles/deltaNote_client.dir/mainwindow.cpp.o: ../mainwindow.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/deltaNote_client.dir/mainwindow.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/deltaNote_client.dir/mainwindow.cpp.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/mainwindow.cpp.o -c /home/delta/deltaNote/deltaNote_client/mainwindow.cpp
 
 CMakeFiles/deltaNote_client.dir/mainwindow.cpp.i: cmake_force
@@ -104,9 +116,48 @@ CMakeFiles/deltaNote_client.dir/mainwindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deltaNote_client.dir/mainwindow.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/deltaNote/deltaNote_client/mainwindow.cpp -o CMakeFiles/deltaNote_client.dir/mainwindow.cpp.s
 
+CMakeFiles/deltaNote_client.dir/todolistitem.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
+CMakeFiles/deltaNote_client.dir/todolistitem.cpp.o: ../todolistitem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/deltaNote_client.dir/todolistitem.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/todolistitem.cpp.o -c /home/delta/deltaNote/deltaNote_client/todolistitem.cpp
+
+CMakeFiles/deltaNote_client.dir/todolistitem.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deltaNote_client.dir/todolistitem.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/delta/deltaNote/deltaNote_client/todolistitem.cpp > CMakeFiles/deltaNote_client.dir/todolistitem.cpp.i
+
+CMakeFiles/deltaNote_client.dir/todolistitem.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deltaNote_client.dir/todolistitem.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/deltaNote/deltaNote_client/todolistitem.cpp -o CMakeFiles/deltaNote_client.dir/todolistitem.cpp.s
+
+CMakeFiles/deltaNote_client.dir/newuser.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
+CMakeFiles/deltaNote_client.dir/newuser.cpp.o: ../newuser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/deltaNote_client.dir/newuser.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/newuser.cpp.o -c /home/delta/deltaNote/deltaNote_client/newuser.cpp
+
+CMakeFiles/deltaNote_client.dir/newuser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deltaNote_client.dir/newuser.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/delta/deltaNote/deltaNote_client/newuser.cpp > CMakeFiles/deltaNote_client.dir/newuser.cpp.i
+
+CMakeFiles/deltaNote_client.dir/newuser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deltaNote_client.dir/newuser.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/deltaNote/deltaNote_client/newuser.cpp -o CMakeFiles/deltaNote_client.dir/newuser.cpp.s
+
+CMakeFiles/deltaNote_client.dir/userinfo.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
+CMakeFiles/deltaNote_client.dir/userinfo.cpp.o: ../userinfo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/deltaNote_client.dir/userinfo.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/userinfo.cpp.o -c /home/delta/deltaNote/deltaNote_client/userinfo.cpp
+
+CMakeFiles/deltaNote_client.dir/userinfo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deltaNote_client.dir/userinfo.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/delta/deltaNote/deltaNote_client/userinfo.cpp > CMakeFiles/deltaNote_client.dir/userinfo.cpp.i
+
+CMakeFiles/deltaNote_client.dir/userinfo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deltaNote_client.dir/userinfo.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/deltaNote/deltaNote_client/userinfo.cpp -o CMakeFiles/deltaNote_client.dir/userinfo.cpp.s
+
 CMakeFiles/deltaNote_client.dir/login.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
 CMakeFiles/deltaNote_client.dir/login.cpp.o: ../login.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/deltaNote_client.dir/login.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/deltaNote_client.dir/login.cpp.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/login.cpp.o -c /home/delta/deltaNote/deltaNote_client/login.cpp
 
 CMakeFiles/deltaNote_client.dir/login.cpp.i: cmake_force
@@ -119,7 +170,7 @@ CMakeFiles/deltaNote_client.dir/login.cpp.s: cmake_force
 
 CMakeFiles/deltaNote_client.dir/socket.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
 CMakeFiles/deltaNote_client.dir/socket.cpp.o: ../socket.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/deltaNote_client.dir/socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/deltaNote_client.dir/socket.cpp.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/socket.cpp.o -c /home/delta/deltaNote/deltaNote_client/socket.cpp
 
 CMakeFiles/deltaNote_client.dir/socket.cpp.i: cmake_force
@@ -130,13 +181,44 @@ CMakeFiles/deltaNote_client.dir/socket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deltaNote_client.dir/socket.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/deltaNote/deltaNote_client/socket.cpp -o CMakeFiles/deltaNote_client.dir/socket.cpp.s
 
+CMakeFiles/deltaNote_client.dir/untils.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
+CMakeFiles/deltaNote_client.dir/untils.cpp.o: ../untils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/deltaNote_client.dir/untils.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/untils.cpp.o -c /home/delta/deltaNote/deltaNote_client/untils.cpp
+
+CMakeFiles/deltaNote_client.dir/untils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deltaNote_client.dir/untils.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/delta/deltaNote/deltaNote_client/untils.cpp > CMakeFiles/deltaNote_client.dir/untils.cpp.i
+
+CMakeFiles/deltaNote_client.dir/untils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deltaNote_client.dir/untils.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/deltaNote/deltaNote_client/untils.cpp -o CMakeFiles/deltaNote_client.dir/untils.cpp.s
+
+CMakeFiles/deltaNote_client.dir/sqlite.cpp.o: CMakeFiles/deltaNote_client.dir/flags.make
+CMakeFiles/deltaNote_client.dir/sqlite.cpp.o: ../sqlite.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/deltaNote_client.dir/sqlite.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deltaNote_client.dir/sqlite.cpp.o -c /home/delta/deltaNote/deltaNote_client/sqlite.cpp
+
+CMakeFiles/deltaNote_client.dir/sqlite.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deltaNote_client.dir/sqlite.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/delta/deltaNote/deltaNote_client/sqlite.cpp > CMakeFiles/deltaNote_client.dir/sqlite.cpp.i
+
+CMakeFiles/deltaNote_client.dir/sqlite.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deltaNote_client.dir/sqlite.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/delta/deltaNote/deltaNote_client/sqlite.cpp -o CMakeFiles/deltaNote_client.dir/sqlite.cpp.s
+
 # Object files for target deltaNote_client
 deltaNote_client_OBJECTS = \
 "CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/deltaNote_client.dir/main.cpp.o" \
 "CMakeFiles/deltaNote_client.dir/mainwindow.cpp.o" \
+"CMakeFiles/deltaNote_client.dir/todolistitem.cpp.o" \
+"CMakeFiles/deltaNote_client.dir/newuser.cpp.o" \
+"CMakeFiles/deltaNote_client.dir/userinfo.cpp.o" \
 "CMakeFiles/deltaNote_client.dir/login.cpp.o" \
-"CMakeFiles/deltaNote_client.dir/socket.cpp.o"
+"CMakeFiles/deltaNote_client.dir/socket.cpp.o" \
+"CMakeFiles/deltaNote_client.dir/untils.cpp.o" \
+"CMakeFiles/deltaNote_client.dir/sqlite.cpp.o"
 
 # External object files for target deltaNote_client
 deltaNote_client_EXTERNAL_OBJECTS =
@@ -144,14 +226,20 @@ deltaNote_client_EXTERNAL_OBJECTS =
 deltaNote_client: CMakeFiles/deltaNote_client.dir/deltaNote_client_autogen/mocs_compilation.cpp.o
 deltaNote_client: CMakeFiles/deltaNote_client.dir/main.cpp.o
 deltaNote_client: CMakeFiles/deltaNote_client.dir/mainwindow.cpp.o
+deltaNote_client: CMakeFiles/deltaNote_client.dir/todolistitem.cpp.o
+deltaNote_client: CMakeFiles/deltaNote_client.dir/newuser.cpp.o
+deltaNote_client: CMakeFiles/deltaNote_client.dir/userinfo.cpp.o
 deltaNote_client: CMakeFiles/deltaNote_client.dir/login.cpp.o
 deltaNote_client: CMakeFiles/deltaNote_client.dir/socket.cpp.o
+deltaNote_client: CMakeFiles/deltaNote_client.dir/untils.cpp.o
+deltaNote_client: CMakeFiles/deltaNote_client.dir/sqlite.cpp.o
 deltaNote_client: CMakeFiles/deltaNote_client.dir/build.make
+deltaNote_client: /usr/local/lib/libsqlite3.so
 deltaNote_client: /install/Qt5.13.0/5.13.0/gcc_64/lib/libQt5Widgets.so.5.13.0
 deltaNote_client: /install/Qt5.13.0/5.13.0/gcc_64/lib/libQt5Gui.so.5.13.0
 deltaNote_client: /install/Qt5.13.0/5.13.0/gcc_64/lib/libQt5Core.so.5.13.0
 deltaNote_client: CMakeFiles/deltaNote_client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable deltaNote_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable deltaNote_client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/deltaNote_client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -164,6 +252,9 @@ CMakeFiles/deltaNote_client.dir/clean:
 .PHONY : CMakeFiles/deltaNote_client.dir/clean
 
 CMakeFiles/deltaNote_client.dir/depend: ui_mainwindow.h
+CMakeFiles/deltaNote_client.dir/depend: ui_todolistitem.h
+CMakeFiles/deltaNote_client.dir/depend: ui_newuser.h
+CMakeFiles/deltaNote_client.dir/depend: ui_userinfo.h
 CMakeFiles/deltaNote_client.dir/depend: ui_login.h
 	cd /home/delta/deltaNote/deltaNote_client/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/delta/deltaNote/deltaNote_client /home/delta/deltaNote/deltaNote_client /home/delta/deltaNote/deltaNote_client/cmake-build-debug /home/delta/deltaNote/deltaNote_client/cmake-build-debug /home/delta/deltaNote/deltaNote_client/cmake-build-debug/CMakeFiles/deltaNote_client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/deltaNote_client.dir/depend

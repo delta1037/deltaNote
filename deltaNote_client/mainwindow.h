@@ -2,12 +2,18 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPainter>
 #include <QListWidgetItem>
+#include <QGraphicsSvgItem>
+#include <QSharedPointer>
+#include <QGraphicsColorizeEffect>
 #include <QMenu>
+#include <QFile>
 
 #include "login.h"
 #include "userinfo.h"
 #include "todolistitem.h"
+#include "graphicscolorsvgitem.h"
 
 namespace Ui {
 class MainWindow;
@@ -39,7 +45,11 @@ private slots:
     void on_actClear_triggered();
 
 private:
+    void paintEvent(QPaintEvent *event = nullptr);
+
     Ui::MainWindow *ui;
 };
+
+
 
 #endif // MAINWINDOW_H

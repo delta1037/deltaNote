@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o"
   "CMakeFiles/deltaNote.dir/src/socket.cpp.o"
   "CMakeFiles/deltaNote.dir/src/sqlite.cpp.o"
+  "CMakeFiles/deltaNote.dir/src/untils.cpp.o"
   "deltaNote"
   "deltaNote.pdb"
 )

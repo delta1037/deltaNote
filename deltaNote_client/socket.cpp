@@ -15,7 +15,7 @@ SocketClient::SocketClient(){
 SocketClient::SocketClient(char *_serverIP, int _serverPort){
     strcpy(serverIP, _serverIP);
     serverPort = _serverPort;
-    socketState = SocketStopped;
+    socketState = SocketConnSuccess;
     clientSocketFd = 0;
 
     LOG_INFO("start socket client")
@@ -32,8 +32,7 @@ SocketClient::SocketClient(char *_serverIP, int _serverPort){
     serverSocketAddr.sin_addr.s_addr = inet_addr(serverIP);
 
     ret = connect(clientSocketFd, (struct sockaddr*)&serverSocketAddr, sizeof(serverSocketAddr));
-    socketState = SocketConnSuccess;
-
+    CHECK(clientSocketFd, SOCKET_ERROR, { LOG_ERROR("connect server failed") socketState = SocketError; })
     LOG_INFO("start socket success")
 }
 
@@ -50,7 +49,11 @@ int SocketClient::recvMsg(void *buf, size_t size) {
 
     return int(recvSize);
 }
-
+ SocketClient::~SocketClient(){
+     LOG_INFO("close client socket")
+     close(clientSocketFd);
+     socketState = SocketStopped;
+}
 SocketState SocketClient::closeClient() {
     LOG_INFO("close client socket")
     close(clientSocketFd);

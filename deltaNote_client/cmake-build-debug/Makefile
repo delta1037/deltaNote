@@ -244,6 +244,33 @@ mainwindow.cpp.s:
 	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/mainwindow.cpp.s
 .PHONY : mainwindow.cpp.s
 
+newuser.o: newuser.cpp.o
+
+.PHONY : newuser.o
+
+# target to build an object file
+newuser.cpp.o:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/newuser.cpp.o
+.PHONY : newuser.cpp.o
+
+newuser.i: newuser.cpp.i
+
+.PHONY : newuser.i
+
+# target to preprocess a source file
+newuser.cpp.i:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/newuser.cpp.i
+.PHONY : newuser.cpp.i
+
+newuser.s: newuser.cpp.s
+
+.PHONY : newuser.s
+
+# target to generate assembly for a file
+newuser.cpp.s:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/newuser.cpp.s
+.PHONY : newuser.cpp.s
+
 socket.o: socket.cpp.o
 
 .PHONY : socket.o
@@ -271,6 +298,114 @@ socket.cpp.s:
 	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/socket.cpp.s
 .PHONY : socket.cpp.s
 
+sqlite.o: sqlite.cpp.o
+
+.PHONY : sqlite.o
+
+# target to build an object file
+sqlite.cpp.o:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/sqlite.cpp.o
+.PHONY : sqlite.cpp.o
+
+sqlite.i: sqlite.cpp.i
+
+.PHONY : sqlite.i
+
+# target to preprocess a source file
+sqlite.cpp.i:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/sqlite.cpp.i
+.PHONY : sqlite.cpp.i
+
+sqlite.s: sqlite.cpp.s
+
+.PHONY : sqlite.s
+
+# target to generate assembly for a file
+sqlite.cpp.s:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/sqlite.cpp.s
+.PHONY : sqlite.cpp.s
+
+todolistitem.o: todolistitem.cpp.o
+
+.PHONY : todolistitem.o
+
+# target to build an object file
+todolistitem.cpp.o:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/todolistitem.cpp.o
+.PHONY : todolistitem.cpp.o
+
+todolistitem.i: todolistitem.cpp.i
+
+.PHONY : todolistitem.i
+
+# target to preprocess a source file
+todolistitem.cpp.i:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/todolistitem.cpp.i
+.PHONY : todolistitem.cpp.i
+
+todolistitem.s: todolistitem.cpp.s
+
+.PHONY : todolistitem.s
+
+# target to generate assembly for a file
+todolistitem.cpp.s:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/todolistitem.cpp.s
+.PHONY : todolistitem.cpp.s
+
+untils.o: untils.cpp.o
+
+.PHONY : untils.o
+
+# target to build an object file
+untils.cpp.o:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/untils.cpp.o
+.PHONY : untils.cpp.o
+
+untils.i: untils.cpp.i
+
+.PHONY : untils.i
+
+# target to preprocess a source file
+untils.cpp.i:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/untils.cpp.i
+.PHONY : untils.cpp.i
+
+untils.s: untils.cpp.s
+
+.PHONY : untils.s
+
+# target to generate assembly for a file
+untils.cpp.s:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/untils.cpp.s
+.PHONY : untils.cpp.s
+
+userinfo.o: userinfo.cpp.o
+
+.PHONY : userinfo.o
+
+# target to build an object file
+userinfo.cpp.o:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/userinfo.cpp.o
+.PHONY : userinfo.cpp.o
+
+userinfo.i: userinfo.cpp.i
+
+.PHONY : userinfo.i
+
+# target to preprocess a source file
+userinfo.cpp.i:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/userinfo.cpp.i
+.PHONY : userinfo.cpp.i
+
+userinfo.s: userinfo.cpp.s
+
+.PHONY : userinfo.s
+
+# target to generate assembly for a file
+userinfo.cpp.s:
+	$(MAKE) -f CMakeFiles/deltaNote_client.dir/build.make CMakeFiles/deltaNote_client.dir/userinfo.cpp.s
+.PHONY : userinfo.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -293,9 +428,24 @@ help:
 	@echo "... mainwindow.o"
 	@echo "... mainwindow.i"
 	@echo "... mainwindow.s"
+	@echo "... newuser.o"
+	@echo "... newuser.i"
+	@echo "... newuser.s"
 	@echo "... socket.o"
 	@echo "... socket.i"
 	@echo "... socket.s"
+	@echo "... sqlite.o"
+	@echo "... sqlite.i"
+	@echo "... sqlite.s"
+	@echo "... todolistitem.o"
+	@echo "... todolistitem.i"
+	@echo "... todolistitem.s"
+	@echo "... untils.o"
+	@echo "... untils.i"
+	@echo "... untils.s"
+	@echo "... userinfo.o"
+	@echo "... userinfo.i"
+	@echo "... userinfo.s"
 .PHONY : help
 
 

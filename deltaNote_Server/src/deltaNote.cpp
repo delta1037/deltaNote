@@ -16,30 +16,6 @@ enum SystemStatus {
     SystemRunning = 1
 };
 SystemStatus systemStatus;
-/*
-int test(){
-    ServerSqlite sqlite = ServerSqlite("deltaNoteDB", "noteUserTable", "root", "root");
-
-    sqlite.addUser();
-
-    char *s_note1 = (char *)"999999";
-    char *op_add = (char *)"0";
-    char *note1_val = (char *)"this is a note";
-    vector<OpChange *> test;
-    OpChange note1 = OpChange(s_note1, s_note1, op_add, note1_val);
-    test.push_back(&note1);
-
-    sqlite.addChange(test);
-
-    vector<OpChange*> res;
-
-    sqlite.synChange((char *)"000000", res);
-
-    printf("%s, %d", res[0]->data, res.size());
-
-    return 0;
-}
-*/
 
 void * clientHandler(void *pVoid){
     auto *socket = (SocketServer *)pVoid;
@@ -48,7 +24,7 @@ void * clientHandler(void *pVoid){
     char *buf = (char *)&recv;
     socket->recvMsg(buf, sizeof(recv));
 
-    ServerSqlite sqlite = ServerSqlite(databaseName, usersTableName, recv.userName, recv.passwd);
+    ServerSqlite sqlite = ServerSqlite(databaseName, recv.userName, recv.passwd);
 
     if (recv.msgOp == CreateUser) {
         ret = sqlite.addUser();
@@ -68,44 +44,48 @@ void * clientHandler(void *pVoid){
         LOG_INFO("login send back")
     } else if (recv.msgOp == Pull) {
         ret = sqlite.loginRes();
+
         if (SqliteRunning == ret) {
             // select from database
-            vector<OpChange *> selectRes;
-            ret = sqlite.synChange(recv.timestamp, selectRes);
+            vector<MSG_OP_PACK> retDataPack;
+            ret = sqlite.returnDataSet(retDataPack);
 
             // send result to client
-            int sendSize = selectRes.size();
-            MSG send{};
-            for(int index = 0; index < sendSize; ++index){
-                int i = 0;
-                for(; i < 5 && index < sendSize; ++i, ++index){
-                    strcpy(send.msgQueue[i].opTimestamp, selectRes[index]->opTimestamp);
-                    strcpy(send.msgQueue[i].createTimestamp, selectRes[index]->createTimestamp);
-                    send.msgQueue[i].op = selectRes[index]->op;
-                    send.msgQueue[i].isCheck = selectRes[index]->isCheck;
-                    strcpy(send.msgQueue[i].data, selectRes[index]->data);
+            int sendSize = retDataPack.size();
+            MSG synPack{};
+            for (int index = 0; index < sendSize;) {
+                int left = min(5, sendSize - index);
+                makeSocketPack(synPack,
+                        left,
+                        ((left == 5) && (sendSize - index != 5))? MSG_HALF:MSG_FULL,
+                        RET);
+                for (int i = 0; i < 5 && index < sendSize; ++i, ++index) {
+                    makeDataPack(synPack.msgQueue[i],
+                                 retDataPack[index].opTimestamp,
+                                 retDataPack[index].createTimestamp,
+                                 retDataPack[index].op,
+                                 retDataPack[index].isCheck,
+                                 retDataPack[index].data);
                 }
-                if(index < sendSize){
-                    send.msgSize = 5;
-                }else{
-                    send.msgSize = i;
-                }
-
-                socket->sendMsg((void *)&send, sizeof(send));
+                socket->sendMsg(&synPack, sizeof(synPack));
             }
             LOG_INFO("send message")
         }
     } else if (recv.msgOp == Push) {
         ret = sqlite.loginRes();
+        vector<MSG_OP_PACK> changePush;
         if (SqliteRunning == ret){
             do {
-                vector<OpChange *> changePush;
                 for (int i = 0; i < recv.msgSize; ++i) {
-                    auto *t = new OpChange(recv.msgQueue[i].opTimestamp, recv.msgQueue[i].createTimestamp,
-                                           recv.msgQueue[i].op, recv.msgQueue[i].isCheck, recv.msgQueue[i].data);
-                    changePush.push_back(t);
+                    MSG_OP_PACK opPack{};
+                    makeDataPack(opPack,
+                                 recv.msgQueue[i].opTimestamp,
+                                 recv.msgQueue[i].createTimestamp,
+                                 recv.msgQueue[i].op,
+                                 recv.msgQueue[i].isCheck,
+                                 recv.msgQueue[i].data);
+                    changePush.push_back(opPack);
                 }
-                ret = sqlite.addChange(changePush);
 
                 if (recv.msg_seg != MSG_FULL) {
                     socket->recvMsg(buf, sizeof(MSG));
@@ -114,6 +94,10 @@ void * clientHandler(void *pVoid){
                 }
             } while (true);
         }
+
+        // add change to sql
+        ret = sqlite.addChange(changePush);
+
         MSG send{};
         if (SqliteRunning == ret){
             send.msgState = PushSuccess;
@@ -121,7 +105,20 @@ void * clientHandler(void *pVoid){
             send.msgState = PushError;
         }
         socket->sendMsg((void *)&send, sizeof(send));
-    } else {
+    } else if (recv.msgOp == Delete){
+        ret = sqlite.loginRes();
+        if (SqliteRunning == ret){
+            ret = sqlite.cleanSqlite();
+        }
+
+        MSG send{};
+        if (SqliteRunning == ret){
+            send.msgState = CleanSuccess;
+        } else {
+            send.msgState = CleanError;
+        }
+        socket->sendMsg((void *)&send, sizeof(send));
+    }else {
         LOG_ERROR("Wrong Msg OP %d received", recv.msgOp)
     }
 
@@ -152,6 +149,7 @@ void RunAPP(){
 }
 int main(){
     //test();
+
     RunAPP();
     return 0;
 }

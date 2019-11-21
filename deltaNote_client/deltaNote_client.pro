@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui svg xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        graphicscolorsvgitem.cpp \
         login.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
         userinfo.cpp
 
 HEADERS += \
+        graphicscolorsvgitem.h \
         log.h \
         login.h \
         mainwindow.h \
@@ -48,8 +50,7 @@ HEADERS += \
         userinfo.h \
         sqlite3.h
 
-LIBS += \
-        -Llib/ -lsqlite3
+LIBS += -Llib/ -lsqlite3
 
 FORMS += \
         login.ui \

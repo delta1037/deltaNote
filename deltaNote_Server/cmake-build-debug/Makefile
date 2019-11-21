@@ -204,6 +204,33 @@ src/sqlite.cpp.s:
 	$(MAKE) -f CMakeFiles/deltaNote.dir/build.make CMakeFiles/deltaNote.dir/src/sqlite.cpp.s
 .PHONY : src/sqlite.cpp.s
 
+src/untils.o: src/untils.cpp.o
+
+.PHONY : src/untils.o
+
+# target to build an object file
+src/untils.cpp.o:
+	$(MAKE) -f CMakeFiles/deltaNote.dir/build.make CMakeFiles/deltaNote.dir/src/untils.cpp.o
+.PHONY : src/untils.cpp.o
+
+src/untils.i: src/untils.cpp.i
+
+.PHONY : src/untils.i
+
+# target to preprocess a source file
+src/untils.cpp.i:
+	$(MAKE) -f CMakeFiles/deltaNote.dir/build.make CMakeFiles/deltaNote.dir/src/untils.cpp.i
+.PHONY : src/untils.cpp.i
+
+src/untils.s: src/untils.cpp.s
+
+.PHONY : src/untils.s
+
+# target to generate assembly for a file
+src/untils.cpp.s:
+	$(MAKE) -f CMakeFiles/deltaNote.dir/build.make CMakeFiles/deltaNote.dir/src/untils.cpp.s
+.PHONY : src/untils.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -222,6 +249,9 @@ help:
 	@echo "... src/sqlite.o"
 	@echo "... src/sqlite.i"
 	@echo "... src/sqlite.s"
+	@echo "... src/untils.o"
+	@echo "... src/untils.i"
+	@echo "... src/untils.s"
 .PHONY : help
 
 

@@ -2,6 +2,7 @@
 #define TODOLISTITEM_H
 
 #include <QWidget>
+#include <QPainter>
 #include <QMessageBox>
 
 #include <iostream>
@@ -9,6 +10,7 @@
 
 #include "untils.h"
 #include "socket.h"
+#include "graphicscolorsvgitem.h"
 
 namespace Ui {
 class ToDoListItem;
@@ -24,7 +26,8 @@ public:
     char op;
     char isCheck;
     char data[128];
-    explicit ToDoListItem(QWidget *parent = nullptr, const QString &data = "");
+    explicit ToDoListItem(QWidget *parent = nullptr, const QString &displayData = "", char *_opTime = nullptr, char *_createTime = nullptr, char _check = '\0', char *_data = nullptr);
+    void refreshColor();
     ~ToDoListItem();
 
 private slots:

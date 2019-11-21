@@ -9,7 +9,7 @@
 #include <vector>
 #include <cstring>
 #include "sqlite3.h"
-#include "pack.h"
+#include "untils.h"
 
 /**
  * 一个数据库，
@@ -20,8 +20,6 @@
  *  用户发过来用户名和加密的密码，查询是否符合条件
  *  符合条件即可进行下一步操作，否则认证失败
  */
-
-namespace deltaNote {
 using namespace std;
 
 enum SqliteState {
@@ -30,37 +28,9 @@ enum SqliteState {
     SqliteError=0
 };
 
-struct OpChange {
-    char *opTimestamp;
-    char *createTimestamp;
-    char op;
-    char isCheck;
-    char *data;
-
-    OpChange(char *_opTimestamp, char *_createTimestamp, char _op, char _isCheck, char *_data){
-        opTimestamp = new char[strlen(_opTimestamp) + 1]();
-        strcpy(opTimestamp, _opTimestamp);
-
-        createTimestamp = new char[strlen(_createTimestamp) + 1]();
-        strcpy(createTimestamp, _createTimestamp);
-
-        op = _op;
-        isCheck = _isCheck;
-
-        data = new char[strlen(_data) + 1]();
-        strcpy(data, _data);
-    }
-
-    ~OpChange(){
-        delete []opTimestamp;
-        delete []createTimestamp;
-        delete []data;
-    }
-};
-
 class ServerSqlite {
 public:
-    ServerSqlite(const char *databaseName, const char *usersTableName, const char *userName, const char *passwd);
+    ServerSqlite(const char *databaseName, char *userName, const char *passwd);
 
     SqliteState cleanSqlite();
 
@@ -71,22 +41,34 @@ public:
     SqliteState loginRes(); // return Running is login other is no login
 
     // add change
-    SqliteState addChange(vector<OpChange *> &changeArr); // push change to table
+    SqliteState addChange(std::vector<MSG_OP_PACK> &changeArr); // push change to table
 
     // syn change with client
-    SqliteState synChange(char *timestamp, vector<OpChange *> &resChange); // pull change from table
+    //SqliteState synChange(char *timestamp, std::vector<MSG_OP_PACK> &resChange); // pull change from table
+
+    bool newChangeAtChangeTable(MSG_OP_PACK &msg);
+
+    SqliteState returnDataSet(std::vector<MSG_OP_PACK> &userDataset);
+
+    SqliteState cleanDataSet();
+
+    SqliteState pushDataSet(std::vector<MSG_OP_PACK> &userDataset);
 
     MSG_State getSqliteOpState();
 
-    static int changeTableCallback(void *data, int argc, char **argv, char **ColName);
+    static int newChangeAtChangeTableCallback(void *data, int argc, char **argv, char **ColName);
+
+    static int retUserDatasetCallback(void *data, int argc, char **argv, char **ColName);
 
     static int userPasswdTableCallback(void *data, int argc, char **argv, char **ColName);
 private:
-    const char *g_databaseName;
-    const char *g_usersTableName;
+    char g_databaseName[G_DATABASE_NAME_SIZE];
 
-    const char *_userName; // = userTableName
-    const char *_passwd;
+    char _userName[G_DATABASE_USERNAME_SIZE];
+    char g_usersChangeTableName[G_DATABASE_TABLE_NAME_SIZE];
+    char g_usersDatasetTableName[G_DATABASE_TABLE_NAME_SIZE];
+
+    char _passwd[G_ARR_SIZE_PASSWD];
 
     SqliteState sqliteState;
     MSG_State sqliteOpState;
@@ -95,8 +77,10 @@ private:
     char *zErrMsg;
     int ret;
 
-    static vector<OpChange *> _resChange;
+    static vector<MSG_OP_PACK> _retChange;
     static vector<pair<char*, char*>> _resUserPasswd;
+    static vector<MSG_OP_PACK> _retDataSet;
+    static int atChangeTableSize;
 };
-}
+
 #endif //GENIUSNOTE1_0_SQLITESERVER_H

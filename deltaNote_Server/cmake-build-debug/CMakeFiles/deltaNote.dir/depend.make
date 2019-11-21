@@ -6,6 +6,7 @@ CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o: ../include/pack.h
 CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o: ../include/socket.h
 CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o: ../include/sqlite.h
 CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o: ../include/sqlite3.h
+CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o: ../include/untils.h
 CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o: ../src/deltaNote.cpp
 
 CMakeFiles/deltaNote.dir/src/socket.cpp.o: ../include/Log.h
@@ -13,11 +14,17 @@ CMakeFiles/deltaNote.dir/src/socket.cpp.o: ../include/pack.h
 CMakeFiles/deltaNote.dir/src/socket.cpp.o: ../include/socket.h
 CMakeFiles/deltaNote.dir/src/socket.cpp.o: ../include/sqlite.h
 CMakeFiles/deltaNote.dir/src/socket.cpp.o: ../include/sqlite3.h
+CMakeFiles/deltaNote.dir/src/socket.cpp.o: ../include/untils.h
 CMakeFiles/deltaNote.dir/src/socket.cpp.o: ../src/socket.cpp
 
 CMakeFiles/deltaNote.dir/src/sqlite.cpp.o: ../include/Log.h
 CMakeFiles/deltaNote.dir/src/sqlite.cpp.o: ../include/pack.h
 CMakeFiles/deltaNote.dir/src/sqlite.cpp.o: ../include/sqlite.h
 CMakeFiles/deltaNote.dir/src/sqlite.cpp.o: ../include/sqlite3.h
+CMakeFiles/deltaNote.dir/src/sqlite.cpp.o: ../include/untils.h
 CMakeFiles/deltaNote.dir/src/sqlite.cpp.o: ../src/sqlite.cpp
+
+CMakeFiles/deltaNote.dir/src/untils.cpp.o: ../include/pack.h
+CMakeFiles/deltaNote.dir/src/untils.cpp.o: ../include/untils.h
+CMakeFiles/deltaNote.dir/src/untils.cpp.o: ../src/untils.cpp
 

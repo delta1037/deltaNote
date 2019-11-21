@@ -99,6 +99,9 @@
 		<Unit filename="/home/delta/deltaNote/deltaNote_Server/include/sqlite3.h">
 			<Option target="deltaNote"/>
 		</Unit>
+		<Unit filename="/home/delta/deltaNote/deltaNote_Server/include/untils.h">
+			<Option target="deltaNote"/>
+		</Unit>
 		<Unit filename="/home/delta/deltaNote/deltaNote_Server/src/deltaNote.cpp">
 			<Option target="deltaNote"/>
 		</Unit>
@@ -106,6 +109,9 @@
 			<Option target="deltaNote"/>
 		</Unit>
 		<Unit filename="/home/delta/deltaNote/deltaNote_Server/src/sqlite.cpp">
+			<Option target="deltaNote"/>
+		</Unit>
+		<Unit filename="/home/delta/deltaNote/deltaNote_Server/src/untils.cpp">
 			<Option target="deltaNote"/>
 		</Unit>
 		<Unit filename="/home/delta/deltaNote/deltaNote_Server/CMakeLists.txt">

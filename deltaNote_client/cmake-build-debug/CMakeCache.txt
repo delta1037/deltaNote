@@ -256,6 +256,9 @@ Qt5Xml_DIR:PATH=/install/Qt5.13.0/5.13.0/gcc_64/lib/cmake/Qt5Xml
 //The directory containing a CMake configuration file for Qt5.
 Qt5_DIR:PATH=/install/Qt5.13.0/5.13.0/gcc_64/lib/cmake/Qt5
 
+//Path to a library.
+Sqlite:FILEPATH=/usr/local/lib/libsqlite3.so
+
 //Value Computed by CMake
 deltaNote_client_BINARY_DIR:STATIC=/home/delta/deltaNote/deltaNote_client/cmake-build-debug
 

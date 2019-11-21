@@ -2,6 +2,7 @@
 #define USERINFO_H
 
 #include <QDialog>
+#include <QColorDialog>
 #include "untils.h"
 
 namespace Ui {
@@ -20,6 +21,14 @@ private slots:
     void on_logout_clicked();
 
     void on_cancel_clicked();
+
+    void on_transparent_sliderMoved(int position);
+
+    void on_chooseFontColor_clicked();
+
+    void on_chooseIconColor_clicked();
+
+    void on_clearData_clicked();
 
 private:
     Ui::userInfo *ui;

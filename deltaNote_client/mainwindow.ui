@@ -31,6 +31,9 @@
   <property name="windowTitle">
    <string>TODO</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
@@ -49,6 +52,9 @@
      <width>280</width>
      <height>16777215</height>
     </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,8,1">
     <property name="spacing">
@@ -76,6 +82,9 @@
       </property>
       <item>
        <widget class="QPushButton" name="setting">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -249,7 +258,7 @@
     <item>
      <layout class="QHBoxLayout" name="opLayer">
       <property name="spacing">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
@@ -341,10 +350,6 @@
      </layout>
     </item>
    </layout>
-   <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>ToDoListWin</zorder>
-   <zorder>splitter</zorder>
   </widget>
   <action name="actAdd">
    <property name="icon">

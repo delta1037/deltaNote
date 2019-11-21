@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/delta/deltaNote/deltaNote_Server/src/deltaNote.cpp" "/home/delta/deltaNote/deltaNote_Server/cmake-build-debug/CMakeFiles/deltaNote.dir/src/deltaNote.cpp.o"
   "/home/delta/deltaNote/deltaNote_Server/src/socket.cpp" "/home/delta/deltaNote/deltaNote_Server/cmake-build-debug/CMakeFiles/deltaNote.dir/src/socket.cpp.o"
   "/home/delta/deltaNote/deltaNote_Server/src/sqlite.cpp" "/home/delta/deltaNote/deltaNote_Server/cmake-build-debug/CMakeFiles/deltaNote.dir/src/sqlite.cpp.o"
+  "/home/delta/deltaNote/deltaNote_Server/src/untils.cpp" "/home/delta/deltaNote/deltaNote_Server/cmake-build-debug/CMakeFiles/deltaNote.dir/src/untils.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

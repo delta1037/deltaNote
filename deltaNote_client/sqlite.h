@@ -10,31 +10,49 @@
 
 using namespace std;
 
+#define G_DATABASE_NAME_SIZE 32
+#define G_DATABASE_USERNAME_SIZE 8
+#define G_DATABASE_TABLE_NAME_SIZE 32
+
 enum SqliteState {
     SqliteRunning=1,
     SqliteStopped=2,
     SqliteError=0
 };
 
-class ServerSqlite {
+class ClientSqlite {
 public:
-    ServerSqlite();
+    ClientSqlite(const char *databaseName = "localDB", char *userName = "local");
+    ~ClientSqlite();
 
-    SqliteState cleanSqlite();
+    // clean local and server data
+    SqliteState cleanChangeTable();
+    SqliteState cleanDatasetTable();
 
-    // add change
-    SqliteState addChange(); // push change to table
+    SqliteState insertDatasetItem(MSG_OP_PACK &item);
+    SqliteState deleteDatasetItem(MSG_OP_PACK &item);
 
-    // syn change with client
-    SqliteState synChange(); // pull change from table
+    // logout solve data
+    SqliteState insertChangeItem(MSG_OP_PACK &item);
+
+    // local data need syn
+    SqliteState getLocalChange(std::vector<MSG_OP_PACK> &userDataset);
+
+    // save dataset local, when reset get
+    SqliteState getDataset(std::vector<MSG_OP_PACK> &userDataset);
 
     MSG_State getSqliteOpState();
 
-    static int changeTableCallback(void *data, int argc, char **argv, char **ColName);
-
-    static int userPasswdTableCallback(void *data, int argc, char **argv, char **ColName);
+    static int retUserDataset(void *data, int argc, char **argv, char **ColName);
+    static int retUserChange(void *data, int argc, char **argv, char **ColName);
 private:
-    const char *databaseName;
+    char g_databaseName[G_DATABASE_NAME_SIZE];
+
+    char _userName[G_DATABASE_USERNAME_SIZE];
+    char g_usersChangeTableName[G_DATABASE_TABLE_NAME_SIZE];
+    char g_usersDatasetTableName[G_DATABASE_TABLE_NAME_SIZE];
+
+    char _passwd[G_ARR_SIZE_PASSWD];
 
     SqliteState sqliteState;
     MSG_State sqliteOpState;
@@ -42,5 +60,9 @@ private:
     sqlite3 *db;
     char *zErrMsg;
     int ret;
+
+    static vector<MSG_OP_PACK> _retChange;
+    static vector<MSG_OP_PACK> _retDataSet;
 };
+
 #endif // SQLITE_H

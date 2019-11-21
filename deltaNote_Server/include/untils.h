@@ -1,16 +1,14 @@
-#ifndef UNTILS_H
-#define UNTILS_H
+//
+// Created by delta on 11/20/19.
+//
 
-#include <string.h>
+#ifndef DELTANOTE_UNTILS_H
+#define DELTANOTE_UNTILS_H
+
+#include <cstring>
 
 #include "pack.h"
-#include "log.h"
-#include "sqlite.h"
-
 
 void makeSocketPack(MSG &synPack, int msgSize, char msgSeg, char msgOp);
 void makeDataPack(MSG_OP_PACK &opPack, char *opTimestamp, char *createTimestamp, char op, char isCheck, char *data);
-
-void parserServerPort(char *serverPort);
-
-#endif // UNTILS_H
+#endif //DELTANOTE_UNTILS_H

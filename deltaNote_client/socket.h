@@ -28,6 +28,7 @@ class SocketClient{
 public:
     SocketClient();
     SocketClient(char *_serverIP, int _serverPort);
+    ~SocketClient();
 
     int sendMsg(void* buf,size_t size);
     int recvMsg(void* buf,size_t size);
