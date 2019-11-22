@@ -10,6 +10,7 @@
 #define ERROR  "[ERROR]"
 #define NEW_LINE "\n"
 
+#ifdef DEBUG
 #define LOG_ERROR(...)  {\
                             printf(" ");  \
                             printf(ERROR); \
@@ -26,7 +27,17 @@
                             printf("\n");  \
                         }
 
+
+#else
+#define LOG_ERROR(...)  {\
+                        }
+
+#define LOG_INFO(...)  {\
+                        }
+#endif
+
 #define CHECK(x,m,handle) if((x) == (m)){\
                            handle;\
                          }
+
 #endif // LOG_H

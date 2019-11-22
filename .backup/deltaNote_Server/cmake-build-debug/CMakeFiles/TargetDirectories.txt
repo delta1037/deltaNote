@@ -1,3 +1,0 @@
-/home/delta/deltaNote/deltaNote_Server/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/delta/deltaNote/deltaNote_Server/cmake-build-debug/CMakeFiles/deltaNote.dir
-/home/delta/deltaNote/deltaNote_Server/cmake-build-debug/CMakeFiles/edit_cache.dir

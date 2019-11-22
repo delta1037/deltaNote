@@ -8,7 +8,10 @@ using namespace deltaNote;
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 8888
 
-#define databaseName "deltaNoteDB"
+char serverIP[32];
+int serverPort;
+
+#define databaseName "./data/deltaNoteServerDB"
 #define usersTableName "user_passwd"
 
 enum SystemStatus {
@@ -126,11 +129,11 @@ void * clientHandler(void *pVoid){
     pthread_exit(nullptr);
     return nullptr;
 }
-void RunAPP(){
+void RunAPP(const char *server, int port){
     systemStatus = SystemRunning;
 
     // socket init
-    SocketServer socket(SERVER_IP, SERVER_PORT);
+    SocketServer socket(server, port);
 
     while(true) {
         if (SystemStopped == systemStatus){
@@ -147,9 +150,16 @@ void RunAPP(){
     // clean all
     socket.closeServer();
 }
-int main(){
+int main(int argc, char* argv[]){
     //test();
-
-    RunAPP();
+    if(argc > 1){
+        strcpy(serverIP, argv[1]);
+        serverPort = atoi(argv[2]);
+        printf("Server:%s\nPort:%d\n", serverIP, serverPort);
+        RunAPP(serverIP, serverPort);
+    }else{
+        printf("Server:%s\nPort:%d\n", SERVER_IP, SERVER_PORT);
+        RunAPP(SERVER_IP, SERVER_PORT);
+    }
     return 0;
 }

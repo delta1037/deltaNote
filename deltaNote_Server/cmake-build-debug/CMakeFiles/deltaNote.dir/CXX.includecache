@@ -14,6 +14,18 @@ cerrno
 
 /home/delta/deltaNote/deltaNote_Server/include/pack.h
 
+/home/delta/deltaNote/deltaNote_Server/include/socket.h
+string
+-
+netdb.h
+-
+sys/socket.h
+-
+sqlite.h
+/home/delta/deltaNote/deltaNote_Server/include/sqlite.h
+pack.h
+/home/delta/deltaNote/deltaNote_Server/include/pack.h
+
 /home/delta/deltaNote/deltaNote_Server/include/sqlite.h
 string
 -
@@ -36,6 +48,28 @@ cstring
 pack.h
 /home/delta/deltaNote/deltaNote_Server/include/pack.h
 
+/home/delta/deltaNote/deltaNote_Server/src/deltaNote.cpp
+../include/socket.h
+/home/delta/deltaNote/deltaNote_Server/include/socket.h
+../include/sqlite.h
+/home/delta/deltaNote/deltaNote_Server/include/sqlite.h
+../include/Log.h
+/home/delta/deltaNote/deltaNote_Server/include/Log.h
+pthread.h
+-
+
+/home/delta/deltaNote/deltaNote_Server/src/socket.cpp
+../include/socket.h
+/home/delta/deltaNote/deltaNote_Server/include/socket.h
+../include/Log.h
+/home/delta/deltaNote/deltaNote_Server/include/Log.h
+unistd.h
+-
+arpa/inet.h
+-
+cstring
+-
+
 /home/delta/deltaNote/deltaNote_Server/src/sqlite.cpp
 cstdio
 -
@@ -43,6 +77,10 @@ cstdio
 /home/delta/deltaNote/deltaNote_Server/include/sqlite.h
 ../include/Log.h
 /home/delta/deltaNote/deltaNote_Server/include/Log.h
+../include/untils.h
+/home/delta/deltaNote/deltaNote_Server/include/untils.h
+
+/home/delta/deltaNote/deltaNote_Server/src/untils.cpp
 ../include/untils.h
 /home/delta/deltaNote/deltaNote_Server/include/untils.h
 

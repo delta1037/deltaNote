@@ -22,7 +22,7 @@ enum SqliteState {
 
 class ClientSqlite {
 public:
-    ClientSqlite(const char *databaseName = "localDB", char *userName = "local");
+    ClientSqlite(const char *databaseName = "data/localDB", char *userName = "local");
     ~ClientSqlite();
 
     // clean local and server data

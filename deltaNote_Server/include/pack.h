@@ -17,10 +17,10 @@
 #define G_DATABASE_TABLE_NAME_SIZE 32
 
 enum MSG_State {
-    LoginSuccess = 0,
+    LoginUndefinedError = 0,
     LoginPasswdError = 1,
     LoginUserNotExits = 2,
-    LoginUndefinedError = 3,
+    LoginSuccess = 3,
 
     CreateUserUserExists = 8,
     CreateUserSuccess = 9,
