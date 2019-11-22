@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New User</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_10">
    <property name="spacing">
