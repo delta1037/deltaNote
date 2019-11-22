@@ -15,12 +15,9 @@ SocketClient::SocketClient(){
 SocketClient::SocketClient(char *_serverIP, int _serverPort){
     strcpy(serverIP, _serverIP);
     serverPort = _serverPort;
-    socketState = SocketConnSuccess;
     clientSocketFd = 0;
-
-    LOG_INFO("start socket client")
-
     socketState = SocketRunning;
+    LOG_INFO("start socket client")
 
     clientSocketFd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     CHECK(clientSocketFd, SOCKET_ERROR, { LOG_ERROR("Client socket init failed") socketState = SocketError; })
@@ -59,5 +56,9 @@ SocketState SocketClient::closeClient() {
     close(clientSocketFd);
     socketState = SocketStopped;
 
+    return socketState;
+}
+
+SocketState SocketClient::getSocketOpState() {
     return socketState;
 }

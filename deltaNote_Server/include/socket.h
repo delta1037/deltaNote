@@ -30,6 +30,7 @@ public:
     static int serverSocketFd;
     SocketServer(SocketServer &socket);
     SocketServer(const char *_serverIP, int _serverPort);
+    ~SocketServer();
 
     int acceptConn();
     int sendMsg(void* buf,size_t size);
@@ -38,8 +39,6 @@ public:
     SocketState closeServer();
 
 private:
-    const char *serverIP;
-    int serverPort;
     SocketState socketState;
     int clientSocketFd;
 };

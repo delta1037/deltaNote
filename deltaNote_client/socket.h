@@ -33,6 +33,7 @@ public:
     int sendMsg(void* buf,size_t size);
     int recvMsg(void* buf,size_t size);
     SocketState closeClient();
+    SocketState getSocketOpState();
 
 private:
     char serverIP[16]{};

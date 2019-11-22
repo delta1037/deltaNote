@@ -33,6 +33,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->ToDoListWin->addItem(addNew);
     ui->ToDoListWin->setItemWidget(addNew, addTag);
+
+    fontColor = QColor(0, 0, 0);
+    iconColor = QColor(0, 0, 0);
+    transparentPos = 30;
 }
 
 MainWindow::~MainWindow()
@@ -46,17 +50,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     painter.fillRect(this->rect(), QColor(255, 255, 255, 255 - transparentPos));
 }
 
-void MainWindow::on_setting_clicked()
-{
-    cleanFlag = false;
-    if(isLogin){
-        userInfo userinfo(this);
-        userinfo.exec();
-    }else {
-        login loginWindow(this);
-        loginWindow.exec();
-    }
-
+void MainWindow::refreshBackground(){
     // refresh block
     ui->add->setStyleSheet("background-color:transparent");
     ui->del->setStyleSheet("background-color:transparent");
@@ -76,7 +70,6 @@ void MainWindow::on_setting_clicked()
         ToDoListItem *todo = qobject_cast<ToDoListItem*>(ui->ToDoListWin->itemWidget(item));
         todo->refreshColor();
     }
-
 
     // change icon color
     GraphicsColorSvgItem svg_refresh(":/resource/refresh.svg");
@@ -105,24 +98,33 @@ void MainWindow::on_setting_clicked()
 
     GraphicsColorSvgItem svg_clear(":/resource/clear.svg");
     ui->clear->setIcon(svg_clear.setColor(iconColor));
+}
+void MainWindow::on_setting_clicked()
+{
+    cleanFlag = false;
+    if(isLogin){
+        userInfo userinfo(this);
+        userinfo.exec();
+    }else {
+        login loginWindow(this);
+        loginWindow.exec();
+    }
 
+    // refreshBackground
+    refreshBackground();
 
     // clean data
     if(cleanFlag){
+        // clean client todo list
         ui->ToDoListWin->clear();
         if(isLogin){
             MSG synPack{};
             makeSocketPack(synPack, 1, MSG_FULL, Delete);
 
-            SocketClient socketClient = SocketClient(g_server, g_port);
-            socketClient.sendMsg(&synPack, sizeof(synPack));
-
-            MSG recv{};
-            socketClient.recvMsg(&recv, sizeof (recv));
-
-            if(recv.msgState == CleanSuccess){
+            if(CleanSuccess == synMsgToServer(synPack)){
                 cleanFlag = false;
-            } else {
+            }else{
+                QMessageBox::warning(this, tr("Error"), tr("server clean data error!"), QMessageBox::Yes);
                 LOG_ERROR("clean data error")
             }
         }
@@ -149,12 +151,7 @@ void MainWindow::on_refresh_clicked()
     do {
         for (int i = 0; i < recv.msgSize; ++i) {
             MSG_OP_PACK opPack{};
-            makeDataPack(opPack,
-                         recv.msgQueue[i].opTimestamp,
-                         recv.msgQueue[i].createTimestamp,
-                         recv.msgQueue[i].op,
-                         recv.msgQueue[i].isCheck,
-                         recv.msgQueue[i].data);
+            makeDataPack(opPack, recv.msgQueue[i].opTimestamp, recv.msgQueue[i].createTimestamp, recv.msgQueue[i].op, recv.msgQueue[i].isCheck, recv.msgQueue[i].data);
             datasetRecv.push_back(opPack);
         }
 
@@ -222,8 +219,6 @@ void MainWindow::on_actAdd_triggered()
 
 void MainWindow::on_actDel_triggered()
 {
-    //int currentRow();
-    //QListWidgetItem* takeItem(int);
     QListWidgetItem *item = ui->ToDoListWin->item(ui->ToDoListWin->currentRow());
     ToDoListItem *todo = qobject_cast<ToDoListItem*>(ui->ToDoListWin->itemWidget(item));
 
@@ -234,13 +229,7 @@ void MainWindow::on_actDel_triggered()
         sprintf(todo->opTime, "%ld", std::time(nullptr));
         makeDataPack(synPack.msgQueue[0], todo->opTime, todo->createTime, DEL, todo->isCheck, todo->data);
 
-        SocketClient socketClient = SocketClient(g_server, g_port);
-        socketClient.sendMsg(&synPack, sizeof(synPack));
-
-        MSG recvPack{};
-        socketClient.recvMsg(&recvPack, sizeof (recvPack));
-
-        if(PushError == recvPack.msgState){
+        if(PushError == synMsgToServer(synPack)){
             QMessageBox::warning(this, tr("Warning"), tr("delete the todo error!"), QMessageBox::Yes);
         }
     } else {
@@ -251,7 +240,6 @@ void MainWindow::on_actDel_triggered()
         makeDataPack(pack, todo->opTime, todo->createTime, DEL, todo->isCheck, todo->data);
         clientSqlite.insertChangeItem(pack);
     }
-
 
     if(nullptr != item){
         delete item;
@@ -264,10 +252,10 @@ void MainWindow::on_actDel_triggered()
 
 void MainWindow::on_actInsert_triggered()
 {
-//void insertItem(int, const QString&);
     QWidget *addTag = new ToDoListItem(this);
     QListWidgetItem *insertNew = new QListWidgetItem();
     insertNew->setSizeHint(QSize(100, 50));
+    //insertNew->setFlags(insertNew->flags() & ~Qt::ItemIsSelectable);
 
     ui->ToDoListWin->insertItem(ui->ToDoListWin->currentRow(), insertNew);
     ui->ToDoListWin->setItemWidget(insertNew, addTag);
@@ -275,36 +263,34 @@ void MainWindow::on_actInsert_triggered()
 
 void MainWindow::on_actClear_triggered()
 {
-    //ui->ToDoListWin->clear();
     if(isLogin) {
-        SocketClient socketClient = SocketClient(g_server, g_port);
+        if(ui->ToDoListWin->count() > 0){
+            SocketClient socketClient = SocketClient(g_server, g_port);
+            if(SocketError == socketClient.getSocketOpState()){
+                QMessageBox::warning(this, tr("Error"), tr("Socket connect error!"), QMessageBox::Yes);
+            }else{
+                MSG synPack{};
+                for(int index = ui->ToDoListWin->count() - 1; index >= 0;){
+                    int left = min(5, index + 1);
+                    makeSocketPack(synPack, left, ((left == 5 && (index != 4))? MSG_HALF:MSG_FULL), Push);
 
-        MSG synPack{};
-        for(int index = ui->ToDoListWin->count() - 1; index >= 0;){
-            int left = min(5, index + 1);
-            makeSocketPack(synPack, left, ((left == 5 && (index != 4))? MSG_FULL:MSG_HALF), Push);
-
-            for(int i = 0; i < 5 && index >= 0; ++i, --index){
-                QListWidgetItem *item = ui->ToDoListWin->item(index);
-                ToDoListItem *todo = qobject_cast<ToDoListItem*>(ui->ToDoListWin->itemWidget(item));
-                makeDataPack(synPack.msgQueue[0], todo->opTime, todo->createTime, DEL, todo->isCheck, todo->data);
-
-                if(nullptr != item){
-                    delete item;
+                    for(int i = 0; i < 5 && index >= 0; ++i, --index){
+                        QListWidgetItem *item = ui->ToDoListWin->item(index);
+                        ToDoListItem *todo = qobject_cast<ToDoListItem*>(ui->ToDoListWin->itemWidget(item));
+                        makeDataPack(synPack.msgQueue[i], todo->opTime, todo->createTime, DEL, todo->isCheck, todo->data);
+                    }
+                    socketClient.sendMsg(&synPack, sizeof(synPack));
                 }
 
-                if(nullptr != todo){
-                    delete todo;
+                MSG recvPack{};
+                socketClient.recvMsg(&recvPack, sizeof (recvPack));
+
+                if(PushError == recvPack.msgState){
+                    QMessageBox::warning(this, tr("Warning"), tr("delete the todo error!"), QMessageBox::Yes);
+                } else {
+                    ui->ToDoListWin->clear();
                 }
             }
-            socketClient.sendMsg(&synPack, sizeof(synPack));
-        }
-
-        MSG recvPack{};
-        socketClient.recvMsg(&recvPack, sizeof (recvPack));
-
-        if(PushError == recvPack.msgState){
-            QMessageBox::warning(this, tr("Warning"), tr("delete the todo error!"), QMessageBox::Yes);
         }
     } else {
         MSG_OP_PACK pack{};

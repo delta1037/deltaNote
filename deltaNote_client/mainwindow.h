@@ -4,16 +4,11 @@
 #include <QMainWindow>
 #include <QPainter>
 #include <QListWidgetItem>
-#include <QGraphicsSvgItem>
-#include <QSharedPointer>
-#include <QGraphicsColorizeEffect>
 #include <QMenu>
-#include <QFile>
 
 #include "login.h"
 #include "userinfo.h"
 #include "todolistitem.h"
-#include "graphicscolorsvgitem.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +20,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
+    void refreshBackground();
     ~MainWindow();
 
 private slots:

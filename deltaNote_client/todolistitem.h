@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QTextCodec>
 #include <QMessageBox>
 
 #include <iostream>
@@ -33,7 +34,7 @@ public:
 private slots:
     void on_choose_clicked();
 
-    void on_data_editingFinished();
+    void on_dataLine_editingFinished();
 
 private:
     Ui::ToDoListItem *ui;

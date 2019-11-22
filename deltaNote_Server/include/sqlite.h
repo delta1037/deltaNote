@@ -31,6 +31,7 @@ enum SqliteState {
 class ServerSqlite {
 public:
     ServerSqlite(const char *databaseName, char *userName, const char *passwd);
+    ~ServerSqlite();
 
     SqliteState cleanSqlite();
 

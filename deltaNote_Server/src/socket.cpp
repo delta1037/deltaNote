@@ -17,9 +17,15 @@ SocketServer::SocketServer(SocketServer &socket){
     clientSocketFd = 0;
 }
 
-SocketServer::SocketServer(const char *_serverIP, int _serverPort){
-    serverIP = _serverIP;
-    serverPort = _serverPort;
+SocketServer::~SocketServer(){
+    if(clientSocketFd != 0) {
+        LOG_INFO("close client socket")
+        close(clientSocketFd);
+    }
+    socketState = SocketStopped;
+}
+
+SocketServer::SocketServer(const char *serverIP, int serverPort){
     socketState = SocketStopped;
     serverSocketFd = 0;
     clientSocketFd = 0;
@@ -68,14 +74,6 @@ int SocketServer::recvMsg(void *buf, size_t size) {
     CHECK(recvSize,0,{LOG_ERROR("Receive Size is NULL") socketState = SocketError;})
 
     return (int)recvSize;
-}
-
-SocketState SocketServer::closeClient() {
-    LOG_INFO("close client socket")
-    close(clientSocketFd);
-    socketState = SocketStopped;
-
-    return socketState;
 }
 
 SocketState SocketServer::closeServer() {

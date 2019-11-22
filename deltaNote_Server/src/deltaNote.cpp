@@ -122,7 +122,7 @@ void * clientHandler(void *pVoid){
         LOG_ERROR("Wrong Msg OP %d received", recv.msgOp)
     }
 
-    socket->closeClient();
+    delete socket;
     pthread_exit(nullptr);
     return nullptr;
 }

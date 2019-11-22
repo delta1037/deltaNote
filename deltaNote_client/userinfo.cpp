@@ -16,8 +16,12 @@ userInfo::userInfo(QWidget *parent) :
     ui(new Ui::userInfo)
 {
     ui->setupUi(this);
-    ui->transparent->setValue(transparentPos);
+
     ui->username->setText(QString(QLatin1String(g_username)));
+
+    ui->transparent->setValue(transparentPos);
+    ui->chooseFontColor->setStyleSheet("background-color:" + fontColor.name()+ ";");
+    ui->chooseIconColor->setStyleSheet("background-color:" + iconColor.name()+ ";");
 }
 
 userInfo::~userInfo()
@@ -51,28 +55,30 @@ void userInfo::on_chooseFontColor_clicked()
     QColor c = color.getColor();
     if(c.isValid()){
         fontColor = c;
+        ui->chooseFontColor->setStyleSheet("background-color:" + c.name()+ ";");
+    }else{
+        QMessageBox::warning(this, tr("Error"), tr("color error!"), QMessageBox::Yes);
     }
 }
 
 void userInfo::on_chooseIconColor_clicked()
 {
-
     QColorDialog color;
     QColor c = color.getColor();
     if(c.isValid()){
         iconColor = c;
+        ui->chooseIconColor->setStyleSheet("background-color:" + c.name()+ ";");
+    }else{
+        QMessageBox::warning(this, tr("Error"), tr("color error!"), QMessageBox::Yes);
     }
-
 }
 
 void userInfo::on_clearData_clicked()
 {
-
     // clear all data
     ClientSqlite sqlite;
     sqlite.cleanDatasetTable();
     sqlite.cleanChangeTable();
 
     cleanFlag = true;
-
 }

@@ -96,10 +96,13 @@ ServerSqlite::ServerSqlite(const char *databaseName, char *userName, const char 
     ret = sqlite3_exec(db, SQL_CREATE_TABLE_USER_PASSWD , nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("CREATE USERS TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; exit(-1);})
 }
+ServerSqlite::~ServerSqlite() {
+    sqlite3_close(db);
+}
 
 SqliteState ServerSqlite::cleanSqlite() {
     cleanDataSet();
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_CHANGE_TABLE_DELETE, _userName), nullptr, nullptr, &zErrMsg);
+    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_CHANGE_TABLE_DELETE, g_usersChangeTableName), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_CHANGE_TABLE_DELETE : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
     return sqliteState;
 }

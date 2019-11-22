@@ -40,31 +40,21 @@ void newUser::on_ok_clicked()
 
     if(nullptr == QS_server_port){
         ui->server_port->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("server & port is null!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("server & port is null!"), QMessageBox::Yes);
     } else if (nullptr == QS_username) {
         ui->username->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("username is null!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("username is null!"), QMessageBox::Yes);
     } else if (nullptr == QS_passwd) {
         ui->passwd->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("password is null!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("password is null!"), QMessageBox::Yes);
     } else if (nullptr == QS_repasswd) {
         ui->repasswd->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("password is null!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("password is null!"), QMessageBox::Yes);
     } else if (0 != QS_passwd.compare(QS_repasswd)) {
         ui->passwd->clear();
         ui->repasswd->clear();
         ui->passwd->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("password is inconpable!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("password is inconpable!"), QMessageBox::Yes);
     } else {
         // read data and create user
         char *server_port = QS_server_port.toLatin1().data();
@@ -72,6 +62,9 @@ void newUser::on_ok_clicked()
 
         // connect server
         SocketClient socketClient = SocketClient(g_server, g_port);
+        if(SocketError == socketClient.getSocketOpState()){
+            QMessageBox::warning(this, tr("Error"), tr("Socket connect error!"), QMessageBox::Yes);
+        }
 
         // get username and passwd
         MSG send{};
@@ -88,57 +81,31 @@ void newUser::on_ok_clicked()
             isLogin = true;
             strcpy(g_username, send.userName);
             strcpy(g_passdw, send.passwd);
-/*
+
             if(cleanFlag){
                 MSG synPack{};
                 makeSocketPack(synPack, 1, MSG_FULL, Delete);
 
-                SocketClient socketClient = SocketClient(g_server, g_port);
-                socketClient.sendMsg(&synPack, sizeof(synPack));
-
-                MSG recv{};
-                socketClient.recvMsg(&recv, sizeof (recv));
-
-                if(recv.msgState == CleanSuccess){
+                if(CleanSuccess == synMsgToServer(synPack)){
                     cleanFlag = false;
-                } else {
+                }else{
+                    QMessageBox::warning(this, tr("Error"), tr("server clean data error!"), QMessageBox::Yes);
                     LOG_ERROR("clean data error")
                 }
             }
-*/
-            vector<MSG_OP_PACK> retDataPack;
-            ClientSqlite sqlite;
-            ret = sqlite.getLocalChange(retDataPack);
 
-            // send result to client
-            SocketClient socket;
-            int sendSize = int(retDataPack.size());
-            MSG synPack{};
-            for (int index = 0; index < sendSize; ++index) {
-                int left = min(5, sendSize - index);
-                makeSocketPack(synPack, left, ((left == 5) && (sendSize - index != 5))? MSG_FULL:MSG_HALF, RET);
-                for (int i = 0; i < 5 && index < sendSize; ++i, ++index) {
-                    makeDataPack(synPack.msgQueue[i], retDataPack[index].opTimestamp, retDataPack[index].createTimestamp, retDataPack[index].op, retDataPack[index].isCheck, retDataPack[index].data);
-                }
-                socket.sendMsg(&synPack, sizeof(synPack));
-            }
-            LOG_INFO("send local change")
+            // send local change to server
+            synLocalChange();
 
             accept();
         } else if (recv.msgState == CreateUserUserExists) {
             ui->username->clear();
             ui->username->setFocus();
-            QMessageBox::warning(this, tr("Warning"),
-                                 tr("username is exists!"),
-                                 QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Error"), tr("username is exists!"), QMessageBox::Yes);
         } else if (recv.msgState == CreateUserUndefinedError) {
-            QMessageBox::warning(this, tr("Warning"),
-                                 tr("server undefined error!"),
-                                 QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Error"), tr("server undefined error!"), QMessageBox::Yes);
         } else {
-            QMessageBox::warning(this, tr("Warning"),
-                                 tr("client undefined error!"),
-                                 QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Error"), tr("client undefined error!"), QMessageBox::Yes);
         }
     }
 }

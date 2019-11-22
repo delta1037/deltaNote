@@ -21,6 +21,8 @@ ToDoListItem::ToDoListItem(QWidget *parent, const QString &displayData, char *_o
 
     ui->dataLine->setFont(QFont("黑体",16));
 
+
+
     if(_opTime != nullptr){
         strcpy(opTime, _opTime);
         strcpy(createTime, _createTime);
@@ -37,7 +39,7 @@ ToDoListItem::ToDoListItem(QWidget *parent, const QString &displayData, char *_o
 
         op = 0;
         strcpy(data, _data);
-        ui->dataLine->setText(QString(QLatin1String(data)));
+        ui->dataLine->setText(QString(data));
         oldData = QString(QLatin1String(data));
     }else{
         ui->dataLine->setText(displayData);
@@ -81,14 +83,8 @@ void ToDoListItem::on_choose_clicked()
         makeSocketPack(synPack, 1, MSG_FULL, Push);
         makeDataPack(synPack.msgQueue[0], opTime, createTime, CHECK, isCheck, data);
 
-        SocketClient socketClient = SocketClient(g_server, g_port);
-        socketClient.sendMsg(&synPack, sizeof(synPack));
-
-        MSG recvPack{};
-        socketClient.recvMsg(&recvPack, sizeof (recvPack));
-
-        if(PushError == recvPack.msgState){
-            QMessageBox::warning(this, tr("Warning"), tr("check the todo error!"), QMessageBox::Yes);
+        if(PushError == synMsgToServer(synPack)){
+            QMessageBox::warning(nullptr, tr("Warning"), tr("check the todo error!"), QMessageBox::Yes);
         }
     }else{
         MSG_OP_PACK pack{};
@@ -106,13 +102,14 @@ void ToDoListItem::on_choose_clicked()
     }
 }
 
-void ToDoListItem::on_data_editingFinished()
+void ToDoListItem::on_dataLine_editingFinished()
 {
     // edit success start process
     QString newData = ui->dataLine->text().trimmed();
     if(oldData == nullptr && newData != nullptr){
         // add
-        strcpy(data, newData.toLatin1().data());
+
+        strcpy(data, newData.toUtf8().data());
         oldData = newData;
         sprintf(createTime, "%ld", std::time(nullptr));
         sprintf(opTime, "%ld", std::time(nullptr));
@@ -122,14 +119,8 @@ void ToDoListItem::on_data_editingFinished()
             makeSocketPack(synPack, 1, MSG_FULL, Push);
             makeDataPack(synPack.msgQueue[0], opTime, createTime, ADD, isCheck, data);
 
-            SocketClient socketClient = SocketClient(g_server, g_port);
-            socketClient.sendMsg(&synPack, sizeof(synPack));
-
-            MSG recvPack{};
-            socketClient.recvMsg(&recvPack, sizeof (recvPack));
-
-            if(PushError == recvPack.msgState){
-                QMessageBox::warning(this, tr("Warning"), tr("add new todo error!"), QMessageBox::Yes);
+            if(PushError == synMsgToServer(synPack)){
+                QMessageBox::warning(nullptr, tr("Warning"), tr("alter new todo error!"), QMessageBox::Yes);
             }
         }else{
             MSG_OP_PACK pack{};
@@ -149,14 +140,8 @@ void ToDoListItem::on_data_editingFinished()
             makeSocketPack(synPack, 1, MSG_FULL, Push);
             makeDataPack(synPack.msgQueue[0], opTime, createTime, ALTER, isCheck, data);
 
-            SocketClient socketClient = SocketClient(g_server, g_port);
-            socketClient.sendMsg(&synPack, sizeof(synPack));
-
-            MSG recvPack{};
-            socketClient.recvMsg(&recvPack, sizeof (recvPack));
-
-            if(PushError == recvPack.msgState){
-                QMessageBox::warning(this, tr("Warning"), tr("alter new todo error!"), QMessageBox::Yes);
+            if(PushError == synMsgToServer(synPack)){
+                QMessageBox::warning(nullptr, tr("Warning"), tr("alter new todo error!"), QMessageBox::Yes);
             }
         }else{
             MSG_OP_PACK pack{};
@@ -166,3 +151,4 @@ void ToDoListItem::on_data_editingFinished()
         }
     }
 }
+

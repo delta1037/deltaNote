@@ -2,10 +2,9 @@
 #define NEWUSER_H
 
 #include <QDialog>
-#include <QMessageBox>
 
 #include "untils.h"
-#include "socket.h"
+
 
 namespace Ui {
 class newUser;

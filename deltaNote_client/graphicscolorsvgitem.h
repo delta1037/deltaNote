@@ -10,7 +10,7 @@
 class GraphicsColorSvgItem : public QGraphicsSvgItem
 {
 public:
-    GraphicsColorSvgItem(QString filePath, QGraphicsItem *parent = 0);
+    GraphicsColorSvgItem(QString filePath, QGraphicsItem *parent = nullptr);
     virtual ~GraphicsColorSvgItem();
 
     QIcon setColor(QColor c);

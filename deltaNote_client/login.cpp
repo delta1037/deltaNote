@@ -9,10 +9,10 @@ extern int g_port;
 
 extern bool isLogin;
 
-QColor fontColor;
-QColor iconColor;
-int transparentPos;
-bool cleanFlag;
+extern QColor fontColor;
+extern QColor iconColor;
+extern int transparentPos;
+extern bool cleanFlag;
 
 login::login(QWidget *parent) :
     QDialog(parent),
@@ -27,6 +27,9 @@ login::login(QWidget *parent) :
     ui->password->setPlaceholderText("password");
 
     ui->transparent->setValue(transparentPos);
+    //ui->chooseFontColor->setStyleSheet()
+    ui->chooseFontColor->setStyleSheet("background-color:" + fontColor.name()+ ";");
+    ui->chooseIconColor->setStyleSheet("background-color:" + iconColor.name()+ ";");
 }
 
 login::~login()
@@ -42,19 +45,13 @@ void login::on_Login_clicked()
 
     if(nullptr == QS_server_port){
         ui->server_port->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("server & port is null!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("server & port is null!"), QMessageBox::Yes);
     } else if (nullptr == QS_username) {
         ui->username->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("username is null!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("username is null!"), QMessageBox::Yes);
     } else if (nullptr == QS_passwd) {
         ui->password->setFocus();
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("password is null!"),
-                             QMessageBox::Yes);
+        QMessageBox::warning(this, tr("Error"), tr("password is null!"), QMessageBox::Yes);
     } else {
         // get server_port conn to server
         char *server_port = ui->server_port->text().trimmed().toLatin1().data();
@@ -62,6 +59,9 @@ void login::on_Login_clicked()
 
         // connect server
         SocketClient socketClient = SocketClient(g_server, g_port);
+        if(SocketError == socketClient.getSocketOpState()){
+            QMessageBox::warning(this, tr("Error"), tr("Socket connect error!"), QMessageBox::Yes);
+        }
 
         // get username and passwd
         MSG send{};
@@ -83,68 +83,37 @@ void login::on_Login_clicked()
                 MSG synPack{};
                 makeSocketPack(synPack, 1, MSG_FULL, Delete);
 
-                SocketClient socketClient = SocketClient(g_server, g_port);
-                socketClient.sendMsg(&synPack, sizeof(synPack));
-
-                MSG recv{};
-                socketClient.recvMsg(&recv, sizeof (recv));
-
-                if(recv.msgState == CleanSuccess){
+                if(CleanSuccess == synMsgToServer(synPack)){
                     cleanFlag = false;
-                } else {
+                }else{
+                    QMessageBox::warning(this, tr("Error"), tr("server clean data error!"), QMessageBox::Yes);
                     LOG_ERROR("clean data error")
                 }
             }
 
-            /*
-            // start send local change
-            vector<MSG_OP_PACK> retDataPack;
-            ClientSqlite sqlite;
-            ret = sqlite.getLocalChange(retDataPack);
-
-            // send result to client
-            SocketClient socket;
-            int sendSize = int(retDataPack.size());
-            MSG synPack{};
-            for (int index = 0; index < sendSize; ++index) {
-                int left = min(5, sendSize - index);
-                makeSocketPack(synPack, left, ((left == 5) && (sendSize - index != 5))? MSG_FULL:MSG_HALF, RET);
-                for (int i = 0; i < 5 && index < sendSize; ++i, ++index) {
-                    makeDataPack(synPack.msgQueue[i], retDataPack[index].opTimestamp, retDataPack[index].createTimestamp, retDataPack[index].op, retDataPack[index].isCheck, retDataPack[index].data);
-                }
-                socket.sendMsg(&synPack, sizeof(synPack));
-            }
-            LOG_INFO("send local change")
-            */
+            // send local change to server
+            synLocalChange();
 
             accept();
         } else if(recv.msgState == LoginPasswdError) {
             ui->password->clear();
             ui->password->setFocus();
-            QMessageBox::warning(this, tr("Warning"),
-                                 tr("user name or password error!"),
-                                 QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Error"), tr("user name or password error!"), QMessageBox::Yes);
 
         } else if(recv.msgState == LoginUserNotExits) {
             ui->username->clear();
             ui->password->clear();
             ui->username->setFocus();
-            QMessageBox::warning(this, tr("Warning"),
-                                 tr("user is not exists!"),
-                                 QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Error"), tr("user is not exists!"), QMessageBox::Yes);
         } else if(recv.msgState == LoginUndefinedError) {
             ui->username->clear();
             ui->password->clear();
             ui->username->setFocus();
-            QMessageBox::warning(this, tr("Warning"),
-                                 tr("undefined error!"),
-                                 QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Error"), tr("server undefined error!"), QMessageBox::Yes);
         } else {
             ui->password->clear();
             ui->password->setFocus();
-            QMessageBox::warning(this, tr("Error"),
-                                 tr("packet error!"),
-                                 QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Error"), tr("client undefined error!"), QMessageBox::Yes);
         }
     }
 
@@ -166,24 +135,33 @@ void login::on_cancel_clicked()
 void login::on_chooseFontColor_clicked()
 {
     QColorDialog color;
+    color.setCurrentColor(fontColor);
     QColor c = color.getColor();
+
     if(c.isValid()){
+        ui->chooseFontColor->setStyleSheet("background-color:" + c.name()+ ";");
         fontColor = c;
+    } else {
+        QMessageBox::warning(this, tr("Error"), tr("color error!"), QMessageBox::Yes);
     }
 }
 
 void login::on_chooseIconColor_clicked()
 {
-
     QColorDialog color;
+    color.setCurrentColor(iconColor);
     QColor c = color.getColor();
     if(c.isValid()){
         iconColor = c;
+        ui->chooseIconColor->setStyleSheet("background-color:" + c.name()+ ";");
+    } else {
+        QMessageBox::warning(this, tr("Error"), tr("color error!"), QMessageBox::Yes);
     }
 }
 
 void login::on_transparent_sliderMoved(int position)
 {
+
     if(position >=0 && position <=255){
         transparentPos = position;
     }

@@ -12,7 +12,7 @@
 #define CALLBACK_ARGC_5 5
 
 // user dataSet table
-const char *SQL_CREATE_USER_DATASET_TABLE = "CREATE TABLE %Q (opTimestamp VARCHAR(32) NOT NULL, createTimestamp VARCHAR(32) NOT NULL, isCheck VARCHAR(1) NOT NULL, data TEXT NOT NULL)";
+const char *SQL_CREATE_USER_DATASET_TABLE = "CREATE TABLE IF NOT EXISTS %Q (opTimestamp VARCHAR(32) NOT NULL, createTimestamp VARCHAR(32) NOT NULL, isCheck VARCHAR(1) NOT NULL, data VARCHAR(128) NOT NULL)";
 // insert dataset
 const char *SQL_USER_DATASET_TABLE_INSERT = "INSERT INTO %Q (opTimestamp, createTimestamp, isCheck, data) VALUES (%Q, %Q, %Q, %Q)";
 // select dataset
@@ -20,8 +20,11 @@ const char *SQL_USER_DATASET_TABLE_SELECT = "SELECT opTimestamp, createTimestamp
 // clean dataset
 const char *SQL_USER_DATASET_TABLE_DELETE = "DELETE from %Q WHERE opTimestamp == %Q AND createTimestamp == %Q";
 
+// clean dataset
+const char *SQL_USER_DATASET_TABLE_CLEAN = "DELETE from %Q";
+
 // user change table
-const char *SQL_CREATE_USER_CHANGE_TABLE = "CREATE TABLE %Q (opTimestamp VARCHAR(32) NOT NULL, createTimestamp VARCHAR(32) NOT NULL, op VARCHAR(1) NOT NULL, isCheck VARCHAR(1) NOT NULL, data TEXT NOT NULL)";
+const char *SQL_CREATE_USER_CHANGE_TABLE = "CREATE TABLE IF NOT EXISTS %Q (opTimestamp VARCHAR(32) NOT NULL, createTimestamp VARCHAR(32) NOT NULL, op VARCHAR(1) NOT NULL, isCheck VARCHAR(1) NOT NULL, data VARCHAR(128) NOT NULL)";
 // insert change
 const char *SQL_USER_CHANGE_TABLE_INSERT = "INSERT INTO %Q (opTimestamp, createTimestamp, op, isCheck, data) VALUES (%Q, %Q, %Q, %Q, %Q)";
 // select change
@@ -39,7 +42,7 @@ int ClientSqlite::retUserDataset(void *data, int argc, char **argv, char **ColNa
 
         ClientSqlite::_retDataSet.push_back(pack);
     } else {
-        LOG_ERROR("change table callback error")
+        LOG_ERROR("return data set callback error")
     }
 
     return 0;
@@ -52,7 +55,7 @@ int ClientSqlite::retUserChange(void *data, int argc, char **argv, char **ColNam
 
         ClientSqlite::_retChange.push_back(pack);
     } else {
-        LOG_ERROR("change table callback error")
+        LOG_ERROR("return change set callback error")
     }
 
     return 0;
@@ -84,12 +87,11 @@ ClientSqlite::ClientSqlite(const char *databaseName, char *userName) {
     // add new user's dataset table
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_CREATE_USER_DATASET_TABLE, g_usersDatasetTableName) , nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_CREATE_USER_DATASET_TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError;})
-
 }
 
 SqliteState ClientSqlite::insertDatasetItem(MSG_OP_PACK &item){
     char *isCheck = new char[2]();
-    isCheck[1] = item.isCheck;
+    isCheck[0] = item.isCheck;
 
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_INSERT, g_usersDatasetTableName, item.opTimestamp, item.createTimestamp, isCheck, item.data), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_INSERT SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
@@ -98,6 +100,9 @@ SqliteState ClientSqlite::insertDatasetItem(MSG_OP_PACK &item){
 }
 
 SqliteState ClientSqlite::deleteDatasetItem(MSG_OP_PACK &item){
+    if(item.opTimestamp[0] == '\0' || item.createTimestamp[0] == '\0'){
+        return SqliteError;
+    }
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_DELETE, g_usersDatasetTableName, item.opTimestamp, item.createTimestamp), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_DELETE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
@@ -108,8 +113,8 @@ SqliteState ClientSqlite::insertChangeItem(MSG_OP_PACK &item){
     char *op = new char[2]();
     char *isCheck = new char[2]();
 
-    op[1] = item.op;
-    isCheck[1] = item.isCheck;
+    op[0] = item.op;
+    isCheck[0] = item.isCheck;
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_CHANGE_TABLE_INSERT, g_usersChangeTableName, item.opTimestamp, item.createTimestamp, op, isCheck, item.data), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_CHANGE_TABLE_INSERT SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
@@ -120,7 +125,7 @@ SqliteState ClientSqlite::getLocalChange(std::vector<MSG_OP_PACK> &userChange){
     // clean _retChange
     _retChange.erase(_retChange.begin(), _retChange.end());
 
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_SELECT, g_usersDatasetTableName), retUserChange, nullptr, &zErrMsg);
+    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_SELECT, g_usersChangeTableName), retUserChange, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_CHANGE_TABLE_SELECT : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     // _retChange mem need to free
@@ -153,13 +158,13 @@ SqliteState ClientSqlite::cleanChangeTable() {
 }
 
 SqliteState ClientSqlite::cleanDatasetTable() {
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_DELETE, g_usersDatasetTableName), nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_DELETE : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
+    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_CLEAN, g_usersDatasetTableName), nullptr, nullptr, &zErrMsg);
+    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_CLEAN : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     return sqliteState;
 }
 ClientSqlite::~ClientSqlite(){
-    sqlite3_close(db);
+    //sqlite3_close(db);
 }
 
 MSG_State ClientSqlite::getSqliteOpState() {
