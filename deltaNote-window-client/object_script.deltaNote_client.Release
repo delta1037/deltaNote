@@ -1,0 +1,16 @@
+release/graphicscolorsvgitem.o
+release/login.o
+release/main.o
+release/mainwindow.o
+release/newuser.o
+release/socket.o
+release/sqlite.o
+release/todolistitem.o
+release/untils.o
+release/userinfo.o
+release/qrc_icon.o
+release/moc_login.o
+release/moc_mainwindow.o
+release/moc_newuser.o
+release/moc_todolistitem.o
+release/moc_userinfo.o
