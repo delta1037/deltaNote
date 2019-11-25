@@ -5,14 +5,12 @@
 #include <string>
 #include <vector>
 #include <cstring>
-#include "untils.h"
+
+#include "pack.h"
+#include "log.h"
 #include "sqlite3.h"
 
 using namespace std;
-
-#define G_DATABASE_NAME_SIZE 32
-#define G_DATABASE_USERNAME_SIZE 8
-#define G_DATABASE_TABLE_NAME_SIZE 32
 
 enum SqliteState {
     SqliteRunning=1,
@@ -45,10 +43,12 @@ public:
 
     // save user setting
     SqliteState initSetting();
-    SqliteState insertSetting(char *settingName, char *value);
-    SqliteState alterSetting(char *settingName, char *value);
-    SqliteState selectSetting(char *settingName, char *value);
+    SqliteState insertSetting(char *settingName);
+    SqliteState insertSettingValue(char *settingName, char *value);
+    SqliteState alterSetting(char *settingName, const char *value);
+    SqliteState selectSettingValue(char *settingName, char *value);
 
+    static void makeDataPack(MSG_OP_PACK &opPack, char *opTimestamp, char *createTimestamp, char op, char isCheck, char *data);
     static int retUserSetting(void *data, int argc, char **argv, char **ColName);
     static int retUserDataset(void *data, int argc, char **argv, char **ColName);
     static int retUserChange(void *data, int argc, char **argv, char **ColName);
@@ -68,8 +68,8 @@ private:
     char *zErrMsg;
     int ret;
 
-    static char _setting[32];
-    static char _value[32];
+    static char _setting[G_USERDATA_SETTING_SIZE];
+    static char _value[G_USERDATA_VALUE_SIZE];
     static bool _atSettingTable;
     static vector<MSG_OP_PACK> _retChange;
     static vector<MSG_OP_PACK> _retDataSet;

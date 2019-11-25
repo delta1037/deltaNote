@@ -50,7 +50,7 @@ HEADERS += \
         userinfo.h \
         sqlite3.h
 
-LIBS += -LC:\Users\delta\Desktop\deltaNote_client\lib -lsqlite3 -lws2_32
+LIBS += -LC:\Users\delta\Desktop\deltaNote-window-client\lib -lsqlite3 -lws2_32
 
 FORMS += \
         login.ui \

@@ -4,7 +4,7 @@ char g_server[G_ARR_SIZE_SERVER];
 int g_port;
 
 char g_username[G_ARR_SIZE_USERNAME];
-char g_passdw[G_ARR_SIZE_PASSWD];
+char g_passwd[G_ARR_SIZE_PASSWD];
 
 bool isLogin;
 bool isLocked;
@@ -48,7 +48,7 @@ MSG_State synMsgToServer(MSG_PACK &synPack){
 }
 void makeSocketPack(MSG_PACK &synPack, int msgSize, char msgSeg, char msgOp){
     strcpy(synPack.userName, g_username);
-    strcpy(synPack.passwd, g_passdw);
+    strcpy(synPack.passwd, g_passwd);
     synPack.msgSize = msgSize;
     synPack.msg_seg = msgSeg;
     synPack.msgOp = msgOp;

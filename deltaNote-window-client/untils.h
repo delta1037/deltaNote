@@ -7,8 +7,7 @@
 #include <winsock.h>
 #include <string.h>
 
-#include "pack.h"
-#include "log.h"
+
 #include "sqlite.h"
 #include "socket.h"
 

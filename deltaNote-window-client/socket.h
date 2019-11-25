@@ -6,7 +6,8 @@
 #include <cstring>
 #include <winsock.h>
 
-#include "untils.h"
+#include "pack.h"
+#include "log.h"
 
 using namespace std;
 
@@ -34,7 +35,7 @@ public:
     SocketState getSocketOpState();
 
 private:
-    char serverIP[16]{};
+    char serverIP[G_ARR_SIZE_SERVER]{};
     int serverPort;
 
     int ret;

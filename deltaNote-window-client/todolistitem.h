@@ -10,7 +10,6 @@
 #include<cstdlib>
 
 #include "untils.h"
-#include "socket.h"
 #include "graphicscolorsvgitem.h"
 
 namespace Ui {

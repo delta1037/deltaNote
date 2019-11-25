@@ -2,7 +2,7 @@
 #include "ui_newuser.h"
 
 extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passdw[G_ARR_SIZE_PASSWD];
+extern char g_passwd[G_ARR_SIZE_PASSWD];
 
 extern char g_server[G_ARR_SIZE_SERVER];
 extern int g_port;
@@ -20,7 +20,8 @@ newUser::newUser(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->server_port->setPlaceholderText("server:port");
-    ui->server_port->setText("39.96.162.190:8888");
+    string server_port = string(g_server) + ":" + to_string(g_port);
+    ui->server_port->setText(QString(server_port.data()));
     ui->username->setPlaceholderText("username");
     ui->passwd->setPlaceholderText("password");
     ui->repasswd ->setPlaceholderText("rewrite password");
@@ -59,9 +60,12 @@ void newUser::on_ok_clicked()
     } else {
         // read data and create user
         char server_port[G_ARR_SIZE_SERVER_PORT]{};
-        strcpy(server_port, QS_server_port.toLatin1().data());
-        //char *server_port = ;
+        strcpy(server_port, QS_server_port.toUtf8().data());
         parserServerPort(server_port);
+
+        ClientSqlite sqlite;
+        sqlite.alterSetting("server", g_server);
+        sqlite.alterSetting("port", to_string(g_port).data());
 
         // connect server
         SocketClient socketClient = SocketClient(g_server, g_port);
@@ -72,8 +76,8 @@ void newUser::on_ok_clicked()
         // get username and passwd
         MSG_PACK send{};
         send.msgOp = CreateUser;
-        strcpy(send.userName, QS_username.toLatin1().data());
-        strcpy(send.passwd, QS_passwd.toLatin1().data());
+        strcpy(send.userName, QS_username.toUtf8().data());
+        strcpy(send.passwd, QS_passwd.toUtf8().data());
 
         ret = socketClient.sendMsg(&send, sizeof(send));
 
@@ -83,7 +87,10 @@ void newUser::on_ok_clicked()
         if (recv.msgState == CreateUserSuccess) {
             isLogin = true;
             strcpy(g_username, send.userName);
-            strcpy(g_passdw, send.passwd);
+            strcpy(g_passwd, send.passwd);
+
+            sqlite.alterSetting("username", g_username);
+            sqlite.alterSetting("passwd", g_passwd);
 
             if(cleanFlag){
                 MSG_PACK synPack{};

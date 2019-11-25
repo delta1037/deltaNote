@@ -109,7 +109,6 @@ void ToDoListItem::on_dataLine_editingFinished()
     QString newData = ui->dataLine->text().trimmed();
     if(oldData == nullptr && newData != nullptr){
         // add
-
         strcpy(data, newData.toUtf8().data());
         oldData = newData;
         sprintf(createTime, "%ld", std::time(nullptr));
@@ -133,7 +132,7 @@ void ToDoListItem::on_dataLine_editingFinished()
         // alter
         memset(opTime, 0, sizeof(opTime));
         sprintf(opTime, "%ld", std::time(nullptr));
-        strcpy(data, newData.toLatin1().data());
+        strcpy(data, newData.toUtf8().data());
         oldData = newData;
 
         if(isLogin) {

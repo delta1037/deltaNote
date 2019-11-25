@@ -6,7 +6,7 @@
 #define LOG_INFO_TAG   "[INFO]"
 #define LOG_ERROR_TAG  "[ERROR]"
 #define NEW_LINE "\n"
-#define DEBUG
+
 #ifdef DEBUG
 #define LOG_ERROR(...)  {\
                             printf(" ");  \

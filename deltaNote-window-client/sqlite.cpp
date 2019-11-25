@@ -12,13 +12,15 @@
 #define CALLBACK_ARGC_5 5
 
 // user setting table
-const char *SQL_CREATE_USER_SETTING_TABLE = "CREATE TABLE IF NOT EXISTS settingTable (setting VARCHAR(32) NOT NULL, value VARCHAR(32) NOT NULL)";
+const char *SQL_CREATE_USER_SETTING_TABLE = "CREATE TABLE IF NOT EXISTS settingTable (setting VARCHAR(64) NOT NULL, value VARCHAR(128))";
 // insert setting table
-const char *SQL_USER_SETTING_TABLE_INSERT = "INSERT INTO settingTable (setting, value,) VALUES (%Q, %Q)";
+const char *SQL_USER_SETTING_TABLE_INSERT_SV = "INSERT INTO settingTable (setting, value) VALUES (%Q, %Q)";
+// insert setting table
+const char *SQL_USER_SETTING_TABLE_INSERT_S = "INSERT INTO settingTable (setting) VALUES (%Q)";
 // select setting table
-const char *SQL_USER_SETTING_TABLE_SELECT = "SELECT setting, value FROM settingTable WHERE setting = %Q";
+const char *SQL_USER_SETTING_TABLE_SELECT = "SELECT setting, value FROM settingTable WHERE setting == %Q";
 // alter setting table
-const char *SQL_USER_SETTING_TABLE_UPDATE = "UPDATE settingTable SET value = %Q WHERE setting = %Q";
+const char *SQL_USER_SETTING_TABLE_UPDATE = "UPDATE settingTable SET value = %Q WHERE setting == %Q";
 
 // user dataSet table
 const char *SQL_CREATE_USER_DATASET_TABLE = "CREATE TABLE IF NOT EXISTS %Q (opTimestamp VARCHAR(32) NOT NULL, createTimestamp VARCHAR(32) NOT NULL, isCheck VARCHAR(1) NOT NULL, data VARCHAR(128) NOT NULL)";
@@ -46,6 +48,19 @@ vector<MSG_OP_PACK> ClientSqlite::_retDataSet;
 char ClientSqlite::_setting[32];
 char ClientSqlite::_value[32];
 bool ClientSqlite::_atSettingTable;
+
+extern char g_username[G_ARR_SIZE_USERNAME];
+extern char g_passwd[G_ARR_SIZE_PASSWD];
+
+extern char g_server[G_ARR_SIZE_SERVER];
+extern int g_port;
+
+extern bool isLogin;
+extern bool isLocked;
+
+extern QColor fontColor;
+extern QColor iconColor;
+extern int transparentPos;
 
 int ClientSqlite::retUserDataset(void *data, int argc, char **argv, char **ColName){
     if (CALLBACK_ARGC_4 == argc){
@@ -77,8 +92,11 @@ int ClientSqlite::retUserSetting(void *data, int argc, char **argv, char **ColNa
     if(argc == CALLBACK_ARGC_2){
         _atSettingTable = true;
         strcpy(_setting, argv[0]);
-        strcpy(_value, argv[1]);
+        if(argv[1]){
+            strcpy(_value, argv[1]);
+        }
     }
+    return 0;
 }
 
 ClientSqlite::ClientSqlite(const char *databaseName, char *userName) {
@@ -99,12 +117,10 @@ ClientSqlite::ClientSqlite(const char *databaseName, char *userName) {
 
     ret = sqlite3_open(databaseName, &db);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("OPEN DATABASE SQL error : %s\n", zErrMsg)})
-    /*
+
     ret = sqlite3_exec(db, SQL_CREATE_USER_SETTING_TABLE , nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_CREATE_USER_SETTING_TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError;})
-    // init setting
-    initSetting();
-    */
+
     // add new user's change table
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_CREATE_USER_CHANGE_TABLE, g_usersChangeTableName) , nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_CREATE_USER_CHANGE_TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError;})
@@ -114,60 +130,121 @@ ClientSqlite::ClientSqlite(const char *databaseName, char *userName) {
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_CREATE_USER_DATASET_TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError;})
 }
 
-SqliteState ClientSqlite::initSetting(){
-    // init setting
-    _atSettingTable = false;
-    selectSetting("username", nullptr);
-    if(!_atSettingTable){
-        insertSetting("username", nullptr);
-    }
-
-    _atSettingTable = false;
-    selectSetting("passwd", nullptr);
-    if(!_atSettingTable){
-        insertSetting("passwd", nullptr);
-    }
-
-    _atSettingTable = false;
-    selectSetting("server_port", nullptr);
-    if(!_atSettingTable){
-        insertSetting("server_port", nullptr);
-    }
-
-    _atSettingTable = false;
-    selectSetting("fontColor", nullptr);
-    if(!_atSettingTable){
-        insertSetting("fontColor", nullptr);
-    }
-
-    _atSettingTable = false;
-    selectSetting("iconColor", nullptr);
-    if(!_atSettingTable){
-        insertSetting("iconColor", nullptr);
-    }
-
-    _atSettingTable = false;
-    selectSetting("transparentPos", nullptr);
-    if(!_atSettingTable){
-        insertSetting("transparentPos", nullptr);
-    }
+void ClientSqlite::makeDataPack(MSG_OP_PACK &opPack, char *opTimestamp, char *createTimestamp, char op, char isCheck, char *data){
+    strcpy(opPack.createTimestamp, createTimestamp);
+    strcpy(opPack.opTimestamp, opTimestamp);
+    strcpy(opPack.data, data);
+    opPack.op = op;
+    opPack.isCheck = isCheck;
 }
 
-SqliteState ClientSqlite::insertSetting(char *settingName, char *value){
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_INSERT, settingName, value), nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_INSERT SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
+SqliteState ClientSqlite::initSetting(){
+    // init setting
+   char value[128];
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("username", value);
+    if(!_atSettingTable){
+        insertSetting("username");
+    }else if(value[0] != '\0'){
+        strcpy(g_username, value);
+    }
+
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    memset(g_passwd, 0, sizeof(g_passwd));
+    selectSettingValue("passwd", value);
+    if(!_atSettingTable){
+        insertSetting("passwd");
+    }else if(strcmp(value, "nullptr") != 0){
+        strcpy(g_passwd, value);
+    }
+
+    if(g_username[0] != '\0' && g_passwd[0] != '\0'){
+        isLogin = true;
+    }
+
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("server", value);
+    if(!_atSettingTable){
+        insertSettingValue("server", "127.0.0.1");
+        strcpy(g_server, "127.0.0.1");
+    }else if(value[0] != '\0'){
+        strcpy(g_server, value);
+    }
+
+    memset(value, 0, sizeof (value));
+    selectSettingValue("port", value);
+    if(!_atSettingTable){
+        insertSettingValue("port", "8888");
+        g_port = 8888;
+    }else if(value[0] != '\0'){
+        g_port = atoi(value);
+    }
+
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("fontColor", value);
+    if(!_atSettingTable){
+        fontColor = QColor(0, 0, 0);
+        insertSettingValue("fontColor", fontColor.name().toUtf8().data());
+    }else if(value[0] != '\0'){
+        fontColor = QColor(value);
+    }
+
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("iconColor", value);
+    if(!_atSettingTable){
+        iconColor = QColor(0, 0, 0);
+        insertSettingValue("iconColor", iconColor.name().toUtf8().data());
+    }else if(value[0] != '\0'){
+        iconColor = QColor(value);
+    }
+
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("transparentPos", value);
+    if(!_atSettingTable){
+        insertSettingValue("transparentPos", "30");
+        transparentPos = 30;
+    }else if(value[0] != '\0'){
+        transparentPos = atoi(value);
+    }
+
+    memset(value, 0, sizeof (value));
+    selectSettingValue("isLocked", value);
+    if(!_atSettingTable){
+        isLocked = false;
+        insertSettingValue("isLocked", "0");
+    }
+    isLocked = bool(value[0]);
+}
+
+SqliteState ClientSqlite::insertSetting(char *settingName){
+    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_INSERT_S, settingName), nullptr, nullptr, &zErrMsg);
+    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_INSERT_S SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     return sqliteState;
 }
-SqliteState ClientSqlite::alterSetting(char *settingName, char *value){
+SqliteState ClientSqlite::insertSettingValue(char *settingName, char *value){
+    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_INSERT_SV, settingName, value), nullptr, nullptr, &zErrMsg);
+    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_INSERT_SV SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
+
+    return sqliteState;
+}
+SqliteState ClientSqlite::alterSetting(char *settingName, const char *value){
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_UPDATE, value, settingName), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_UPDATE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     return sqliteState;
 }
-SqliteState ClientSqlite::selectSetting(char *settingName, char *value){
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_SELECT, settingName), nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_SELECT SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
+
+SqliteState ClientSqlite::selectSettingValue(char *settingName, char *value){
+    _atSettingTable = false;
+    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_SELECT, settingName), retUserSetting, nullptr, &zErrMsg);
+    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_SELECT SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
     if(value != nullptr){
         strcpy(value, _value);
     }

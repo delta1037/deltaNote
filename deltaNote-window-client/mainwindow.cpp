@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passdw[G_ARR_SIZE_PASSWD];
+extern char g_passwd[G_ARR_SIZE_PASSWD];
 
 extern char g_server[G_ARR_SIZE_SERVER];
 extern int g_port;
@@ -34,9 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ToDoListWin->addItem(addNew);
     ui->ToDoListWin->setItemWidget(addNew, addTag);
 
-    fontColor = QColor(0, 0, 0);
-    iconColor = QColor(0, 0, 0);
-    transparentPos = 30;
+    refreshBackground();
 
     //设置无边框和设置隐藏下部图标
     setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
