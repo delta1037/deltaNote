@@ -4,7 +4,7 @@ char g_server[G_ARR_SIZE_SERVER];
 int g_port;
 
 char g_username[G_ARR_SIZE_USERNAME];
-char g_passdw[G_ARR_SIZE_PASSWD];
+char g_passwd[G_ARR_SIZE_PASSWD];
 
 bool isLogin;
 bool isLocked;
@@ -22,7 +22,7 @@ void synLocalChange(){
 
     SocketClient socket;
     int sendSize = int(retDataPack.size());
-    MSG synPack{};
+    MSG_PACK synPack{};
     for (int index = 0; index < sendSize; ++index) {
         int left = min(5, sendSize - index);
         makeSocketPack(synPack, left, ((left == 5) && (sendSize - index != 5))? MSG_FULL:MSG_HALF, RET);
@@ -34,26 +34,21 @@ void synLocalChange(){
     LOG_INFO("send local change")
 }
 
-MSG_State synMsgToServer(MSG &synPack){
+MSG_State synMsgToServer(MSG_PACK &synPack){
     SocketClient socketClient = SocketClient(g_server, g_port);
     socketClient.sendMsg(&synPack, sizeof(synPack));
 
-    MSG recvPack{};
+    MSG_PACK recvPack{};
     socketClient.recvMsg(&recvPack, sizeof (recvPack));
 
     if(PushError == recvPack.msgState || CleanError == recvPack.msgState){
-        QMessageBox::warning(nullptr, "Warning", "push msg to server error!", QMessageBox::Yes);
-    } else {
-        socketClient.sendMsg(&synPack, sizeof(synPack));
-
-        MSG recvPack{};
-        socketClient.recvMsg(&recvPack, sizeof (recvPack));
+        QMessageBox::warning(nullptr, "Warning", "推送数据失败!", QMessageBox::Yes);
     }
     return MSG_State(recvPack.msgState);
 }
-void makeSocketPack(MSG &synPack, int msgSize, char msgSeg, char msgOp){
+void makeSocketPack(MSG_PACK &synPack, int msgSize, char msgSeg, char msgOp){
     strcpy(synPack.userName, g_username);
-    strcpy(synPack.passwd, g_passdw);
+    strcpy(synPack.passwd, g_passwd);
     synPack.msgSize = msgSize;
     synPack.msg_seg = msgSeg;
     synPack.msgOp = msgOp;
@@ -119,7 +114,7 @@ void parserServerPort(char *serverPort){
 
     //check
     if(server[0] == '\0' || port == 0){
-        QMessageBox::warning(nullptr, "Error", "server_port format error", QMessageBox::Yes);
+        QMessageBox::warning(nullptr, "Error", "服务器格式错误", QMessageBox::Yes);
         LOG_ERROR("server and port parser error!")
         return;
     }
@@ -129,7 +124,7 @@ void parserServerPort(char *serverPort){
         int ret = getIPbyDomain(server, serverIP);
 
         if(ret != 0){
-            QMessageBox::warning(nullptr, "Error", "host name unreachable", QMessageBox::Yes);
+            QMessageBox::warning(nullptr, "Error", "服务器不可达", QMessageBox::Yes);
             LOG_ERROR("host name error");
             return;
         }

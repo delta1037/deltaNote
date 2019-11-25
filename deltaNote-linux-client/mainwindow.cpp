@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passdw[G_ARR_SIZE_PASSWD];
+extern char g_passwd[G_ARR_SIZE_PASSWD];
 
 extern char g_server[G_ARR_SIZE_SERVER];
 extern int g_port;
@@ -34,18 +34,46 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ToDoListWin->addItem(addNew);
     ui->ToDoListWin->setItemWidget(addNew, addTag);
 
-    fontColor = QColor(0, 0, 0);
-    iconColor = QColor(0, 0, 0);
-    transparentPos = 30;
+    refreshBackground();
+
+    //设置无边框和设置隐藏下部图标
+    setWindowFlags(Qt::Tool);
+    QIcon icon = QIcon(":/deltaNote.ico");
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(icon);
+    trayIcon->setParent(this);
+    trayIcon->setToolTip("deltaNote");
+    trayIcon->setVisible(true);
+    trayIcon->show();
+
+    officialAction = new QAction("官网", this);
+    connect(officialAction, SIGNAL(triggered()), this, SLOT(on_openOfficialSite_triggered()));
+
+    settingAction = new QAction("设置", this);
+    connect(settingAction, SIGNAL(triggered()), this, SLOT(on_setting_clicked()));
+
+    quitAction = new QAction("退出程序", this);
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit())); //关闭应用，qApp对应的是程序全局唯一指针
+
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(officialAction);
+    trayIconMenu->addAction(settingAction);
+    trayIconMenu->addAction(quitAction);
+
+    trayIcon->setContextMenu(trayIconMenu);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+void MainWindow::on_openOfficialSite_triggered(){
+    QDesktopServices :: openUrl(QUrl(QLatin1String("http://www.delta1037.cn/2019/11/23/deltaNoteSite/")));
+}
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
+    event->ignore();
     QPainter painter(this);
     painter.fillRect(this->rect(), QColor(255, 255, 255, 255 - transparentPos));
 }
@@ -118,13 +146,13 @@ void MainWindow::on_setting_clicked()
         // clean client todo list
         ui->ToDoListWin->clear();
         if(isLogin){
-            MSG synPack{};
+            MSG_PACK synPack{};
             makeSocketPack(synPack, 1, MSG_FULL, Delete);
 
             if(CleanSuccess == synMsgToServer(synPack)){
                 cleanFlag = false;
             }else{
-                QMessageBox::warning(this, tr("Error"), tr("server clean data error!"), QMessageBox::Yes);
+                QMessageBox::warning(this, tr("Error"), tr("服务端清除数据错误!"), QMessageBox::Yes);
                 LOG_ERROR("clean data error")
             }
         }
@@ -138,13 +166,13 @@ void MainWindow::on_refresh_clicked()
         return;
     }
 
-    MSG synPack{};
+    MSG_PACK synPack{};
     makeSocketPack(synPack, 1, MSG_FULL, Pull);
 
     SocketClient socketClient = SocketClient(g_server, g_port);
     socketClient.sendMsg(&synPack, sizeof(synPack));
 
-    MSG recv{};
+    MSG_PACK recv{};
     socketClient.recvMsg(&recv, sizeof (recv));
     vector<MSG_OP_PACK> datasetRecv;
 
@@ -182,12 +210,12 @@ void MainWindow::on_lock_clicked()
 {
     // lock location
     if (isLocked){
-        setWindowFlags(Qt::Window);
+        setWindowFlags(Qt::Window | Qt::Tool);
         showNormal();
         GraphicsColorSvgItem svg_lock(":/resource/lock.svg");
         ui->lock->setIcon(svg_lock.setColor(iconColor));
     } else {
-        setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
         showNormal();
         GraphicsColorSvgItem svg_lock(":/resource/locked.svg");
         ui->lock->setIcon(svg_lock.setColor(iconColor));
@@ -226,14 +254,14 @@ void MainWindow::on_actDel_triggered()
     ToDoListItem *todo = qobject_cast<ToDoListItem*>(ui->ToDoListWin->itemWidget(item));
 
     if(isLogin) {
-        MSG synPack{};
+        MSG_PACK synPack{};
         makeSocketPack(synPack, 1, MSG_FULL, Push);
 
         sprintf(todo->opTime, "%ld", std::time(nullptr));
         makeDataPack(synPack.msgQueue[0], todo->opTime, todo->createTime, DEL, todo->isCheck, todo->data);
 
         if(PushError == synMsgToServer(synPack)){
-            QMessageBox::warning(this, tr("Warning"), tr("delete the todo error!"), QMessageBox::Yes);
+            QMessageBox::warning(this, tr("Warning"), tr("服务端删除数据错误!"), QMessageBox::Yes);
         }
     } else {
         MSG_OP_PACK pack{};
@@ -272,7 +300,7 @@ void MainWindow::on_actClear_triggered()
             if(SocketError == socketClient.getSocketOpState()){
                 QMessageBox::warning(this, tr("Error"), tr("Socket connect error!"), QMessageBox::Yes);
             }else{
-                MSG synPack{};
+                MSG_PACK synPack{};
                 for(int index = ui->ToDoListWin->count() - 1; index >= 0;){
                     int left = min(5, index + 1);
                     makeSocketPack(synPack, left, ((left == 5 && (index != 4))? MSG_HALF:MSG_FULL), Push);
@@ -285,11 +313,11 @@ void MainWindow::on_actClear_triggered()
                     socketClient.sendMsg(&synPack, sizeof(synPack));
                 }
 
-                MSG recvPack{};
+                MSG_PACK recvPack{};
                 socketClient.recvMsg(&recvPack, sizeof (recvPack));
 
                 if(PushError == recvPack.msgState){
-                    QMessageBox::warning(this, tr("Warning"), tr("delete the todo error!"), QMessageBox::Yes);
+                    QMessageBox::warning(this, tr("Warning"), tr("服务端删除数据错误!"), QMessageBox::Yes);
                 } else {
                     ui->ToDoListWin->clear();
                 }

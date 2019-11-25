@@ -2,7 +2,7 @@
 #include "ui_userinfo.h"
 
 extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passdw[G_ARR_SIZE_PASSWD];
+extern char g_passwd[G_ARR_SIZE_PASSWD];
 
 extern bool isLogin;
 
@@ -16,7 +16,6 @@ userInfo::userInfo(QWidget *parent) :
     ui(new Ui::userInfo)
 {
     ui->setupUi(this);
-
     ui->username->setText(QString(QLatin1String(g_username)));
 
     ui->transparent->setValue(transparentPos);
@@ -32,8 +31,10 @@ userInfo::~userInfo()
 void userInfo::on_logout_clicked()
 {
     isLogin = false;
-    memset(g_username, 0, sizeof (g_username));
-    memset(g_passdw, 0, sizeof (g_passdw));
+    //memset(g_username, 0, sizeof (g_username));
+    ClientSqlite sqlite;
+    sqlite.alterSetting("passwd", "nullptr");
+    memset(g_passwd, 0, sizeof (g_passwd));
     accept();
 }
 
@@ -46,30 +47,34 @@ void userInfo::on_transparent_sliderMoved(int position)
 {
     if(position >=0 && position <=255){
         transparentPos = position;
+        ClientSqlite sqlite;
+        sqlite.alterSetting("transparentPos", to_string(transparentPos).data());
     }
 }
 
 void userInfo::on_chooseFontColor_clicked()
 {
     QColorDialog color;
+    color.show();
     QColor c = color.getColor();
     if(c.isValid()){
         fontColor = c;
         ui->chooseFontColor->setStyleSheet("background-color:" + c.name()+ ";");
-    }else{
-        QMessageBox::warning(this, tr("Error"), tr("color error!"), QMessageBox::Yes);
+        ClientSqlite sqlite;
+        sqlite.alterSetting("fontColor", c.name().toUtf8().data());
     }
 }
 
 void userInfo::on_chooseIconColor_clicked()
 {
     QColorDialog color;
+    color.show();
     QColor c = color.getColor();
     if(c.isValid()){
         iconColor = c;
         ui->chooseIconColor->setStyleSheet("background-color:" + c.name()+ ";");
-    }else{
-        QMessageBox::warning(this, tr("Error"), tr("color error!"), QMessageBox::Yes);
+        ClientSqlite sqlite;
+        sqlite.alterSetting("iconColor", c.name().toUtf8().data());
     }
 }
 

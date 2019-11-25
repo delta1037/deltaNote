@@ -9,6 +9,6 @@
 
 #include "pack.h"
 
-void makeSocketPack(MSG &synPack, int msgSize, char msgSeg, char msgOp);
+void makeSocketPack(MSG_PACK &synPack, int msgSize, char msgSeg, char msgOp);
 void makeDataPack(MSG_OP_PACK &opPack, char *opTimestamp, char *createTimestamp, char op, char isCheck, char *data);
 #endif //DELTANOTE_UNTILS_H

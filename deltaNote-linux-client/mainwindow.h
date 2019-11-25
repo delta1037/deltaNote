@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QPainter>
+#include <QSystemTrayIcon>
 #include <QListWidgetItem>
+#include<QDesktopServices>
+#include<QUrl>
 #include <QMenu>
 
 #include "login.h"
@@ -40,12 +43,18 @@ private slots:
 
     void on_actClear_triggered();
 
+    void on_openOfficialSite_triggered();
+
 private:
     void paintEvent(QPaintEvent *event = nullptr);
 
     Ui::MainWindow *ui;
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
+
+    QAction *officialAction;
+    QAction *settingAction;
+    QAction *quitAction;
 };
-
-
 
 #endif // MAINWINDOW_H

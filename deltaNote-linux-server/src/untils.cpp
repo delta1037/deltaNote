@@ -4,7 +4,7 @@
 
 #include "../include/untils.h"
 
-void makeSocketPack(MSG &synPack, int msgSize, char msgSeg, char msgOp){
+void makeSocketPack(MSG_PACK &synPack, int msgSize, char msgSeg, char msgOp){
     synPack.msgSize = msgSize;
     synPack.msg_seg = msgSeg;
     synPack.msgOp = msgOp;

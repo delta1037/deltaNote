@@ -3,17 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define RED    ""
-#define GREEN  ""
-
-#define INFO   "[INFO]"
-#define ERROR  "[ERROR]"
+#define LOG_INFO_TAG   "[INFO]"
+#define LOG_ERROR_TAG  "[ERROR]"
 #define NEW_LINE "\n"
 
 #ifdef DEBUG
 #define LOG_ERROR(...)  {\
                             printf(" ");  \
-                            printf(ERROR); \
+                            printf(LOG_ERROR_TAG); \
                             printf(" ");  \
                             printf(__VA_ARGS__);   \
                             printf("\n");  \
@@ -21,7 +18,7 @@
 
 #define LOG_INFO(...)  {\
                             printf(" ");  \
-                            printf(INFO); \
+                            printf(LOG_INFO_TAG); \
                             printf(" ");  \
                             printf(__VA_ARGS__);   \
                             printf("\n");  \

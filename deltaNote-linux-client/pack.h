@@ -1,18 +1,29 @@
 #ifndef PACK_H
 #define PACK_H
 
+#include <QColor>
+
+#define G_ARR_SIZE_SERVER_PORT 64
 #define G_ARR_SIZE_SERVER 16
-#define G_ARR_SIZE_USERNAME 8
-#define G_ARR_SIZE_PASSWD 12
+
+#define G_ARR_SIZE_USERNAME 16
+#define G_ARR_SIZE_PASSWD 64
 #define G_MAX_MSG_OP_RECV_SIZE 5
 #define G_TIMESTAMP_SIZE 32
 #define G_DATA_TRANS_SIZE 128
 
+#define G_DATABASE_NAME_SIZE 32
+#define G_DATABASE_USERNAME_SIZE 16
+#define G_DATABASE_TABLE_NAME_SIZE 32
+
+#define G_USERDATA_SETTING_SIZE 32
+#define G_USERDATA_VALUE_SIZE 32
+
 enum MSG_State {
-    LoginUndefinedError = 0,
     LoginPasswdError = 1,
     LoginUserNotExits = 2,
     LoginSuccess = 3,
+    LoginUndefinedError = 4,
 
     CreateUserUserExists = 8,
     CreateUserSuccess = 9,
@@ -28,8 +39,6 @@ enum MSG_State {
 
     UndefinedError
 };
-
-static MSG_State  g_msgState;
 
 enum MSG_OP {
     CreateUser = '0',
@@ -66,7 +75,7 @@ struct MSG_OP_PACK {
     char isCheck;
 };
 
-struct MSG {
+struct MSG_PACK {
     char msgOp;
     char msgState;
     char userName[G_ARR_SIZE_USERNAME];

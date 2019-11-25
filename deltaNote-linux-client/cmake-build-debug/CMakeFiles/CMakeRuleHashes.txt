@@ -1,7 +1,0 @@
-# Hashes of file build rules.
-fbdbf73d27db92b963f48bdda007c8e4 CMakeFiles/deltaNote_client_autogen
-68109c2fc510a6b716d48cb955fd482e ui_login.h
-afec609a51fcafb072f60944f8186ad2 ui_mainwindow.h
-66ca95980829a73c4d797d29ed4d5036 ui_newuser.h
-8904e858d2ec09b41ff1b74f2ec04a03 ui_todolistitem.h
-78945898c8a0d0987789fda53eb35717 ui_userinfo.h

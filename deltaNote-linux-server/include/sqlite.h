@@ -44,9 +44,6 @@ public:
     // add change
     SqliteState addChange(std::vector<MSG_OP_PACK> &changeArr); // push change to table
 
-    // syn change with client
-    //SqliteState synChange(char *timestamp, std::vector<MSG_OP_PACK> &resChange); // pull change from table
-
     bool newChangeAtChangeTable(MSG_OP_PACK &msg);
 
     SqliteState returnDataSet(std::vector<MSG_OP_PACK> &userDataset);
@@ -78,7 +75,6 @@ private:
     char *zErrMsg;
     int ret;
 
-    static vector<MSG_OP_PACK> _retChange;
     static vector<pair<string, string>> _resUserPasswd;
     static vector<MSG_OP_PACK> _retDataSet;
     static int atChangeTableSize;

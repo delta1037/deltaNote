@@ -80,12 +80,12 @@ void ToDoListItem::on_choose_clicked()
     isCheck = isChoose == true ? Checked:UnCheck;
     sprintf(opTime, "%ld", std::time(nullptr));
     if(isLogin) {
-        MSG synPack{};
+        MSG_PACK synPack{};
         makeSocketPack(synPack, 1, MSG_FULL, Push);
         makeDataPack(synPack.msgQueue[0], opTime, createTime, CHECK, isCheck, data);
 
         if(PushError == synMsgToServer(synPack)){
-            QMessageBox::warning(nullptr, tr("Warning"), tr("check the todo error!"), QMessageBox::Yes);
+            QMessageBox::warning(nullptr, tr("Warning"), tr("修改便签同步错误!"), QMessageBox::Yes);
         }
     }else{
         MSG_OP_PACK pack{};
@@ -115,12 +115,12 @@ void ToDoListItem::on_dataLine_editingFinished()
         sprintf(opTime, "%ld", std::time(nullptr));
 
         if(isLogin) {
-            MSG synPack{};
+            MSG_PACK synPack{};
             makeSocketPack(synPack, 1, MSG_FULL, Push);
             makeDataPack(synPack.msgQueue[0], opTime, createTime, ADD, isCheck, data);
 
             if(PushError == synMsgToServer(synPack)){
-                QMessageBox::warning(nullptr, tr("Warning"), tr("alter new todo error!"), QMessageBox::Yes);
+                QMessageBox::warning(nullptr, tr("Warning"), tr("新建便签同步错误!"), QMessageBox::Yes);
             }
         }else{
             MSG_OP_PACK pack{};
@@ -132,16 +132,16 @@ void ToDoListItem::on_dataLine_editingFinished()
         // alter
         memset(opTime, 0, sizeof(opTime));
         sprintf(opTime, "%ld", std::time(nullptr));
-        strcpy(data, newData.toLatin1().data());
+        strcpy(data, newData.toUtf8().data());
         oldData = newData;
 
         if(isLogin) {
-            MSG synPack{};
+            MSG_PACK synPack{};
             makeSocketPack(synPack, 1, MSG_FULL, Push);
             makeDataPack(synPack.msgQueue[0], opTime, createTime, ALTER, isCheck, data);
 
             if(PushError == synMsgToServer(synPack)){
-                QMessageBox::warning(nullptr, tr("Warning"), tr("alter new todo error!"), QMessageBox::Yes);
+                QMessageBox::warning(nullptr, tr("Warning"), tr("修改便签同步错误!"), QMessageBox::Yes);
             }
         }else{
             MSG_OP_PACK pack{};

@@ -41,7 +41,7 @@ int SocketClient::sendMsg(void *buf, size_t size) {
 }
 
 int SocketClient::recvMsg(void *buf, size_t size) {
-    ssize_t recvSize=read(clientSocketFd, buf, size);
+    ssize_t recvSize = recv(clientSocketFd, buf, size, 0);
     CHECK(recvSize,0,{LOG_ERROR("Receive Size is NULL") socketState = SocketError;})
 
     return int(recvSize);

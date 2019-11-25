@@ -7,7 +7,7 @@ using namespace deltaNote;
 
 #define databaseName "data/deltaNoteServerDB"
 #define SERVER_IP "0.0.0.0"
-#define SERVER_PORT 8888
+#define SERVER_PORT 1234
 
 char serverIP[32];
 int serverPort;
@@ -21,7 +21,7 @@ SystemStatus systemStatus;
 void * clientHandler(void *pVoid){
     auto *socket = (SocketServer *)pVoid;
     int ret = SqliteRunning;
-    MSG recv{};
+    MSG_PACK recv{};
     char *buf = (char *)&recv;
     socket->recvMsg(buf, sizeof(recv));
 
@@ -30,7 +30,7 @@ void * clientHandler(void *pVoid){
     if (recv.msgOp == CreateUser) {
         ret = sqlite.addUser();
 
-        MSG send{};
+        MSG_PACK send{};
         send.msgState = sqlite.getSqliteOpState();
 
         socket->sendMsg(&send, sizeof(send));
@@ -38,9 +38,8 @@ void * clientHandler(void *pVoid){
     } else if (recv.msgOp == Login) {
         ret = sqlite.loginRes();
 
-        MSG send{};
+        MSG_PACK send{};
         send.msgState = sqlite.getSqliteOpState();
-
         socket->sendMsg(&send, sizeof(send));
         LOG_INFO("login send back")
     } else if (recv.msgOp == Pull) {
@@ -53,7 +52,7 @@ void * clientHandler(void *pVoid){
 
             // send result to client
             int sendSize = retDataPack.size();
-            MSG synPack{};
+            MSG_PACK synPack{};
             for (int index = 0; index < sendSize;) {
                 int left = min(5, sendSize - index);
                 makeSocketPack(synPack,
@@ -70,7 +69,7 @@ void * clientHandler(void *pVoid){
                 }
                 socket->sendMsg(&synPack, sizeof(synPack));
             }
-            LOG_INFO("send message")
+            LOG_INFO("send server data back")
         }
     } else if (recv.msgOp == Push) {
         ret = sqlite.loginRes();
@@ -89,7 +88,7 @@ void * clientHandler(void *pVoid){
                 }
 
                 if (recv.msg_seg != MSG_FULL) {
-                    socket->recvMsg(buf, sizeof(MSG));
+                    socket->recvMsg(buf, sizeof(MSG_PACK));
                 } else {
                     break;
                 }
@@ -99,26 +98,28 @@ void * clientHandler(void *pVoid){
         // add change to sql
         ret = sqlite.addChange(changePush);
 
-        MSG send{};
+        MSG_PACK send{};
         if (SqliteRunning == ret){
             send.msgState = PushSuccess;
         } else {
             send.msgState = PushError;
         }
         socket->sendMsg((void *)&send, sizeof(send));
+        LOG_INFO("push to server change success")
     } else if (recv.msgOp == Delete){
         ret = sqlite.loginRes();
         if (SqliteRunning == ret){
             ret = sqlite.cleanSqlite();
         }
 
-        MSG send{};
+        MSG_PACK send{};
         if (SqliteRunning == ret){
             send.msgState = CleanSuccess;
         } else {
             send.msgState = CleanError;
         }
         socket->sendMsg((void *)&send, sizeof(send));
+        LOG_INFO("clear server data success")
     }else {
         LOG_ERROR("Wrong Msg OP %d received", recv.msgOp)
     }

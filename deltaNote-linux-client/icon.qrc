@@ -13,5 +13,6 @@
         <file>resource/clear.svg</file>
         <file>resource/delete.svg</file>
         <file>resource/insert.svg</file>
+        <file>deltaNote.ico</file>
     </qresource>
 </RCC>

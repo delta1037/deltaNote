@@ -37,7 +37,6 @@ const char *SQL_USER_CHANGE_TABLE_SELECT = "SELECT opTimestamp, createTimestamp,
 // clean dataset
 const char *SQL_USER_CHANGE_TABLE_DELETE = "DELETE from %Q";
 
-vector<MSG_OP_PACK> ServerSqlite::_retChange;
 vector<pair<string, string>> ServerSqlite::_resUserPasswd;
 vector<MSG_OP_PACK> ServerSqlite::_retDataSet;
 int ServerSqlite::atChangeTableSize;
@@ -132,7 +131,7 @@ SqliteState ServerSqlite::addUser() {
 
     // add new user's change table
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_CREATE_USER_CHANGE_TABLE, g_usersChangeTableName) , nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("CREATE USER TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
+    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_CREATE_USER_CHANGE_TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     // add new user's dataset table
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_CREATE_USER_DATASET_TABLE, g_usersDatasetTableName) , nullptr, nullptr, &zErrMsg);
