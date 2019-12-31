@@ -62,6 +62,12 @@ extern QColor fontColor;
 extern QColor iconColor;
 extern int transparentPos;
 
+extern int xPos;
+extern int yPos;
+
+extern int frameWigth;
+extern int frameHeight;
+
 int ClientSqlite::retUserDataset(void *data, int argc, char **argv, char **ColName){
     if (CALLBACK_ARGC_4 == argc){
         MSG_OP_PACK pack{};
@@ -160,16 +166,17 @@ SqliteState ClientSqlite::initSetting(){
         strcpy(g_passwd, value);
     }
 
-    if(g_username[0] != '\0' && g_passwd[0] != '\0'){
-        isLogin = true;
-    }
+    //if(g_username[0] != '\0' && g_passwd[0] != '\0'){
+    //    isLogin = true;
+    //}
+
 
     _atSettingTable = false;
     memset(value, 0, sizeof (value));
     selectSettingValue("server", value);
     if(!_atSettingTable){
-        insertSettingValue("server", "127.0.0.1");
-        strcpy(g_server, "127.0.0.1");
+        insertSettingValue("server", "39.96.162.190");
+        strcpy(g_server, "39.96.162.190");
     }else if(value[0] != '\0'){
         strcpy(g_server, value);
     }
@@ -213,6 +220,37 @@ SqliteState ClientSqlite::initSetting(){
         transparentPos = atoi(value);
     }
 
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("xPos", value);
+    if(!_atSettingTable){
+        insertSettingValue("xPos", "600");
+        xPos = 600;
+    }else if(value[0] != '\0'){
+        xPos = atoi(value);
+    }
+
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("yPos", value);
+    if(!_atSettingTable){
+        insertSettingValue("yPos", "300");
+        yPos = 300;
+    }else if(value[0] != '\0'){
+        yPos = atoi(value);
+    }
+
+    _atSettingTable = false;
+    memset(value, 0, sizeof (value));
+    selectSettingValue("frameHeight", value);
+    if(!_atSettingTable){
+        insertSettingValue("frameHeight", "560");
+        frameHeight = 560;
+    }else if(value[0] != '\0'){
+        frameHeight = atoi(value);
+    }
+
+    _atSettingTable = false;
     memset(value, 0, sizeof (value));
     selectSettingValue("isLocked", value);
     if(!_atSettingTable){

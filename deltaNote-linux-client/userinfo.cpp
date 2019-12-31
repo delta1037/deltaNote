@@ -1,16 +1,6 @@
 #include "userinfo.h"
 #include "ui_userinfo.h"
 
-extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passwd[G_ARR_SIZE_PASSWD];
-
-extern bool isLogin;
-
-extern QColor fontColor;
-extern QColor iconColor;
-extern int transparentPos;
-extern bool cleanFlag;
-
 userInfo::userInfo(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::userInfo)

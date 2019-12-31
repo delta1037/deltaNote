@@ -1,20 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passwd[G_ARR_SIZE_PASSWD];
-
-extern char g_server[G_ARR_SIZE_SERVER];
-extern int g_port;
-
-extern bool isLogin;
-extern bool isLocked;
-
-extern QColor fontColor;
-extern QColor iconColor;
-extern int transparentPos;
-extern bool cleanFlag;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -61,11 +47,48 @@ MainWindow::MainWindow(QWidget *parent) :
     trayIconMenu->addAction(quitAction);
 
     trayIcon->setContextMenu(trayIconMenu);
+
+    move(xPos, yPos);
+    setGeometry(xPos, yPos, 280, frameHeight);
+
+    if(g_username[0] != '\0' && g_passwd[0] != '\0'){
+        isLogin = doLogin();
+    }
+    if(isLogin){
+        on_refresh_clicked();
+    }
+
+    if (isLocked){
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
+
+        showNormal();
+        GraphicsColorSvgItem svg_lock(":/resource/locked.svg");
+        ui->lock->setIcon(svg_lock.setColor(iconColor));
+
+    } else {
+        setWindowFlags(Qt::Window | Qt::Tool);
+        showNormal();
+        GraphicsColorSvgItem svg_lock(":/resource/lock.svg");
+        ui->lock->setIcon(svg_lock.setColor(iconColor));
+    }
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::moveEvent(QMoveEvent *event)
+{
+    ClientSqlite sqlite;
+    sqlite.alterSetting("xPos", to_string(this->geometry().x()).data());
+    sqlite.alterSetting("yPos", to_string(this->geometry().y()).data());
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    ClientSqlite sqlite;
+    sqlite.alterSetting("frameHeight", to_string(this->geometry().height()).data());
 }
 void MainWindow::on_openOfficialSite_triggered(){
     QDesktopServices :: openUrl(QUrl(QLatin1String("http://www.delta1037.cn/2019/11/23/deltaNoteSite/")));
@@ -113,7 +136,6 @@ void MainWindow::refreshBackground(){
         GraphicsColorSvgItem svg_lock(":/resource/lock.svg");
         ui->lock->setIcon(svg_lock.setColor(iconColor));
     }
-
 
     GraphicsColorSvgItem svg_add(":/resource/add.svg");
     ui->add->setIcon(svg_add.setColor(iconColor));
@@ -221,6 +243,10 @@ void MainWindow::on_lock_clicked()
         ui->lock->setIcon(svg_lock.setColor(iconColor));
     }
     isLocked = !isLocked;
+    ClientSqlite sqlite;
+    char islock[2];
+    islock[0] = isLocked;
+    sqlite.alterSetting("isLocked", islock);
 }
 
 void MainWindow::on_ToDoListWin_customContextMenuRequested(const QPoint &pos)

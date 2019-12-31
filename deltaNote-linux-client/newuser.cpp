@@ -1,19 +1,6 @@
 #include "newuser.h"
 #include "ui_newuser.h"
 
-extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passwd[G_ARR_SIZE_PASSWD];
-
-extern char g_server[G_ARR_SIZE_SERVER];
-extern int g_port;
-
-extern bool isLogin;
-
-extern QColor fontColor;
-extern QColor iconColor;
-extern int transparentPos;
-extern bool cleanFlag;
-
 newUser::newUser(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::newUser)

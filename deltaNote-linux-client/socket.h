@@ -16,7 +16,6 @@ using namespace std;
 #define SOCKET_ERROR (-1)
 #define SOCKET_SUCCESS (0)
 
-
 enum SocketState {
     SocketRunning = 1,
     SocketStopped = 2,

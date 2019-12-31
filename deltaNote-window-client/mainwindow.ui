@@ -65,15 +65,18 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,20,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,100,0">
     <property name="spacing">
      <number>0</number>
+    </property>
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMinAndMaxSize</enum>
     </property>
     <property name="leftMargin">
      <number>0</number>
     </property>
     <property name="topMargin">
-     <number>15</number>
+     <number>10</number>
     </property>
     <property name="rightMargin">
      <number>0</number>
@@ -177,25 +180,25 @@
       <property name="minimumSize">
        <size>
         <width>280</width>
-        <height>280</height>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>280</width>
-        <height>800</height>
+        <height>16777215</height>
        </size>
       </property>
       <property name="sizeIncrement">
        <size>
         <width>0</width>
-        <height>520</height>
+        <height>-1</height>
        </size>
       </property>
       <property name="baseSize">
        <size>
         <width>0</width>
-        <height>520</height>
+        <height>-1</height>
        </size>
       </property>
       <property name="mouseTracking">

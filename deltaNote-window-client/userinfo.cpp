@@ -1,16 +1,6 @@
 #include "userinfo.h"
 #include "ui_userinfo.h"
 
-extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passwd[G_ARR_SIZE_PASSWD];
-
-extern bool isLogin;
-
-extern QColor fontColor;
-extern QColor iconColor;
-extern int transparentPos;
-extern bool cleanFlag;
-
 userInfo::userInfo(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::userInfo)
@@ -86,4 +76,15 @@ void userInfo::on_clearData_clicked()
     sqlite.cleanChangeTable();
 
     cleanFlag = true;
+}
+
+void userInfo::on_radioButton_clicked(bool checked)
+{
+    QSettings regedit(REGEDIT_AUTO_START_PATH, QSettings::NativeFormat);
+    if(checked) {
+        QString sAppPath = QApplication::applicationFilePath();
+        regedit.setValue(REGEDIT_KEY, QVariant(QDir::toNativeSeparators(sAppPath)));
+    } else {
+        regedit.setValue(REGEDIT_KEY, QVariant());
+    }
 }

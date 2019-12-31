@@ -1,20 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passwd[G_ARR_SIZE_PASSWD];
-
-extern char g_server[G_ARR_SIZE_SERVER];
-extern int g_port;
-
-extern bool isLogin;
-extern bool isLocked;
-
-extern QColor fontColor;
-extern QColor iconColor;
-extern int transparentPos;
-extern bool cleanFlag;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -25,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ToDoListWin->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->ToDoListWin->setStyleSheet("background-color:transparent");
     ui->ToDoListWin->setFrameShape(QListWidget::NoFrame);
+
 
     ui->ToDoListWin->clear();
     QWidget *addTag = new ToDoListItem(this);
@@ -64,6 +51,15 @@ MainWindow::MainWindow(QWidget *parent) :
     trayIconMenu->addAction(quitAction);
 
     trayIcon->setContextMenu(trayIconMenu);
+
+    move(xPos, yPos);
+    setGeometry(xPos, yPos, 280, frameHeight);
+
+    isLogin = doLogin();
+
+    if(isLogin){
+        on_refresh_clicked();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +101,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton){
         if(resizeDir == nodir){
             move(event->globalX()-m_nMouseClick_X_Coordinate, event->globalY()-m_nMouseClick_Y_Coordinate);
+            ClientSqlite sqlite;
+            sqlite.alterSetting("xPos", to_string(this->geometry().x()).data());
+            sqlite.alterSetting("yPos", to_string(this->geometry().y()).data());
         }else{
             int pbottom = frameGeometry().bottom();
             int ptop = frameGeometry().top();
@@ -117,6 +116,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
             else{
                 pbottom = event->globalY();
             }
+            ClientSqlite sqlite;
+            sqlite.alterSetting("frameHeight", to_string(this->geometry().height()).data());
             setGeometry(QRect(QPoint(frameGeometry().left(), ptop),QPoint(frameGeometry().right(), pbottom)));
         }
     }else {

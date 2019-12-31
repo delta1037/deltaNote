@@ -28,6 +28,9 @@
     <height>16777215</height>
    </size>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>TODO</string>
   </property>
@@ -53,10 +56,13 @@
      <height>16777215</height>
     </size>
    </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,8,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,100,1">
     <property name="spacing">
      <number>0</number>
     </property>

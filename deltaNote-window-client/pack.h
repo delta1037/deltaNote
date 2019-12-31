@@ -19,6 +19,9 @@
 #define G_USERDATA_SETTING_SIZE 32
 #define G_USERDATA_VALUE_SIZE 32
 
+#define REGEDIT_AUTO_START_PATH "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
+#define REGEDIT_KEY "deltaNote"
+
 enum MSG_State {
     LoginPasswdError = 1,
     LoginUserNotExits = 2,

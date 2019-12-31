@@ -1,19 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
 
-extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passwd[G_ARR_SIZE_PASSWD];
-
-extern char g_server[G_ARR_SIZE_SERVER];
-extern int g_port;
-
-extern bool isLogin;
-
-extern QColor fontColor;
-extern QColor iconColor;
-extern int transparentPos;
-extern bool cleanFlag;
-
 login::login(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::login)
@@ -31,11 +18,21 @@ login::login(QWidget *parent) :
     ui->transparent->setValue(transparentPos);
     ui->chooseFontColor->setStyleSheet("background-color:" + fontColor.name()+ ";");
     ui->chooseIconColor->setStyleSheet("background-color:" + iconColor.name()+ ";");
+
+    //setAttribute(Qt::WA_TranslucentBackground, true);
+    //setStyleSheet("background-color:transparent");
+    //setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 login::~login()
 {
     delete ui;
+}
+
+void login::paintEvent(QPaintEvent *e)
+{
+    QPainter p(this);
+    //p.fillRect(rect(), QColor(255, 255, 255, 100));
 }
 
 void login::on_Login_clicked()
@@ -185,4 +182,15 @@ void login::on_clearData_clicked()
     sqlite.cleanDatasetTable();
     sqlite.cleanChangeTable();
     cleanFlag = true;
+}
+
+void login::on_radioButton_clicked(bool checked)
+{
+    QSettings regedit(REGEDIT_AUTO_START_PATH, QSettings::NativeFormat);
+    if(checked) {
+        QString sAppPath = QApplication::applicationFilePath();
+        regedit.setValue(REGEDIT_KEY, QVariant(QDir::toNativeSeparators(sAppPath)));
+    } else {
+        regedit.setValue(REGEDIT_KEY, QVariant());
+    }
 }

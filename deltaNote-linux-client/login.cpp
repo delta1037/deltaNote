@@ -1,19 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
 
-extern char g_username[G_ARR_SIZE_USERNAME];
-extern char g_passwd[G_ARR_SIZE_PASSWD];
-
-extern char g_server[G_ARR_SIZE_SERVER];
-extern int g_port;
-
-extern bool isLogin;
-
-extern QColor fontColor;
-extern QColor iconColor;
-extern int transparentPos;
-extern bool cleanFlag;
-
 login::login(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::login)

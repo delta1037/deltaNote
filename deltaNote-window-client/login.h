@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <QColorDialog>
 #include <QMessageBox>
+#include <QSettings>
+#include <QDir>
+#include <QPainter>
 #include "newuser.h"
 
 namespace Ui {
@@ -33,9 +36,14 @@ private slots:
 
     void on_clearData_clicked();
 
+    void on_radioButton_clicked(bool checked);
+
 private:
     Ui::login *ui;
     int ret;
+
+protected:
+    void paintEvent(QPaintEvent *);
 };
 
 #endif // LOGIN_H

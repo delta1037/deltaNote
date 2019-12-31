@@ -1,14 +1,6 @@
 #include "todolistitem.h"
 #include "ui_todolistitem.h"
 
-extern char g_server[G_ARR_SIZE_SERVER];
-extern int g_port;
-
-extern bool isLogin;
-extern int transparentPos;
-extern QColor fontColor;
-extern QColor iconColor;
-
 ToDoListItem::ToDoListItem(QWidget *parent, const QString &displayData, char *_opTime, char *_createTime, char _check, char *_data) :
     QWidget(parent),
     ui(new Ui::ToDoListItem)

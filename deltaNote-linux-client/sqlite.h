@@ -12,6 +12,8 @@
 
 using namespace std;
 
+extern char dbPATH[PATH_SIZE];
+
 enum SqliteState {
     SqliteRunning=1,
     SqliteStopped=2,
@@ -20,7 +22,7 @@ enum SqliteState {
 
 class ClientSqlite {
 public:
-    ClientSqlite(const char *databaseName = "data/localDB", char *userName = "local");
+    ClientSqlite(const char *databaseName = dbPATH, char *userName = "local");
     ~ClientSqlite();
 
     // clean local and server data

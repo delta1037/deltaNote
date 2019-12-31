@@ -5,12 +5,17 @@
 
 using namespace deltaNote;
 
-#define databaseName "data/deltaNoteServerDB"
 #define SERVER_IP "0.0.0.0"
 #define SERVER_PORT 1234
 
+char databaseName[128];
+char logFilePath[128];
+
 char serverIP[32];
 int serverPort;
+
+FILE *pLogFile;
+time_t  curTime;
 
 enum SystemStatus {
     SystemStopped = 0,
@@ -19,15 +24,26 @@ enum SystemStatus {
 SystemStatus systemStatus;
 
 void * clientHandler(void *pVoid){
+    // detach self make standalone
+    pthread_detach(pthread_self());
+    LOG_INFO("new thread %d detach and running", (int)pthread_self())
+
+    // define ret val
+    int ret;
+
+    // get socket fd
     auto *socket = (SocketServer *)pVoid;
-    int ret = SqliteRunning;
+
+    // receive pack from client
     MSG_PACK recv{};
     char *buf = (char *)&recv;
     socket->recvMsg(buf, sizeof(recv));
 
+    // init db
     ServerSqlite sqlite = ServerSqlite(databaseName, recv.userName, recv.passwd);
 
     if (recv.msgOp == CreateUser) {
+        // create new user
         ret = sqlite.addUser();
 
         MSG_PACK send{};
@@ -36,6 +52,7 @@ void * clientHandler(void *pVoid){
         socket->sendMsg(&send, sizeof(send));
         LOG_INFO("create user send back")
     } else if (recv.msgOp == Login) {
+        // login
         ret = sqlite.loginRes();
 
         MSG_PACK send{};
@@ -43,8 +60,9 @@ void * clientHandler(void *pVoid){
         socket->sendMsg(&send, sizeof(send));
         LOG_INFO("login send back")
     } else if (recv.msgOp == Pull) {
+        // get msg from server
+        // do login
         ret = sqlite.loginRes();
-
         if (SqliteRunning == ret) {
             // select from database
             vector<MSG_OP_PACK> retDataPack;
@@ -72,6 +90,7 @@ void * clientHandler(void *pVoid){
             LOG_INFO("send server data back")
         }
     } else if (recv.msgOp == Push) {
+        // push msg to server
         ret = sqlite.loginRes();
         vector<MSG_OP_PACK> changePush;
         if (SqliteRunning == ret){
@@ -107,6 +126,7 @@ void * clientHandler(void *pVoid){
         socket->sendMsg((void *)&send, sizeof(send));
         LOG_INFO("push to server change success")
     } else if (recv.msgOp == Delete){
+        // clean user's db
         ret = sqlite.loginRes();
         if (SqliteRunning == ret){
             ret = sqlite.cleanSqlite();
@@ -125,40 +145,58 @@ void * clientHandler(void *pVoid){
     }
 
     delete socket;
-    pthread_exit(nullptr);
-    return nullptr;
+    LOG_INFO("thread is exiting");
+    pthread_exit(0);
 }
 void RunAPP(const char *server, int port){
+    LOG_INFO("APP start: server:%s port:%d", server, port)
+
+    // init system status
     systemStatus = SystemRunning;
+    int ret;
 
     // socket init
     SocketServer socket(server, port);
 
     while(true) {
         if (SystemStopped == systemStatus){
+            LOG_INFO("System break and ready stopped")
             break;
         }
         auto *new_socket = new SocketServer(socket);
         new_socket->acceptConn();
 
         pthread_t thread_handles;
-        pthread_create(&thread_handles, nullptr, clientHandler, (void *)new_socket);
-        pthread_detach(thread_handles);
+        ret = pthread_create(&thread_handles, nullptr, clientHandler, (void *)new_socket);
+        if(0 == ret){
+            LOG_INFO("Create new thread success")
+        }else{
+            LOG_ERROR("create new thread fail")
+        }
     }
-
     // clean all
     socket.closeServer();
+
+    LOG_INFO("APP is stopped")
 }
 int main(int argc, char* argv[]){
-    //test();
     if(argc > 1){
-        strcpy(serverIP, argv[1]);
-        serverPort = atoi(argv[2]);
-        printf("Server:%s\nPort:%d\n", serverIP, serverPort);
+        strcpy(databaseName, argv[1]);
+        strcat(databaseName, "/data/deltaNoteServerDB");
+
+        strcpy(logFilePath, argv[1]);
+        strcat(logFilePath, "/log/deltaNote.log");
+
+        strcpy(serverIP, argv[2]);
+        serverPort = atoi(argv[3]);
+        LOG_INFO("log path:%s", logFilePath);
+        LOG_INFO("db path:%s", databaseName);
         RunAPP(serverIP, serverPort);
     }else{
-        printf("Server:%s\nPort:%d\n", SERVER_IP, SERVER_PORT);
-        RunAPP(SERVER_IP, SERVER_PORT);
+        strcpy(databaseName, "deltaNoteServerDB");
+        strcpy(logFilePath, "deltaNote.log");
+        RunAPP("0.0.0.0", 8888);
+        LOG_ERROR("app start fail with wrong para")
     }
     return 0;
 }

@@ -2,6 +2,8 @@
 #define USERINFO_H
 
 #include <QDialog>
+#include <QSettings>
+#include <QDir>
 #include <QColorDialog>
 #include "untils.h"
 
@@ -29,6 +31,8 @@ private slots:
     void on_chooseIconColor_clicked();
 
     void on_clearData_clicked();
+
+    void on_radioButton_clicked(bool checked);
 
 private:
     Ui::userInfo *ui;

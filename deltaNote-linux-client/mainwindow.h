@@ -55,6 +55,9 @@ private:
     QAction *officialAction;
     QAction *settingAction;
     QAction *quitAction;
+protected:
+    virtual void resizeEvent(QResizeEvent *event) override;
+    virtual void moveEvent(QMoveEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

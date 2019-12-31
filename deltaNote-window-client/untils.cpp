@@ -14,6 +14,35 @@ QColor iconColor;
 int transparentPos;
 bool cleanFlag;
 
+int xPos;
+int yPos;
+
+int frameWigth;
+int frameHeight;
+
+bool doLogin(){
+    // connect server
+    SocketClient socketClient = SocketClient(g_server, g_port);
+    if(SocketError == socketClient.getSocketOpState()){
+        return false;
+    }
+
+    // get username and passwd
+    MSG_PACK send{};
+    send.msgOp = Login;
+    strcpy(send.userName, g_username);
+    strcpy(send.passwd, g_passwd);
+    int ret = socketClient.sendMsg(&send, sizeof(send));
+
+    MSG_PACK recv{};
+    ret = socketClient.recvMsg(&recv, sizeof(recv));
+
+    if (recv.msgState == LoginSuccess) {
+        return true;
+    }
+    return false;
+}
+
 void synLocalChange(){
     vector<MSG_OP_PACK> retDataPack;
 
