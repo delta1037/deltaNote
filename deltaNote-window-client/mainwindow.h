@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QSystemTrayIcon>
 #include <QListWidgetItem>
@@ -43,14 +44,15 @@ private slots:
 
     void on_actClear_triggered();
 
-    void on_traySetting_clicked();
-    void on_openOfficialSite_triggered();
+    void openOfficialSite();
 
 private:
     void paintEvent(QPaintEvent *event = nullptr);
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent*event);
+    //void enterEvent(QEvent *);
+    //void leaveEvent(QEvent *);
     void detectEdge();
     int edgeMargin;     //鼠标检测的边缘距离
     int m_nMouseClick_X_Coordinate;

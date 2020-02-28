@@ -3,6 +3,7 @@
 #include <QSvgRenderer>
 #include <QRgb>
 #include <QDebug>
+#include <QFile>
 
 GraphicsColorSvgItem::GraphicsColorSvgItem(QString filePath, QGraphicsItem *parent) :
     QGraphicsSvgItem(parent),

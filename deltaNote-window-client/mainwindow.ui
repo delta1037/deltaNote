@@ -62,6 +62,9 @@
    <property name="mouseTracking">
     <bool>true</bool>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true"/>
    </property>
@@ -222,11 +225,17 @@
       <property name="sizeAdjustPolicy">
        <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
+      <property name="autoScrollMargin">
+       <number>1</number>
+      </property>
       <property name="editTriggers">
-       <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="showDropIndicator" stdset="0">
+       <bool>false</bool>
       </property>
       <property name="dragEnabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="dragDropOverwriteMode">
        <bool>false</bool>

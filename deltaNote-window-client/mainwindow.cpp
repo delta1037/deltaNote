@@ -6,12 +6,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    mainWindow = this; // 记录主窗口
 
     setAttribute(Qt::WA_TranslucentBackground);
     ui->ToDoListWin->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->ToDoListWin->setStyleSheet("background-color:transparent");
     ui->ToDoListWin->setFrameShape(QListWidget::NoFrame);
-
 
     ui->ToDoListWin->clear();
     QWidget *addTag = new ToDoListItem(this);
@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     refreshBackground();
 
     //设置无边框和设置隐藏下部图标
-    setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
+    setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::SubWindow);
 
     setMouseTracking(true); //开启鼠标追踪
     edgeMargin = 3;
@@ -37,10 +37,10 @@ MainWindow::MainWindow(QWidget *parent) :
     trayIcon->show();
 
     officialAction = new QAction("官网", this);
-    connect(officialAction, SIGNAL(triggered()), this, SLOT(on_openOfficialSite_triggered()));
+    connect(officialAction, SIGNAL(triggered()), this, SLOT(openOfficialSite()));
 
     settingAction = new QAction("设置", this);
-    connect(settingAction, SIGNAL(triggered()), this, SLOT(on_traySetting_clicked()));
+    connect(settingAction, SIGNAL(triggered()), this, SLOT(on_setting_clicked()));
 
     quitAction = new QAction("退出程序", this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit())); //关闭应用，qApp对应的是程序全局唯一指针
@@ -67,12 +67,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_openOfficialSite_triggered(){
+void MainWindow::openOfficialSite(){
     QDesktopServices :: openUrl(QUrl(QLatin1String("http://www.delta1037.cn/2019/11/23/deltaNoteSite/")));
-}
-
-void MainWindow::on_traySetting_clicked(){
-    on_setting_clicked();
 }
 
 void MainWindow::detectEdge()
@@ -91,7 +87,18 @@ void MainWindow::detectEdge()
 
     setCursor(tempCursor);                    //重新设置鼠标,主要是改样式
 }
-
+/*
+void MainWindow::enterEvent(QEvent *e){
+    e->ignore();
+    if(!isLocked){
+        setStyleSheet(QString::fromUtf8(".QWidget{border:1px solid white;}"));
+    }
+}
+void MainWindow::leaveEvent(QEvent *e){
+    e->ignore();
+    setStyleSheet(QString::fromUtf8(""));
+}
+*/
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     event->ignore();
@@ -100,6 +107,12 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     }
     if (event->buttons() & Qt::LeftButton){
         if(resizeDir == nodir){
+            if(event->globalX()-m_nMouseClick_X_Coordinate > desktop.width() - 20
+                    || event->globalX()-m_nMouseClick_X_Coordinate <= 0
+                    || event->globalY()-m_nMouseClick_Y_Coordinate > desktop.height() - 50
+                    || event->globalY()-m_nMouseClick_Y_Coordinate <= 0){
+                return;
+            }
             move(event->globalX()-m_nMouseClick_X_Coordinate, event->globalY()-m_nMouseClick_Y_Coordinate);
             ClientSqlite sqlite;
             sqlite.alterSetting("xPos", to_string(this->geometry().x()).data());
@@ -207,17 +220,24 @@ void MainWindow::refreshBackground(){
 
     GraphicsColorSvgItem svg_clear(":/resource/clear.svg");
     ui->clear->setIcon(svg_clear.setColor(iconColor));
+
+    if (!isLocked){
+        setStyleSheet(".QWidget{border:1px solid "+ iconColor.name() +"}");
+    } else {
+        setStyleSheet("");
+    }
 }
 void MainWindow::on_setting_clicked()
 {
     cleanFlag = false;
+
+    login loginWindow(this);
+    loginWindow.exec();
+
     if(isLogin){
-        userInfo userinfo(this);
-        userinfo.exec();
-    }else {
-        login loginWindow(this);
-        loginWindow.exec();
+        on_refresh_clicked();
     }
+
     // refreshBackground
     refreshBackground();
 
@@ -232,7 +252,7 @@ void MainWindow::on_setting_clicked()
             if(CleanSuccess == synMsgToServer(synPack)){
                 cleanFlag = false;
             }else{
-                QMessageBox::warning(this, tr("Error"), tr("server clean data error!"), QMessageBox::Yes);
+                MessagesBox::warn(this, "server clean data error!");
                 LOG_ERROR("clean data error")
             }
         }
@@ -273,7 +293,7 @@ void MainWindow::on_refresh_clicked()
     ClientSqlite sqlite;
     sqlite.cleanDatasetTable();
     ui->ToDoListWin->clear();
-    for(int i = 0; i < datasetRecv.size(); ++i){
+    for(int i = 0; i < (int)datasetRecv.size(); ++i){
         sqlite.insertDatasetItem(datasetRecv[i]);
 
         QString data = QString(QLatin1String(datasetRecv[i].data));
@@ -293,12 +313,17 @@ void MainWindow::on_lock_clicked()
         showNormal();
         GraphicsColorSvgItem svg_lock(":/resource/lock.svg");
         ui->lock->setIcon(svg_lock.setColor(iconColor));
+        setStyleSheet(".QWidget{border:1px solid "+ iconColor.name() +"}");
     } else {
         showNormal();
         GraphicsColorSvgItem svg_lock(":/resource/locked.svg");
         ui->lock->setIcon(svg_lock.setColor(iconColor));
+        setStyleSheet("");
     }
     isLocked = !isLocked;
+    //LOG_INFO("lock:%s", to_string(isLocked).data())
+    ClientSqlite sqlite;
+    sqlite.alterSetting("isLocked", to_string(isLocked).data());
 }
 
 void MainWindow::on_ToDoListWin_customContextMenuRequested(const QPoint &pos)
@@ -339,7 +364,7 @@ void MainWindow::on_actDel_triggered()
         makeDataPack(synPack.msgQueue[0], todo->opTime, todo->createTime, DEL, todo->isCheck, todo->data);
 
         if(PushError == synMsgToServer(synPack)){
-            QMessageBox::warning(this, tr("Warning"), tr("delete the todo error!"), QMessageBox::Yes);
+            MessagesBox::warn(this, "delete the todo error!");
         }
     } else {
         MSG_OP_PACK pack{};
@@ -395,7 +420,7 @@ void MainWindow::on_actClear_triggered()
                 socketClient.recvMsg(&recvPack, sizeof (recvPack));
 
                 if(PushError == recvPack.msgState){
-                    QMessageBox::warning(this, tr("Warning"), tr("delete the todo error!"), QMessageBox::Yes);
+                    MessagesBox::warn(this, "delete the todo error!");
                 } else {
                     ui->ToDoListWin->clear();
                 }

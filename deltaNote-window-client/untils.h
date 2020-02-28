@@ -19,6 +19,7 @@ extern int g_port;
 
 extern bool isLogin;
 extern bool isLocked;
+extern bool isAutoStart;
 
 extern QColor fontColor;
 extern QColor iconColor;
@@ -30,6 +31,9 @@ extern int yPos;
 
 extern int frameWigth;
 extern int frameHeight;
+
+extern QRect desktop;
+extern QWidget *mainWindow;
 
 bool doLogin();
 void makeSocketPack(MSG_PACK &synPack, int msgSize, char msgSeg, char msgOp);

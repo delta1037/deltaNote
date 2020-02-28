@@ -25,39 +25,45 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        choosecolor.cpp \
         graphicscolorsvgitem.cpp \
         login.cpp \
         main.cpp \
         mainwindow.cpp \
         newuser.cpp \
+        notify.cpp \
         socket.cpp \
         sqlite.cpp \
         todolistitem.cpp \
-        untils.cpp \
-        userinfo.cpp
+        untils.cpp
 
 HEADERS += \
+        choosecolor.h \
         graphicscolorsvgitem.h \
         log.h \
         login.h \
         mainwindow.h \
         newuser.h \
+        notify.h \
         pack.h \
         socket.h \
         sqlite.h \
+        stringTable.h \
         todolistitem.h \
         untils.h \
-        userinfo.h \
         sqlite3.h
 
-LIBS += -LD:\deltaNote-window-client\lib -lsqlite3 -lws2_32
+LIBS += -LH:\deltaNote\deltaNote-window-client\lib -lsqlite3 -lws2_32
 
 FORMS += \
+        choosecolor.ui \
         login.ui \
         mainwindow.ui \
         newuser.ui \
-        todolistitem.ui \
-        userinfo.ui
+        notify.ui \
+        todolistitem.ui
+
+UI_DIR = H:\deltaNote\deltaNote-window-client
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

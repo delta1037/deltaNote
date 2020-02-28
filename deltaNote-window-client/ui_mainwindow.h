@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.13.2
+** Created by: Qt User Interface Compiler version 5.14.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -84,12 +84,14 @@ public:
         mainWindow->setMinimumSize(QSize(280, 0));
         mainWindow->setMaximumSize(QSize(280, 16777215));
         mainWindow->setMouseTracking(true);
+        mainWindow->setFocusPolicy(Qt::NoFocus);
         mainWindow->setStyleSheet(QString::fromUtf8(""));
         verticalLayout = new QVBoxLayout(mainWindow);
         verticalLayout->setSpacing(0);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 15, 0, 8);
+        verticalLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+        verticalLayout->setContentsMargins(0, 10, 0, 8);
         settingLayer = new QHBoxLayout();
         settingLayer->setSpacing(0);
         settingLayer->setObjectName(QString::fromUtf8("settingLayer"));
@@ -144,10 +146,10 @@ public:
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(ToDoListWin->sizePolicy().hasHeightForWidth());
         ToDoListWin->setSizePolicy(sizePolicy1);
-        ToDoListWin->setMinimumSize(QSize(280, 280));
-        ToDoListWin->setMaximumSize(QSize(280, 800));
-        ToDoListWin->setSizeIncrement(QSize(0, 520));
-        ToDoListWin->setBaseSize(QSize(0, 520));
+        ToDoListWin->setMinimumSize(QSize(280, 0));
+        ToDoListWin->setMaximumSize(QSize(280, 16777215));
+        ToDoListWin->setSizeIncrement(QSize(0, -1));
+        ToDoListWin->setBaseSize(QSize(0, -1));
         ToDoListWin->setMouseTracking(false);
         ToDoListWin->setContextMenuPolicy(Qt::CustomContextMenu);
         ToDoListWin->setLayoutDirection(Qt::LeftToRight);
@@ -155,8 +157,10 @@ public:
         ToDoListWin->setFrameShape(QFrame::NoFrame);
         ToDoListWin->setFrameShadow(QFrame::Plain);
         ToDoListWin->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-        ToDoListWin->setEditTriggers(QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked);
-        ToDoListWin->setDragEnabled(true);
+        ToDoListWin->setAutoScrollMargin(1);
+        ToDoListWin->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        ToDoListWin->setProperty("showDropIndicator", QVariant(false));
+        ToDoListWin->setDragEnabled(false);
         ToDoListWin->setDragDropOverwriteMode(false);
         ToDoListWin->setDragDropMode(QAbstractItemView::DragDrop);
         ToDoListWin->setDefaultDropAction(Qt::MoveAction);
@@ -218,9 +222,7 @@ public:
 
         verticalLayout->addLayout(opLayer);
 
-        verticalLayout->setStretch(0, 1);
-        verticalLayout->setStretch(1, 20);
-        verticalLayout->setStretch(2, 1);
+        verticalLayout->setStretch(1, 100);
         MainWindow->setCentralWidget(mainWindow);
 
         retranslateUi(MainWindow);

@@ -20,7 +20,7 @@ SocketClient::SocketClient(char *_serverIP, int _serverPort){
     LOG_INFO("start socket client")
 
     WSADATA wsa;
-    WSAStartup(MAKEWORD(2,2),&wsa);
+    WSAStartup(MAKEWORD(2, 2), &wsa);
 
     clientSocketFd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     CHECK(clientSocketFd, SOCKET_ERROR, { LOG_ERROR("Client socket init failed") socketState = SocketError; })

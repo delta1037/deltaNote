@@ -57,6 +57,7 @@ extern int g_port;
 
 extern bool isLogin;
 extern bool isLocked;
+extern bool isAutoStart;
 
 extern QColor fontColor;
 extern QColor iconColor;
@@ -105,7 +106,7 @@ int ClientSqlite::retUserSetting(void *data, int argc, char **argv, char **ColNa
     return 0;
 }
 
-ClientSqlite::ClientSqlite(const char *databaseName, char *userName) {
+ClientSqlite::ClientSqlite(const char *databaseName, const char *userName) {
     strcpy(g_databaseName, databaseName);
     strcpy(g_usersChangeTableName, userName);
     strcat(g_usersChangeTableName, "_changeTable");
@@ -146,9 +147,7 @@ void ClientSqlite::makeDataPack(MSG_OP_PACK &opPack, char *opTimestamp, char *cr
 
 SqliteState ClientSqlite::initSetting(){
     // init setting
-   char value[128];
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
+    char value[128];
     selectSettingValue("username", value);
     if(!_atSettingTable){
         insertSetting("username");
@@ -156,9 +155,6 @@ SqliteState ClientSqlite::initSetting(){
         strcpy(g_username, value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
-    memset(g_passwd, 0, sizeof(g_passwd));
     selectSettingValue("passwd", value);
     if(!_atSettingTable){
         insertSetting("passwd");
@@ -166,13 +162,6 @@ SqliteState ClientSqlite::initSetting(){
         strcpy(g_passwd, value);
     }
 
-    //if(g_username[0] != '\0' && g_passwd[0] != '\0'){
-    //    isLogin = true;
-    //}
-
-
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("server", value);
     if(!_atSettingTable){
         insertSettingValue("server", "39.96.162.190");
@@ -181,7 +170,6 @@ SqliteState ClientSqlite::initSetting(){
         strcpy(g_server, value);
     }
 
-    memset(value, 0, sizeof (value));
     selectSettingValue("port", value);
     if(!_atSettingTable){
         insertSettingValue("port", "8888");
@@ -190,8 +178,6 @@ SqliteState ClientSqlite::initSetting(){
         g_port = atoi(value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("fontColor", value);
     if(!_atSettingTable){
         fontColor = QColor(0, 0, 0);
@@ -200,8 +186,6 @@ SqliteState ClientSqlite::initSetting(){
         fontColor = QColor(value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("iconColor", value);
     if(!_atSettingTable){
         iconColor = QColor(0, 0, 0);
@@ -210,8 +194,6 @@ SqliteState ClientSqlite::initSetting(){
         iconColor = QColor(value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("transparentPos", value);
     if(!_atSettingTable){
         insertSettingValue("transparentPos", "30");
@@ -220,8 +202,6 @@ SqliteState ClientSqlite::initSetting(){
         transparentPos = atoi(value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("xPos", value);
     if(!_atSettingTable){
         insertSettingValue("xPos", "600");
@@ -230,8 +210,6 @@ SqliteState ClientSqlite::initSetting(){
         xPos = atoi(value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("yPos", value);
     if(!_atSettingTable){
         insertSettingValue("yPos", "300");
@@ -240,8 +218,6 @@ SqliteState ClientSqlite::initSetting(){
         yPos = atoi(value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("frameHeight", value);
     if(!_atSettingTable){
         insertSettingValue("frameHeight", "560");
@@ -250,36 +226,45 @@ SqliteState ClientSqlite::initSetting(){
         frameHeight = atoi(value);
     }
 
-    _atSettingTable = false;
-    memset(value, 0, sizeof (value));
     selectSettingValue("isLocked", value);
     if(!_atSettingTable){
         isLocked = false;
         insertSettingValue("isLocked", "0");
+    }else{
+        //LOG_INFO("lock: %s", value)
+        isLocked = bool(value[0] - '0');
     }
-    isLocked = bool(value[0]);
+
+    selectSettingValue("isAutoStart", value);
+    if(!_atSettingTable){
+        isAutoStart = false;
+        insertSettingValue("isAutoStart", "0");
+    }else{
+        //LOG_INFO("start: %s", value)
+        isAutoStart = bool(value[0] - '0');
+    }
 }
 
-SqliteState ClientSqlite::insertSetting(char *settingName){
+SqliteState ClientSqlite::insertSetting(const char settingName[]){
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_INSERT_S, settingName), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_INSERT_S SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     return sqliteState;
 }
-SqliteState ClientSqlite::insertSettingValue(char *settingName, char *value){
+SqliteState ClientSqlite::insertSettingValue(const char settingName[], const char value[]){
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_INSERT_SV, settingName, value), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_INSERT_SV SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     return sqliteState;
 }
-SqliteState ClientSqlite::alterSetting(char *settingName, const char *value){
+SqliteState ClientSqlite::alterSetting(const char settingName[], const char value[]){
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_UPDATE, value, settingName), nullptr, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_UPDATE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
 
     return sqliteState;
 }
 
-SqliteState ClientSqlite::selectSettingValue(char *settingName, char *value){
+SqliteState ClientSqlite::selectSettingValue(const char settingName[], char value[]){
     _atSettingTable = false;
     ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_SETTING_TABLE_SELECT, settingName), retUserSetting, nullptr, &zErrMsg);
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_SETTING_TABLE_SELECT SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})

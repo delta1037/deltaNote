@@ -10,6 +10,7 @@
 #include "log.h"
 #include "sqlite3.h"
 
+extern char dbPATH[PATH_SIZE];
 using namespace std;
 
 enum SqliteState {
@@ -20,7 +21,7 @@ enum SqliteState {
 
 class ClientSqlite {
 public:
-    ClientSqlite(const char *databaseName = "data/localDB", char *userName = "local");
+    ClientSqlite(const char *databaseName = dbPATH, const char userName[] = "local");
     ~ClientSqlite();
 
     // clean local and server data
@@ -43,10 +44,10 @@ public:
 
     // save user setting
     SqliteState initSetting();
-    SqliteState insertSetting(char *settingName);
-    SqliteState insertSettingValue(char *settingName, char *value);
-    SqliteState alterSetting(char *settingName, const char *value);
-    SqliteState selectSettingValue(char *settingName, char *value);
+    SqliteState insertSetting(const char settingName[]);
+    SqliteState insertSettingValue(const char settingName[], const char value[]);
+    SqliteState alterSetting(const char settingName[], const char value[]);
+    SqliteState selectSettingValue(const char settingName[], char value[]);
 
     static void makeDataPack(MSG_OP_PACK &opPack, char *opTimestamp, char *createTimestamp, char op, char isCheck, char *data);
     static int retUserSetting(void *data, int argc, char **argv, char **ColName);

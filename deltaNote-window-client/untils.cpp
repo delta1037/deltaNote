@@ -8,6 +8,7 @@ char g_passwd[G_ARR_SIZE_PASSWD];
 
 bool isLogin;
 bool isLocked;
+bool isAutoStart;
 
 QColor fontColor;
 QColor iconColor;
@@ -20,8 +21,15 @@ int yPos;
 int frameWigth;
 int frameHeight;
 
+QRect desktop;
+QWidget *mainWindow;
+
 bool doLogin(){
+    if(g_username[0] == '\0' || g_passwd[0] == '\0'){
+        return false;
+    }
     // connect server
+    LOG_INFO("server:%s, port:%d", g_server, g_port)
     SocketClient socketClient = SocketClient(g_server, g_port);
     if(SocketError == socketClient.getSocketOpState()){
         return false;
@@ -40,6 +48,8 @@ bool doLogin(){
     if (recv.msgState == LoginSuccess) {
         return true;
     }
+
+
     return false;
 }
 

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'newuser.ui'
 **
-** Created by: Qt User Interface Compiler version 5.13.2
+** Created by: Qt User Interface Compiler version 5.14.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -26,16 +26,16 @@ public:
     QHBoxLayout *horizontalLayout_10;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
-    QPushButton *pushButton;
+    QPushButton *S;
     QLineEdit *server_port;
     QHBoxLayout *horizontalLayout_3;
-    QPushButton *pushButton_2;
+    QPushButton *U;
     QLineEdit *username;
     QHBoxLayout *horizontalLayout_4;
-    QPushButton *pushButton_3;
+    QPushButton *P1;
     QLineEdit *passwd;
     QHBoxLayout *horizontalLayout_5;
-    QPushButton *pushButton_4;
+    QPushButton *P2;
     QLineEdit *repasswd;
     QHBoxLayout *horizontalLayout;
     QPushButton *cancel;
@@ -57,17 +57,17 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(-1, -1, 10, -1);
-        pushButton = new QPushButton(newUser);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setMinimumSize(QSize(32, 32));
-        pushButton->setMaximumSize(QSize(32, 32));
+        S = new QPushButton(newUser);
+        S->setObjectName(QString::fromUtf8("S"));
+        S->setMinimumSize(QSize(32, 32));
+        S->setMaximumSize(QSize(32, 32));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/resource/server.svg"), QSize(), QIcon::Normal, QIcon::Off);
         icon.addFile(QString::fromUtf8(":/resource/server.svg"), QSize(), QIcon::Normal, QIcon::On);
-        pushButton->setIcon(icon);
-        pushButton->setIconSize(QSize(32, 32));
+        S->setIcon(icon);
+        S->setIconSize(QSize(32, 32));
 
-        horizontalLayout_2->addWidget(pushButton);
+        horizontalLayout_2->addWidget(S);
 
         server_port = new QLineEdit(newUser);
         server_port->setObjectName(QString::fromUtf8("server_port"));
@@ -83,16 +83,16 @@ public:
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(-1, -1, 10, -1);
-        pushButton_2 = new QPushButton(newUser);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setMinimumSize(QSize(32, 32));
-        pushButton_2->setMaximumSize(QSize(32, 32));
+        U = new QPushButton(newUser);
+        U->setObjectName(QString::fromUtf8("U"));
+        U->setMinimumSize(QSize(32, 32));
+        U->setMaximumSize(QSize(32, 32));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/resource/user.svg"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_2->setIcon(icon1);
-        pushButton_2->setIconSize(QSize(32, 32));
+        U->setIcon(icon1);
+        U->setIconSize(QSize(32, 32));
 
-        horizontalLayout_3->addWidget(pushButton_2);
+        horizontalLayout_3->addWidget(U);
 
         username = new QLineEdit(newUser);
         username->setObjectName(QString::fromUtf8("username"));
@@ -108,16 +108,16 @@ public:
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         horizontalLayout_4->setContentsMargins(-1, -1, 10, -1);
-        pushButton_3 = new QPushButton(newUser);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-        pushButton_3->setMinimumSize(QSize(32, 32));
-        pushButton_3->setMaximumSize(QSize(32, 32));
+        P1 = new QPushButton(newUser);
+        P1->setObjectName(QString::fromUtf8("P1"));
+        P1->setMinimumSize(QSize(32, 32));
+        P1->setMaximumSize(QSize(32, 32));
         QIcon icon2;
         icon2.addFile(QString::fromUtf8(":/resource/passwd.svg"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_3->setIcon(icon2);
-        pushButton_3->setIconSize(QSize(32, 32));
+        P1->setIcon(icon2);
+        P1->setIconSize(QSize(32, 32));
 
-        horizontalLayout_4->addWidget(pushButton_3);
+        horizontalLayout_4->addWidget(P1);
 
         passwd = new QLineEdit(newUser);
         passwd->setObjectName(QString::fromUtf8("passwd"));
@@ -134,14 +134,14 @@ public:
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         horizontalLayout_5->setContentsMargins(-1, -1, 10, -1);
-        pushButton_4 = new QPushButton(newUser);
-        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
-        pushButton_4->setMinimumSize(QSize(32, 32));
-        pushButton_4->setMaximumSize(QSize(32, 32));
-        pushButton_4->setIcon(icon2);
-        pushButton_4->setIconSize(QSize(32, 32));
+        P2 = new QPushButton(newUser);
+        P2->setObjectName(QString::fromUtf8("P2"));
+        P2->setMinimumSize(QSize(32, 32));
+        P2->setMaximumSize(QSize(32, 32));
+        P2->setIcon(icon2);
+        P2->setIconSize(QSize(32, 32));
 
-        horizontalLayout_5->addWidget(pushButton_4);
+        horizontalLayout_5->addWidget(P2);
 
         repasswd = new QLineEdit(newUser);
         repasswd->setObjectName(QString::fromUtf8("repasswd"));
@@ -162,6 +162,8 @@ public:
         cancel->setObjectName(QString::fromUtf8("cancel"));
         cancel->setMinimumSize(QSize(64, 32));
         cancel->setMaximumSize(QSize(64, 32));
+        cancel->setStyleSheet(QString::fromUtf8("border-radius:10px;\n"
+"background-color: rgb(188, 250, 109);"));
 
         horizontalLayout->addWidget(cancel);
 
@@ -169,6 +171,8 @@ public:
         ok->setObjectName(QString::fromUtf8("ok"));
         ok->setMinimumSize(QSize(64, 32));
         ok->setMaximumSize(QSize(64, 32));
+        ok->setStyleSheet(QString::fromUtf8("border-radius:10px;\n"
+"background-color: rgb(188, 250, 109);"));
 
         horizontalLayout->addWidget(ok);
 
@@ -187,10 +191,10 @@ public:
     void retranslateUi(QDialog *newUser)
     {
         newUser->setWindowTitle(QCoreApplication::translate("newUser", "New User", nullptr));
-        pushButton->setText(QString());
-        pushButton_2->setText(QString());
-        pushButton_3->setText(QString());
-        pushButton_4->setText(QString());
+        S->setText(QString());
+        U->setText(QString());
+        P1->setText(QString());
+        P2->setText(QString());
         cancel->setText(QCoreApplication::translate("newUser", "Cancel", nullptr));
         ok->setText(QCoreApplication::translate("newUser", "OK", nullptr));
     } // retranslateUi

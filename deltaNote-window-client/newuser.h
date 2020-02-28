@@ -4,7 +4,11 @@
 #include <QDialog>
 
 #include "untils.h"
+#include "graphicscolorsvgitem.h"
+#include <QPaintEvent>
+#include <QBitmap>
 
+#include "notify.h"
 
 namespace Ui {
 class newUser;
@@ -26,6 +30,12 @@ private slots:
 private:
     Ui::newUser *ui;
     int ret;
+
+private:
+    void refreshBackground();
+
+protected:
+    void paintEvent(QPaintEvent *);
 };
 
 #endif // NEWUSER_H

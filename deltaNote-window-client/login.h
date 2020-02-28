@@ -2,12 +2,16 @@
 #define LOGIN_H
 
 #include <QDialog>
+#include <QPaintEvent>
+#include <QBitmap>
 #include <QColorDialog>
 #include <QMessageBox>
 #include <QSettings>
 #include <QDir>
 #include <QPainter>
 #include "newuser.h"
+#include "graphicscolorsvgitem.h"
+#include "choosecolor.h"
 
 namespace Ui {
 class login;
@@ -38,10 +42,17 @@ private slots:
 
     void on_radioButton_clicked(bool checked);
 
+    void on_exit_clicked();
+
 private:
     Ui::login *ui;
     int ret;
 
+public:
+    void refreshBackground();
+private:
+    void doLogin();
+    void doLogout();
 protected:
     void paintEvent(QPaintEvent *);
 };

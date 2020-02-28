@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'userinfo.ui'
 **
-** Created by: Qt User Interface Compiler version 5.13.2
+** Created by: Qt User Interface Compiler version 5.14.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -17,6 +17,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QVBoxLayout>
 
@@ -45,9 +46,13 @@ public:
     QHBoxLayout *horizontalLayout_7;
     QLabel *IconColorLabel;
     QPushButton *chooseIconColor;
+    QHBoxLayout *horizontalLayout_10;
     QHBoxLayout *horizontalLayout_8;
     QLabel *clearDataLabel;
     QPushButton *clearData;
+    QHBoxLayout *horizontalLayout_9;
+    QLabel *clearDataLabel_2;
+    QRadioButton *radioButton;
 
     void setupUi(QDialog *userInfo)
     {
@@ -57,9 +62,7 @@ public:
         userInfo->setMinimumSize(QSize(560, 360));
         userInfo->setMaximumSize(QSize(560, 360));
         horizontalLayout_3 = new QHBoxLayout(userInfo);
-        horizontalLayout_3->setSpacing(20);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(20, 30, 20, 30);
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(20);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
@@ -142,6 +145,7 @@ public:
         transparent->setPageStep(25);
         transparent->setValue(100);
         transparent->setSliderPosition(100);
+        transparent->setTracking(false);
         transparent->setOrientation(Qt::Horizontal);
 
         horizontalLayout_5->addWidget(transparent);
@@ -160,8 +164,8 @@ public:
         chooseFontColor->setObjectName(QString::fromUtf8("chooseFontColor"));
         chooseFontColor->setMinimumSize(QSize(150, 40));
         chooseFontColor->setMaximumSize(QSize(150, 16777215));
-        chooseFontColor->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:0.166 rgba(255, 255, 0, 255), stop:0.333 rgba(0, 255, 0, 255), stop:0.5 rgba(0, 255, 255, 255), stop:0.666 rgba(0, 0, 255, 255), stop:0.833 rgba(255, 0, 255, 255), stop:1 rgba(255, 0, 0, 255));\n"
-"border-radius:3px;"));
+        chooseFontColor->setStyleSheet(QString::fromUtf8("border-radius:3px;\n"
+""));
 
         horizontalLayout_6->addWidget(chooseFontColor);
 
@@ -179,14 +183,16 @@ public:
         chooseIconColor->setObjectName(QString::fromUtf8("chooseIconColor"));
         chooseIconColor->setMinimumSize(QSize(150, 40));
         chooseIconColor->setMaximumSize(QSize(150, 16777215));
-        chooseIconColor->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:0.166 rgba(255, 255, 0, 255), stop:0.333 rgba(0, 255, 0, 255), stop:0.5 rgba(0, 255, 255, 255), stop:0.666 rgba(0, 0, 255, 255), stop:0.833 rgba(255, 0, 255, 255), stop:1 rgba(255, 0, 0, 255));\n"
-"border-radius:3px;"));
+        chooseIconColor->setStyleSheet(QString::fromUtf8("border-radius:3px;"));
 
         horizontalLayout_7->addWidget(chooseIconColor);
 
 
         verticalLayout_2->addLayout(horizontalLayout_7);
 
+        horizontalLayout_10 = new QHBoxLayout();
+        horizontalLayout_10->setSpacing(20);
+        horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
         horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
         clearDataLabel = new QLabel(userInfo);
@@ -196,7 +202,7 @@ public:
 
         clearData = new QPushButton(userInfo);
         clearData->setObjectName(QString::fromUtf8("clearData"));
-        clearData->setMinimumSize(QSize(150, 40));
+        clearData->setMinimumSize(QSize(0, 40));
         clearData->setMaximumSize(QSize(150, 16777215));
         clearData->setStyleSheet(QString::fromUtf8("background-color: rgb(239, 41, 41);\n"
 "border-radius:3px;"));
@@ -204,7 +210,27 @@ public:
         horizontalLayout_8->addWidget(clearData);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_8);
+        horizontalLayout_10->addLayout(horizontalLayout_8);
+
+        horizontalLayout_9 = new QHBoxLayout();
+        horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
+        horizontalLayout_9->setContentsMargins(-1, -1, 20, -1);
+        clearDataLabel_2 = new QLabel(userInfo);
+        clearDataLabel_2->setObjectName(QString::fromUtf8("clearDataLabel_2"));
+
+        horizontalLayout_9->addWidget(clearDataLabel_2);
+
+        radioButton = new QRadioButton(userInfo);
+        radioButton->setObjectName(QString::fromUtf8("radioButton"));
+        radioButton->setLayoutDirection(Qt::RightToLeft);
+
+        horizontalLayout_9->addWidget(radioButton);
+
+
+        horizontalLayout_10->addLayout(horizontalLayout_9);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_10);
 
 
         horizontalLayout_3->addLayout(verticalLayout_2);
@@ -229,7 +255,9 @@ public:
         IconColorLabel->setText(QCoreApplication::translate("userInfo", "Icon Color", nullptr));
         chooseIconColor->setText(QString());
         clearDataLabel->setText(QCoreApplication::translate("userInfo", "Clean Data", nullptr));
-        clearData->setText(QCoreApplication::translate("userInfo", "Push", nullptr));
+        clearData->setText(QCoreApplication::translate("userInfo", "Clean", nullptr));
+        clearDataLabel_2->setText(QCoreApplication::translate("userInfo", "AutoStart", nullptr));
+        radioButton->setText(QString());
     } // retranslateUi
 
 };
