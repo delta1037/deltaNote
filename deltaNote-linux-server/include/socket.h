@@ -9,9 +9,7 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include "sqlite.h"
-#include "pack.h"
 
-namespace deltaNote{
 using namespace std;
 
 #define SOCKET_ERROR (-1)
@@ -28,20 +26,44 @@ enum SocketState {
 class SocketServer{
 public:
     static int serverSocketFd;
-    SocketServer(SocketServer &socket);
-    SocketServer(const char *_serverIP, int _serverPort);
+    static bool initSocketServer(const char *serverIP, int serverPort);
+
+    SocketServer();
     ~SocketServer();
 
-    int acceptConn();
-    int sendMsg(void* buf,size_t size);
-    int recvMsg(void* buf,size_t size);
+    bool acceptConn();
+    bool sendMsg(void* buf,size_t size);
+    bool recvMsg(void* buf,size_t size);
     SocketState closeServer();
 
 private:
     SocketState socketState;
     int clientSocketFd;
 };
-}
 
+class ServerConnectControl {
+public:
+    static bool initServerConnect(const char *serverIP, int serverPort);
+
+    ServerConnectControl();
+    ~ServerConnectControl();
+
+    bool acceptNewConnect();
+
+    void processingClientRequest();
+    //
+    bool returnStateMsg(struct SocketMsgPack &returnMsg);
+
+    void loginToServer();
+
+    void createNewUser();
+    void loadFromServer();
+    void uploadToServer();
+private:
+    MSG_State state;
+    struct SocketMsgPack socketMsgPack;
+    SocketServer *socketServer;
+    struct ServerDataControl *dataControl;
+};
 #endif //GENIUSNOTE1_0_SOCKETSERVER_H
 

@@ -14,7 +14,7 @@ add_executable(deltaNote
         include/Log.h
         include/sqlite3.h
         src/deltaNote.cpp
-        include/pack.h src/untils.cpp include/untils.h)
+        include/untils.h)
 
 target_link_libraries(deltaNote ${Sqlite})
 target_link_libraries(deltaNote Threads::Threads)

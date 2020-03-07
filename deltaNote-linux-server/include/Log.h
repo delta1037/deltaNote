@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cerrno>
 #include <ctime>
+#include "untils.h"
 
 #define INFO   " [INFO] "
 #define ERROR  " [ERROR] "
@@ -15,7 +16,7 @@
 #define DEBUG
 
 extern FILE *pLogFile;
-extern char logFilePath[128];
+extern char logFilePath[PATH_SIZE];
 extern time_t  curTime;
 
 #ifdef DEBUG
