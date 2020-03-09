@@ -25,45 +25,51 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        choosecolor.cpp \
-        graphicscolorsvgitem.cpp \
-        login.cpp \
-        main.cpp \
-        mainwindow.cpp \
-        newuser.cpp \
-        notify.cpp \
-        socket.cpp \
-        sqlite.cpp \
-        todolistitem.cpp \
-        untils.cpp
+        source/choosecolor.cpp \
+        source/graphicscolorsvgitem.cpp \
+        source/login.cpp \
+        source/main.cpp \
+        source/mainwindow.cpp \
+        source/newuser.cpp \
+        source/notify.cpp \
+        source/socket.cpp \
+        source/sqlite.cpp \
+        source/todolistcontrol.cpp \
+        source/todolistitem.cpp \
+        source/todolistwidget.cpp \
+        source/untils.cpp
 
 HEADERS += \
-        choosecolor.h \
-        graphicscolorsvgitem.h \
-        log.h \
-        login.h \
-        mainwindow.h \
-        newuser.h \
-        notify.h \
-        pack.h \
-        socket.h \
-        sqlite.h \
-        stringTable.h \
-        todolistitem.h \
-        untils.h \
-        sqlite3.h
+        include/choosecolor.h \
+        include/graphicscolorsvgitem.h \
+        include/log.h \
+        include/login.h \
+        include/mainwindow.h \
+        include/newuser.h \
+        include/notify.h \
+        include/socket.h \
+        include/sqlite.h \
+        include/todolistcontrol.h \
+        include/todolistitem.h \
+        include/todolistwidget.h \
+        include/untils.h \
+        include/sqlite/sqlite3.h
 
 LIBS += -LH:\deltaNote\deltaNote-window-client\lib -lsqlite3 -lws2_32
 
-FORMS += \
-        choosecolor.ui \
-        login.ui \
-        mainwindow.ui \
-        newuser.ui \
-        notify.ui \
-        todolistitem.ui
+INCLUDEPATH += \
+        include/ \
+        ui/
 
-UI_DIR = H:\deltaNote\deltaNote-window-client
+FORMS += \
+        ui/choosecolor.ui       \
+        ui/login.ui             \
+        ui/mainwindow.ui        \
+        ui/newuser.ui           \
+        ui/notify.ui            \
+        ui/todolistitem.ui
+
+UI_DIR = ui/
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

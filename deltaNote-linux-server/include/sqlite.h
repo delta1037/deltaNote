@@ -100,6 +100,8 @@ public:
     // 清除所有操作记录
     void cleanLocalOpList();
 
+    // 更新单条数据记录
+    void addPackToDataset(std::vector<struct SocketMsgOpPack> &userDataset, struct SocketMsgOpPack &pack);
     // 存储单条数据记录
     void saveLocalListSingle(struct SocketMsgOpPack &msg_pack);
     // 存储多条数据记录

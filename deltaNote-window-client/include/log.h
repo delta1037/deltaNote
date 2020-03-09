@@ -1,26 +1,21 @@
-//
-// Created by geniusrabbit on 18-2-27.
-//
-
-#ifndef GENIUSNOTE1_0_LOG_H
-#define GENIUSNOTE1_0_LOG_H
-
+#ifndef LOG_H
+#define LOG_H
 #include <cstdio>
 #include <cerrno>
 #include <ctime>
+#include <string>
+
 #include "untils.h"
 
-#define INFO   " [INFO] "
-#define ERROR  " [ERROR] "
+#define LOG_INFO_TAG   "[INFO]"
+#define LOG_ERROR_TAG  "[ERROR]"
 #define NEW_LINE "\n"
 #define DEBUG
-
 extern FILE *pLogFile;
-extern char logFilePath[PATH_SIZE];
+extern char logPATH[PATH_SIZE];
 extern time_t  curTime;
-
 #ifdef DEBUG
-#define LOG_ERROR(...)  { time(&curTime);                           \
+#define LOG_ERROR(...)  { time_t  curTime;time(&curTime);                           \
                           struct tm *localTime = localtime(&curTime);\
                           char timeValue[100];\
                           sprintf(timeValue, "%d-%d-%d %d:%d:%d", \
@@ -31,19 +26,19 @@ extern time_t  curTime;
                                           localTime->tm_min,\
                                           localTime->tm_sec);\
                           printf("%s", timeValue);                  \
-                          printf(ERROR);                            \
+                          printf(LOG_ERROR_TAG);                            \
                           printf(__VA_ARGS__);                      \
                           printf(NEW_LINE);                         \
                                                                     \
-                          pLogFile = fopen(logFilePath, "a+");      \
+                          pLogFile = fopen(logPATH, "a+");      \
                           fprintf(pLogFile, "%s", timeValue);       \
-                          fprintf(pLogFile, ERROR);                 \
+                          fprintf(pLogFile, LOG_ERROR_TAG);                 \
                           fprintf(pLogFile, __VA_ARGS__);           \
                           fprintf(pLogFile, NEW_LINE);              \
                           fclose(pLogFile);                         \
                         }
 
-#define LOG_INFO(...)   { time(&curTime);                           \
+#define LOG_INFO(...)   { time_t  curTime;time(&curTime);                           \
                           struct tm *localTime = localtime(&curTime);\
                           char timeValue[100];\
                           sprintf(timeValue, "%d-%d-%d %d:%d:%d", \
@@ -54,37 +49,32 @@ extern time_t  curTime;
                                           localTime->tm_min,\
                                           localTime->tm_sec);\
                           printf("%s", timeValue);                  \
-                          printf(INFO);                             \
+                          printf(LOG_INFO_TAG);                             \
                           printf(__VA_ARGS__);                      \
                           printf(NEW_LINE);                         \
                                                                     \
-                          pLogFile = fopen(logFilePath, "a+");      \
+                          pLogFile = fopen(logPATH, "a+");      \
                           fprintf(pLogFile, "%s", timeValue);       \
-                          fprintf(pLogFile, INFO);                  \
+                          fprintf(pLogFile, LOG_INFO_TAG);                  \
                           fprintf(pLogFile, __VA_ARGS__);           \
                           fprintf(pLogFile, NEW_LINE);              \
                           fclose(pLogFile);                         \
                         }
 #else
-#define LOG_ERROR(...)  { fprintf(pLogFile, __TIME__); \
-                          fprintf(pLogFile, " "); \
-                          fprintf(pLogFile, ERROR);\
-                          fprintf(pLogFile, " "); \
-                          fprintf(pLogFile, __VA_ARGS__);   \
-                          fprintf(pLogFile, NEW_LINE); \
+#define LOG_ERROR(...)  { printf(__TIME__); \
+                          printf(LOG_ERROR_TAG);\
+                          printf(__VA_ARGS__);   \
+                          printf(NEW_LINE); \
                         }
 
-#define LOG_INFO(...)   { fprintf(pLogFile, __TIME__); \
-                          fprintf(pLogFile, " "); \
-                          fprintf(pLogFile, INFO); \
-                          fprintf(pLogFile, " "); \
-                          fprintf(pLogFile, __VA_ARGS__);  \
-                          fprintf(pLogFile, NEW_LINE); \
+#define LOG_INFO(...)   { printf(__TIME__); \
+                          printf(LOG_INFO_TAG); \
+                          printf(__VA_ARGS__);  \
+                          printf(NEW_LINE); \
                         }
 #endif
 
 #define CHECK(x,m,handle) if((x) == (m)){\
                            handle;\
                          }
-
-#endif //GENIUSNOTE1_0_LOG_H
+#endif // LOG_H

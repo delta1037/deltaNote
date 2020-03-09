@@ -1,108 +1,27 @@
-//
-// Created by delta on 11/20/19.
-//
+#ifndef SOCKET_H
+#define SOCKET_H
 
-#ifndef DELTANOTE_UNTILS_H
-#define DELTANOTE_UNTILS_H
-
+#include <string>
+#include <unistd.h>
 #include <cstring>
-#include <vector>
+#include <winsock.h>
+
+#include "log.h"
+#include "todolistcontrol.h"
 
 using namespace std;
 
-#define PATH_SIZE 1024
+//#define SOCKET_ERROR (-1)
+#define SOCKET_SUCCESS (0)
 
-#define G_ARR_SIZE_USERNAME 16
-#define G_ARR_SIZE_PASSWD 64
 
-#define G_MAX_MSG_OP_RECV_SIZE 5
-
-#define G_TIMESTAMP_SIZE 32
-#define G_DATA_TRANS_SIZE 128
-
-#define G_DATABASE_NAME_SIZE 1024
-#define G_DATABASE_USERNAME_SIZE 16
-#define G_DATABASE_TABLE_NAME_SIZE 32
-
-#define G_USERDATA_SETTING_SIZE 32
-#define G_USERDATA_VALUE_SIZE 32
-
-enum MSG_State {
-    LoginPasswdError = 1,
-    LoginUserNotExits = 2,
-    LoginSuccess = 3,
-    LoginUndefinedError = 4,
-
-    CreateUserUserExists = 8,
-    CreateUserSuccess = 9,
-    CreateUserUndefinedError = 10,
-
-    ConnectError = 16,
-
-    PushSuccess = 24,
-    PushError = 25,
-
-    CleanSuccess = 26,
-    CleanError = 27,
-
-    OperateNotDefine = 36,
-
-    PullSuccess,
-    PullError,
-
-    UndefinedError
+enum SocketState {
+    SocketRunning = 1,
+    SocketStopped = 2,
+    SocketConnSuccess = 3,
+    SocketKilled = 4,
+    SocketError=0
 };
-
-enum MSG_OP {
-    CreateUser = '0',
-    Login = '1',
-    Pull = '2',
-    Push = '3',
-    Delete = '4',
-    RET = '5',
-    ACK = '6',
-    MSG_OP_NULL
-};
-
-enum MSG_SEG {
-    MSG_FULL = '0',
-    MSG_HALF = '1',
-    MSG_NONE
-};
-
-enum Check {
-    Checked = '1',
-    UnCheck = '0'
-};
-
-enum TODO_OP{
-    TODO_ADD = '1',
-    TODO_DEL = '2',
-    TODO_ALTER = '3',
-    TODO_CHECK = '4',
-    TODO_NULL_OP
-};
-
-struct UserInfo {
-    char userName[G_ARR_SIZE_USERNAME];
-    char passWord[G_ARR_SIZE_PASSWD];
-
-    UserInfo(){
-        memset(userName, 0, G_ARR_SIZE_USERNAME);
-        memset(passWord, 0, G_ARR_SIZE_PASSWD);
-    }
-
-    UserInfo(char *userName, char *passWord){
-        strcpy(this->userName, userName);
-        strcpy(this->passWord, passWord);
-    }
-
-    UserInfo(UserInfo &userInfo){
-        strcpy(this->userName, userInfo.userName);
-        strcpy(this->passWord, userInfo.passWord);
-    }
-};
-
 
 struct SocketMsgOpPack {
     char operation;                                // 数据的操作，插入，修改，删除
@@ -130,6 +49,15 @@ struct SocketMsgOpPack {
         this->isCheck = isCheck;
     }
 
+    SocketMsgOpPack(MsgOpPack &msg){
+        this->operation = msg.operation;
+        this->isCheck = msg.isCheck;
+
+        sprintf(this->createTimestamp, "%lld", msg.createTime);
+        sprintf(this->operateTimestamp, "%lld", msg.operateTime);
+        strcpy(this->data, msg.data.toUtf8().data());
+    }
+
     SocketMsgOpPack(const SocketMsgOpPack &msg){
         strncpy(this->operateTimestamp, msg.operateTimestamp, G_TIMESTAMP_SIZE);
         strncpy(this->createTimestamp, msg.createTimestamp, G_TIMESTAMP_SIZE);
@@ -149,7 +77,7 @@ struct SocketMsgPack {
     char userName[G_ARR_SIZE_USERNAME];
     char passwd[G_ARR_SIZE_PASSWD];
 
-    struct SocketMsgOpPack msgQueue[G_MAX_MSG_OP_RECV_SIZE];
+    SocketMsgOpPack msgQueue[G_MAX_MSG_OP_RECV_SIZE];
 
     SocketMsgPack(){
         this->msgState = UndefinedError;
@@ -167,8 +95,8 @@ struct SocketMsgPack {
         this->msgState = msgState;
         this->msgSize = msgSize;
 
-        strcpy(this->userName, userName);
-        strcpy(this->passwd, passwd);
+        strncpy(this->userName, userName, G_ARR_SIZE_USERNAME);
+        strncpy(this->passwd, passwd, G_ARR_SIZE_PASSWD);
     }
 
     SocketMsgPack(char msgOp,
@@ -177,17 +105,17 @@ struct SocketMsgPack {
                   int msgSize,
                   char userName[],
                   char passwd[],
-                  vector<struct SocketMsgOpPack> &msgQueue){
+                  std::vector<MsgOpPack> &msgQueue){
         this->msgOp = msgOp;
         this->msgSeg = msgSeg;
         this->msgState = msgState;
         this->msgSize = msgSize;
 
-        strcpy(this->userName, userName);
-        strcpy(this->passwd, passwd);
+        strncpy(this->userName, userName, G_ARR_SIZE_USERNAME);
+        strncpy(this->passwd, passwd, G_ARR_SIZE_PASSWD);
 
         for(int i = 0 ; i < this->msgSize; ++i){
-            this->msgQueue[i] = msgQueue[i];
+            this->msgQueue[i] = SocketMsgOpPack(msgQueue[i]);
         }
     }
 
@@ -198,12 +126,64 @@ struct SocketMsgPack {
 
         this->msgSize = msg.msgSize;
 
-        strcpy(this->userName, msg.userName);
-        strcpy(this->passwd, msg.passwd);
+        strncpy(this->userName,  msg.userName, G_ARR_SIZE_USERNAME);
+        strncpy(this->passwd, msg.passwd, G_ARR_SIZE_PASSWD);
 
         for(int i = 0 ; i < this->msgSize; ++i){
             this->msgQueue[i] = msg.msgQueue[i];
         }
     }
 };
-#endif //DELTANOTE_UNTILS_H
+
+class SocketClient{
+public:
+    SocketClient();
+    SocketClient(char *_serverIP, int _serverPort);
+    ~SocketClient();
+
+    bool initSocket();
+
+    bool sendMsg(void *buf,int size);
+    bool recvMsg(void* buf,int size);
+    SocketState closeClient();
+    SocketState getSocketOpState();
+
+private:
+    char serverIP[G_ARR_SIZE_SERVER]{};
+    int serverPort;
+
+    WSADATA wsa;
+
+    int ret;
+    SocketState socketState;
+    SOCKET clientSocketFd;
+};
+
+class ServerConnectControl {
+public:
+    ServerConnectControl();
+    ~ServerConnectControl();
+
+    bool initConnect();
+
+    void parserServerPort(char *serverPort);
+
+    void loginToServer();
+    void createNewUser();
+    bool loadFromServer(std::vector<MsgOpPack> &msgQueue);
+    bool uploadToServer(std::vector<MsgOpPack> &msgQueue);
+
+    MSG_State getState();
+
+private:
+    bool isIPAddr(const char* pStr);
+    int getIPbyDomain(const char* domain, char* ip);
+    void communicateWithServer(MSG_OP op);
+
+private:
+    bool init;
+    SocketClient *socketClient;
+    MSG_State state;
+};
+
+#endif // SOCKET_H

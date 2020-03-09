@@ -6,6 +6,7 @@
 #define GENIUSNOTE1_0_SOCKETSERVER_H
 
 #include <string>
+#include <ctime>
 #include <netdb.h>
 #include <sys/socket.h>
 #include "sqlite.h"

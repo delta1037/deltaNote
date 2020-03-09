@@ -44,6 +44,8 @@ int ServerSqlite::retUserInfo(void *data, int argc, char **argv, char **ColName)
     if(argc == CALLBACK_ARGC_2){
         userAtTableCallBack = true;
         ServerSqlite::userInfoCallBack = UserInfo(argv[0], argv[1]);
+    }else{
+        LOG_ERROR("return user info callback error")
     }
     return 0;
 }
@@ -162,10 +164,11 @@ bool ServerSqlite::loadOpListSingle(struct SocketMsgOpPack &msg_pack){
     CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_SELECT : SQL error : %s\n", zErrMsg) return false;})
 
     // _retChange mem need to free
-    if(ListCallBack.size() > 1){
-        msg_pack = ListCallBack[0];
+    if(ListCallBack.size() > 0){
+        return true;
+    }else{
+        return false;
     }
-    return true;
 }
 
 // 存储操作记录，成功返回true，失败返回false
@@ -223,7 +226,6 @@ bool ServerSqlite::loadList(std::vector<struct SocketMsgOpPack> &msg_pack){
 bool ServerSqlite::loadListSingle(struct SocketMsgOpPack &msg_pack){
     // clean _retChange
     ListCallBack.erase(ListCallBack.begin(), ListCallBack.end());
-
     int ret = sqlite3_exec(db, sqlite3_mprintf(
                                SQL_USER_DATABASE_TABLE_SELECT_ONE,
                                userLocalListTableName,
@@ -288,24 +290,30 @@ ServerDataControl::~ServerDataControl(){
 }
 
 bool ServerDataControl::addNewUser() {
+    serverSqlite->openDataBase();
     char passwd[G_ARR_SIZE_PASSWD];
     if(!serverSqlite->loadUserValue(this->msg_pack.userName, passwd)){
         if(serverSqlite->saveUserValue(msg_pack.userName, msg_pack.passwd)){
             sqliteState = CreateUserSuccess;
+            serverSqlite->closeDataBase();
             return true;
         }else{
             sqliteState = CreateUserUndefinedError;
+            serverSqlite->closeDataBase();
             return false;
         }
     }else{
         sqliteState = CreateUserUserExists;
+        serverSqlite->closeDataBase();
         return false;
     }
 }
 
 bool ServerDataControl::userDoLogin() {
+    serverSqlite->openDataBase();
     char passwd[G_ARR_SIZE_PASSWD];
     if(serverSqlite->loadUserValue(this->msg_pack.userName, passwd)) {
+        serverSqlite->closeDataBase();
         if (strcmp(passwd, this->msg_pack.passwd) == 0) {
             sqliteState = LoginSuccess;
             return true;
@@ -313,6 +321,7 @@ bool ServerDataControl::userDoLogin() {
         sqliteState = LoginPasswdError;
         return false;
     }
+    serverSqlite->closeDataBase();
     sqliteState = LoginUserNotExits;
     return false;
 }
@@ -326,14 +335,54 @@ void ServerDataControl::saveLocalOpListSingle(struct SocketMsgOpPack &msg_op_pac
     serverSqlite->closeDataBase();
 }
 
+void ServerDataControl::addPackToDataset(std::vector<struct SocketMsgOpPack> &userDataset, struct SocketMsgOpPack &pack){
+    if(TODO_ADD == pack.operation){
+        userDataset.push_back(pack);
+        // LOG_INFO("TODO ADD")
+    } else {
+        int dataIndex = 0;
+        for(dataIndex = 0; dataIndex < userDataset.size(); ++dataIndex){
+            if(0 == strcmp(userDataset[dataIndex].createTimestamp, pack.createTimestamp)){
+                if (TODO_DEL == pack.operation) {
+                    userDataset.erase(userDataset.begin() + dataIndex);
+                    // LOG_INFO("TODO DEL")
+                } else if (TODO_ALTER == pack.operation || TODO_CHECK == pack.operation) {
+                    userDataset[dataIndex] = pack;
+                    // LOG_INFO("TODO ALTER || CHECK")
+                } else {
+                    // LOG_ERROR("unknown op")
+                }
+                break;
+            }
+        }
+        if(dataIndex == userDataset.size()){
+            LOG_ERROR("cant find this pack in userDataset")
+        }
+    }
+}
+
 void ServerDataControl::saveLocalOpList(std::vector<struct SocketMsgOpPack> &msg_op_pack_list){
     serverSqlite->openDataBase();
 
+    vector<struct SocketMsgOpPack> userDataset;
+    serverSqlite->loadList(userDataset);
+
     for(auto it : msg_op_pack_list){
         if(!serverSqlite->loadOpListSingle(it)){
+            // LOG_INFO("add new op to oplist")
             serverSqlite->saveOpList(it);
+            addPackToDataset(userDataset, it);
+        }else{
+            LOG_ERROR("muti trans op pack")
         }
     }
+
+    // save user data
+    serverSqlite->cleanList();
+    for(auto it : userDataset){
+        serverSqlite->saveList(it);
+    }
+
     serverSqlite->closeDataBase();
 }
 void ServerDataControl::loadLocalOpList(std::vector<struct SocketMsgOpPack> &msg_op_pack_list){
@@ -402,237 +451,9 @@ void ServerDataControl::cleanLocalList(){
 
 bool ServerDataControl::initControlEnv(const char dbPath[]) {
     strcpy(ServerSqlite::g_databaseName, dbPath);
-    ServerSqlite::initDatabase();
+    return ServerSqlite::initDatabase();
 }
 
 MSG_State ServerDataControl::getSqliteState() {
     return sqliteState;
 }
-
-
-/*
-
-vector<pair<string, string>> ServerSqlite::_resUserPasswd;
-vector<MSG_OP_PACK> ServerSqlite::_retDataSet;
-int ServerSqlite::atChangeTableSize;
-
-int ServerSqlite::retUserDatasetCallback(void *data, int argc, char **argv, char **ColName){
-    if (CALLBACK_ARGC_4 == argc){
-        MSG_OP_PACK pack{};
-        makeDataPack(pack, argv[0], argv[1], NULL_OP, argv[2][0], argv[3]);
-
-        ServerSqlite::_retDataSet.push_back(pack);
-    } else {
-        LOG_ERROR("change table callback error")
-    }
-
-    return 0;
-}
-
-int ServerSqlite::newChangeAtChangeTableCallback(void *data, int argc, char **argv, char **ColName){
-    atChangeTableSize++;
-    return 0;
-}
-
-int ServerSqlite::userPasswdTableCallback(void *data, int argc, char **argv, char **ColName){
-    if (CALLBACK_ARGC_2 == argc) {
-        string username(argv[0]);
-        string passwd(argv[1]);
-        ServerSqlite::_resUserPasswd.emplace_back(username, passwd);
-    } else {
-        LOG_ERROR("user_passwd table callback error")
-    }
-
-    return 0;
-}
-
-ServerSqlite::ServerSqlite(const char *databaseName, char *userName, const char *passwd) {
-    strcpy(g_databaseName, databaseName);
-    strcpy(g_usersChangeTableName, userName);
-    strcat(g_usersChangeTableName, "_changeTable");
-    strcpy(g_usersDatasetTableName, userName);
-    strcat(g_usersDatasetTableName, "_datasetTable");
-
-    strcpy(_userName, userName);
-    _passwd = passwd;
-    sqliteState = SqliteStopped;
-    sqliteOpState = UndefinedError;
-
-    zErrMsg = nullptr;
-    ret = 0;
-    db = nullptr;
-
-    ret = sqlite3_open(g_databaseName, &db);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("OPEN DATABASE SQL error : %s\n", zErrMsg)})
-
-    ret = sqlite3_exec(db, SQL_CREATE_TABLE_USER_PASSWD , nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("CREATE USERS TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; exit(-1);})
-}
-ServerSqlite::~ServerSqlite() {
-    sqlite3_close(db);
-}
-
-SqliteState ServerSqlite::cleanSqlite() {
-    cleanDataSet();
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_CHANGE_TABLE_DELETE, g_usersChangeTableName), nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_CHANGE_TABLE_DELETE : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-    return sqliteState;
-}
-
-SqliteState ServerSqlite::addUser() {
-    // check new user
-    _resUserPasswd.erase(_resUserPasswd.begin(), _resUserPasswd.end());
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_FIND_ONE_USER, _userName), userPasswdTableCallback, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SELECT USER : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-
-    if (_resUserPasswd.empty()) {
-        sqliteState = SqliteRunning;
-        sqliteOpState = CreateUserSuccess;
-    } else if (1 == _resUserPasswd.size()){
-        sqliteState = SqliteStopped;
-        sqliteOpState = CreateUserUserExists;
-        LOG_ERROR("user %s exits", _userName)
-        return sqliteState;
-    } else {
-        sqliteState = SqliteError;
-        sqliteOpState = CreateUserUndefinedError;
-        LOG_ERROR("create user error")
-        return sqliteState;
-    }
-
-    // add new user
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_ADD_NEW_USER, _userName, _passwd.data()), nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("ADD USER SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-
-    // add new user's change table
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_CREATE_USER_CHANGE_TABLE, g_usersChangeTableName) , nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_CREATE_USER_CHANGE_TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-
-    // add new user's dataset table
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_CREATE_USER_DATASET_TABLE, g_usersDatasetTableName) , nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_CREATE_USER_DATASET_TABLE SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-
-    LOG_INFO("create user success")
-
-    return sqliteState;
-}
-
-SqliteState ServerSqlite::loginRes() {
-    _resUserPasswd.erase(_resUserPasswd.begin(), _resUserPasswd.end());
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_FIND_ONE_USER, _userName), userPasswdTableCallback, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("LOGIN SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-
-    if (_resUserPasswd.empty()) {
-        sqliteState = SqliteStopped;
-        sqliteOpState = LoginUserNotExits;
-        LOG_ERROR("user %s not exits", _userName)
-        return sqliteState;
-    } else if (1 == _resUserPasswd.size()){
-        if (_resUserPasswd[0].second != _passwd){
-            sqliteState = SqliteStopped;
-            sqliteOpState = LoginPasswdError;
-            LOG_ERROR("user %s's passwd %s is error", _userName, _resUserPasswd[0].second.data())
-            return sqliteState;
-        }else{
-            sqliteState = SqliteRunning;
-            sqliteOpState = LoginSuccess;
-            LOG_INFO("login success")
-        }
-    } else {
-        sqliteState = SqliteError;
-        sqliteOpState = LoginUndefinedError;
-        LOG_ERROR("login undefined error")
-        return sqliteState;
-    }
-
-    return sqliteState;
-}
-
-SqliteState ServerSqlite::addChange(std::vector<MSG_OP_PACK> &changeArr) {
-    char *op = new char[2]();
-    char *isCheck = new char[2]();
-    vector<MSG_OP_PACK> userDataset;
-    returnDataSet(userDataset);
-
-    for(auto & i : changeArr){
-        if(newChangeAtChangeTable(i)){
-            // change is exists
-            continue;
-        }
-        if(ADD == i.op){
-            MSG_OP_PACK newData{};
-            makeDataPack(newData, i.opTimestamp, i.createTimestamp, i.op, i.isCheck, i.data);
-            userDataset.push_back(newData);
-        } else {
-            for(int dataIndex = 0; dataIndex < userDataset.size(); ++dataIndex){
-                if(0 == strcmp(userDataset[dataIndex].createTimestamp, i.createTimestamp)){
-                    if (DEL == i.op) {
-                        userDataset.erase(userDataset.begin() + dataIndex);
-                    } else if (ALTER == i.op) {
-                        makeDataPack(userDataset[dataIndex], i.opTimestamp, i.createTimestamp, i.op, i.isCheck, i.data);
-                    } else if (CHECK == i.op) {
-                        makeDataPack(userDataset[dataIndex], i.opTimestamp, i.createTimestamp, i.op, i.isCheck, i.data);
-                    } else {
-                        LOG_ERROR("unknown op")
-                    }
-                    break;
-                }
-            }
-        }
-
-        // insert into change table
-        op[0] = i.op;
-        isCheck[0] = i.isCheck;
-        ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_CHANGE_TABLE_INSERT, g_usersChangeTableName, i.opTimestamp, i.createTimestamp, op, isCheck, i.data), nullptr, nullptr, &zErrMsg);
-        CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_CHANGE_TABLE_INSERT SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-    }
-
-    // push new data set to dataset table
-    cleanDataSet();
-    pushDataSet(userDataset);
-    return sqliteState;
-}
-
-bool ServerSqlite::newChangeAtChangeTable(MSG_OP_PACK &msg){
-    atChangeTableSize = 0;
-
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_CHANGE_TABLE_SELECT, g_usersChangeTableName, msg.opTimestamp, msg.createTimestamp), newChangeAtChangeTableCallback, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_CHANGE_TABLE_SELECT : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-
-    return atChangeTableSize >= 1;
-}
-
-SqliteState ServerSqlite::returnDataSet(std::vector<MSG_OP_PACK> &userDataset){
-    // clean _retDataSet
-    _retDataSet.erase(_retDataSet.begin(), _retDataSet.end());
-
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_SELECT, g_usersDatasetTableName), retUserDatasetCallback, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_SELECT : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-
-    // _retDataSet mem need to free
-    for(auto i : _retDataSet){
-        userDataset.push_back(i);
-    }
-
-    return sqliteState;
-}
-
-SqliteState ServerSqlite::cleanDataSet(){
-    ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_DELETE, g_usersDatasetTableName), nullptr, nullptr, &zErrMsg);
-    CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_DELETE : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-    return sqliteState;
-}
-
-SqliteState ServerSqlite::pushDataSet(std::vector<MSG_OP_PACK> &userDataset){
-    char *op = new char[2]();
-    char *isCheck = new char[2]();
-
-    for(auto & i : userDataset){
-        op[0] = i.op;
-        isCheck[0] = i.isCheck;
-        ret = sqlite3_exec(db, sqlite3_mprintf(SQL_USER_DATASET_TABLE_INSERT, g_usersDatasetTableName, i.opTimestamp, i.createTimestamp, isCheck, i.data), nullptr, nullptr, &zErrMsg);
-        CHECK(ret, SQLITE_ERROR, {LOG_ERROR("SQL_USER_DATASET_TABLE_INSERT : SQL error : %s\n", zErrMsg) sqliteState = SqliteError; return sqliteState;})
-    }
-    return sqliteState;
-}
-*/

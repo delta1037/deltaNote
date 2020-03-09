@@ -15,11 +15,10 @@ SocketServer::SocketServer(){
 }
 
 SocketServer::~SocketServer(){
-    if(clientSocketFd != 0) {
+    if(clientSocketFd > 0) {
         LOG_INFO("close client socket")
         close(clientSocketFd);
     }
-    socketState = SocketStopped;
 }
 
 bool SocketServer::initSocketServer(const char *serverIP, int serverPort) {
@@ -69,7 +68,6 @@ SocketState SocketServer::closeServer() {
     return socketState;
 }
 
-
 ServerConnectControl::ServerConnectControl() {
     socketServer= new SocketServer;
 }
@@ -90,22 +88,31 @@ void ServerConnectControl::processingClientRequest() {
     socketServer->recvMsg(&socketMsgPack, sizeof(SocketMsgPack));
 
     state = OperateNotDefine;
-    dataControl = new ServerDataControl(socketMsgPack);
+    if(strlen(socketMsgPack.userName) == 0 || strlen(socketMsgPack.passwd) == 0){
+        LOG_ERROR("null username or null passwd")
+        return;
+    }
 
+    dataControl = new ServerDataControl(socketMsgPack);
     switch (socketMsgPack.msgOp){
         case CreateUser:
+            LOG_INFO("create new user")
             createNewUser();
             break;
         case Login:
+            LOG_INFO("login to server")
             loginToServer();
             break;
         case Pull:
+            LOG_INFO("pull from server")
             loadFromServer();
             break;
         case Push:
+            LOG_INFO("push to server")
             uploadToServer();
             break;
         default:
+            LOG_INFO("unknow op: %s", socketMsgPack.msgOp)
             struct SocketMsgPack returnMsg;
             returnMsg.msgState = MSG_OP_NULL;
             returnStateMsg(returnMsg);
@@ -114,7 +121,7 @@ void ServerConnectControl::processingClientRequest() {
 }
 
 bool ServerConnectControl::returnStateMsg(struct SocketMsgPack &returnMsg) {
-    return socketServer->sendMsg(&returnMsg, sizeof(SocketMsgPack));
+    return socketServer->sendMsg(&returnMsg, sizeof(struct SocketMsgPack));
 }
 
 void ServerConnectControl::loginToServer() {
@@ -143,18 +150,21 @@ void ServerConnectControl::createNewUser() {
 
 void ServerConnectControl::uploadToServer() {
     if(!dataControl->userDoLogin()){
-        LOG_ERROR("user:%s passwd:****** login error", socketMsgPack.userName)
+        LOG_ERROR("user:%s passwd:****** upload user error", socketMsgPack.userName)
         // send ack
         struct SocketMsgPack returnMsg;
+        returnMsg.msgOp = ACK;
         returnMsg.msgState = LoginPasswdError;
         returnStateMsg(returnMsg);
         return;
     }
+
     vector<SocketMsgOpPack> socketMsgOpList;
     struct SocketMsgPack recv_buffer = socketMsgPack;
     do {
         if(recv_buffer.msgOp != Push){
             LOG_ERROR("user:%s upload data format error", socketMsgPack.userName)
+            socketMsgOpList.clear();
             break;
         }
 
@@ -165,6 +175,7 @@ void ServerConnectControl::uploadToServer() {
         if (recv_buffer.msgSeg == MSG_HALF) {
             if(!socketServer->recvMsg(&recv_buffer, sizeof(SocketMsgPack))){
                 LOG_ERROR("user:%s wrong size recv", socketMsgPack.userName)
+                socketMsgOpList.clear();
                 break;
             }
         } else {
@@ -181,14 +192,17 @@ void ServerConnectControl::uploadToServer() {
     returnMsg.msgState = PushSuccess;
     returnMsg.msgOp = ACK;
     returnMsg.msgSize = socketMsgOpList.size();
+    LOG_INFO("push to server success, size : %d", returnMsg.msgSize)
     returnStateMsg(returnMsg);
 }
 
 void ServerConnectControl::loadFromServer() {
     if(!dataControl->userDoLogin()){
-        LOG_ERROR("user:%s passwd:****** login error", socketMsgPack.userName)
+        LOG_ERROR("user:%s passwd:******  load from server error", socketMsgPack.userName)
         struct SocketMsgPack returnMsg;
+        returnMsg.msgOp = ACK;
         returnMsg.msgState = PullError;
+        returnMsg.msgSize = 0;
         returnStateMsg(returnMsg);
         return;
     }
@@ -203,9 +217,8 @@ void ServerConnectControl::loadFromServer() {
             SocketMsgPack msg_buffer(Pull, MSG_HALF, PullSuccess, socketPack.size(), tempArr, tempArr, socketPack);
             socketServer->sendMsg(&msg_buffer, sizeof (SocketMsgPack));
             socketPack.clear();
-        }else{
-            socketPack.push_back(it);
         }
+        socketPack.push_back(it);
     }
     if(!socketPack.empty()){
         SocketMsgPack msg_buffer(Pull, MSG_FULL, PullSuccess, socketPack.size(), tempArr, tempArr, socketPack);
@@ -217,6 +230,7 @@ void ServerConnectControl::loadFromServer() {
     returnMsg.msgState = PullSuccess;
     returnMsg.msgOp = ACK;
     returnMsg.msgSize = socketMsgList.size();
+    LOG_INFO("pull from server success, size : %d", returnMsg.msgSize)
     returnStateMsg(returnMsg);
 }
 

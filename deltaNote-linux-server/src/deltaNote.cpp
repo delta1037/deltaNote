@@ -2,6 +2,7 @@
 #include "../include/sqlite.h"
 #include "../include/Log.h"
 #include <pthread.h>
+#include <vector>
 
 #define SERVER_IP "0.0.0.0"
 #define SERVER_PORT 1234
@@ -21,15 +22,27 @@ enum SystemStatus {
 };
 SystemStatus systemStatus;
 
+using namespace std;
+
 void * clientHandler(void *pVoid){
     // detach self make standalone
     pthread_detach(pthread_self());
     LOG_INFO("new thread %d detach and running", (int)pthread_self())
-
-    auto *serverControl = (ServerConnectControl *)pVoid;
-    serverControl->processingClientRequest();
-
-    LOG_INFO("thread is exiting");
+    if(pVoid != nullptr){
+        ServerConnectControl testClass;
+        auto *serverControl = (ServerConnectControl *)pVoid;
+        if(typeid(testClass) == typeid(*serverControl)){
+            serverControl->processingClientRequest();
+            LOG_INFO("thread is exiting");
+            delete serverControl;
+            serverControl = nullptr;
+        }else{
+            serverControl = nullptr;
+            LOG_ERROR("pointer is error")
+        }
+    }else{
+        LOG_ERROR("multi thread error")
+    }
     pthread_exit(nullptr);
 }
 void RunAPP(const char *server, int port){
@@ -49,6 +62,8 @@ void RunAPP(const char *server, int port){
         return;
     }
 
+    // 存储已建立的连接
+    vector<pair<long long, ServerConnectControl *>> controlQueue;
     while(true) {
         if (SystemStopped == systemStatus){
             LOG_INFO("System break and ready stopped")
@@ -61,6 +76,7 @@ void RunAPP(const char *server, int port){
             continue;
         }
 
+        controlQueue.push_back(make_pair(std::time(nullptr), serverControl));
         pthread_t thread_handles;
         int ret = pthread_create(&thread_handles, nullptr, clientHandler, (void *)serverControl);
         if(0 == ret){
@@ -68,10 +84,15 @@ void RunAPP(const char *server, int port){
         }else{
             LOG_ERROR("create new thread fail")
         }
+
+        for(int i = controlQueue.size() - 1; i >= 0; --i){
+            // 超过六十秒清理掉
+            if(std::time(nullptr) - controlQueue[i].first > 60){
+                controlQueue.erase(controlQueue.begin() + i);
+            }
+        }
     }
     // clean all
-
-
     LOG_INFO("APP is stopped")
 }
 int main(int argc, char* argv[]){
