@@ -47,6 +47,10 @@ bool Socket::acceptConn(){
 }
 
 bool Socket::sendMsg(void *buf, size_t size) {
+    if(clientSocketFd == -1){
+        // 对端关闭连接
+        return false;
+    }
     ssize_t sendSize = send(clientSocketFd, buf, size, 0);
     if(sendSize != size){
         LogCtrl::error("Send Size is error : send:%d != needSend:%d", (int)sendSize, (int)size);
@@ -59,6 +63,12 @@ bool Socket::recvMsg(void *buf, size_t size) {
     ssize_t recvSize=read(clientSocketFd, buf, size);
     if(recvSize != size){
         LogCtrl::error("Receive Size is error: recv:%d != needRecv:%d", (int)recvSize, (int)size);
+        if(recvSize <= 0){
+            //  当接收到的大小小于等于0时判断为对端关闭连接
+            LogCtrl::debug("close client socket");
+            close(clientSocketFd);
+            clientSocketFd = -1;
+        }
         return false;
     }
     return true;

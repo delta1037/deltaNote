@@ -12,7 +12,7 @@ CFLAGS += -std=c++11
 LDFLAGS += -L$(PRJ_TOP_DIR)/lib -lpthread -lsqlite3
 
 #common 
-COMMON_SRC = sqlite.cpp socket.cpp untils.cpp blackList.cpp
+COMMON_SRC = sqlite.cpp socket.cpp untils.cpp blacklist.cpp
 COMMON_INC_DIR = $(INC_DIR)/common/
 
 COMMON_DIR = ./common/

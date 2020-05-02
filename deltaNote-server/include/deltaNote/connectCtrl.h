@@ -4,7 +4,7 @@
 #include <string>
 
 #include "../common/socket.h"
-#include "../common/blackList.h"
+#include "../common/blacklist.h"
 
 #include "sqliteCtrl.h"
 #include "packCtrl.h"

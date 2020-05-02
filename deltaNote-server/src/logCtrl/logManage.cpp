@@ -19,7 +19,7 @@ LogManage::LogManage() {
     outputLogLevel = LOG_DEBUG;
     outputLocation = OUTPUT_FILE;
 
-    logFileName = "local_log.log";
+    logFileName = "default";
 }
 
 void LogManage::logMessage(short level, std::string &message) {
@@ -38,11 +38,12 @@ void LogManage::logMessage(short level, std::string &message) {
 }
 
 void LogManage::logMsgToFile(short level, std::string &message) {
-    std::fstream outFileFd;
-    outFileFd.open(logFileName, std::ios_base::app);
-
     time_t now = time(nullptr);
     char *ct = ctime(&now);
+
+    std::fstream outFileFd;
+    outFileFd.open(getLogFilePath(), std::ios_base::app);
+
     ct[strcspn(ct, "\n")] = '\0';
     outFileFd << ct << " " << getLevelStr(level) << " " << message << std::endl;
 }
@@ -81,4 +82,21 @@ std::string LogManage::getLevelStr(short level) {
         return "[DEBUG]";
     }
     return "[NONE] ";
+}
+
+std::string LogManage::getLogFilePath(){
+    time_t now = time(nullptr);
+    struct tm *nowTime = localtime(&now);
+    return this->logFileName + 
+        "_" + std::to_string(nowTime->tm_year + 1900) + 
+        "-" + getTwoBitsNumber(nowTime->tm_mon + 1) + 
+        "-" + getTwoBitsNumber(nowTime->tm_mday) + ".log";
+}
+
+std::string LogManage::getTwoBitsNumber(int i){
+    if(i < 10){
+        return "0" + std::to_string(i);
+    }else{
+        return std::to_string(i);
+    }
 }

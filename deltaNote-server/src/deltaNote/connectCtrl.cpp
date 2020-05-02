@@ -22,11 +22,14 @@ void ConnectControl::processingClientRequest() {
     if(!socketServer->msgRecv(msgPack)){
         // 记录黑名单
         LogCtrl::error("receive first operation pack error, ip: %s", clientIPAddr);
-        ServerBlackListControl::instance()->addBlackListItem(clientIPAddr);
+        BlacklistControl::instance()->addBlacklistItem(clientIPAddr);
 
         // return ack pack
         msgPack.setMSgType(ACK_STATUS_TYPE);
+        msgPack.setMsgState(UndefinedError);
         socketServer->msgSend(msgPack);
+
+        LogCtrl::debug("first pack error, return");
         return;
     }
 
@@ -72,7 +75,7 @@ void ConnectControl::processingClientRequest() {
 
 void ConnectControl::getUpdateLink(){
     msgPack.setMSgType(UPDATE_GET_LINK_TYPE);
-    if(msgPack.getTodoVersion() != VERSION_ID){
+    if(msgPack.getTodoVersion() < VERSION_ID){
         if(msgPack.getTodoDeviceType() == WINDOW_DEVICE){
             msgPack.setDownloadLink(WINDOW_CLIENT_DOWNLOAD_LINK);
 
@@ -146,7 +149,7 @@ void ConnectControl::uploadToServer() {
     msgPack.setOpQueueAckSize(socketMsgOpList.size());
     socketServer->msgSend(msgPack);
 
-    LogCtrl::info("push to server success, size : %d", msgPack.getOpQueueAckSize());
+    LogCtrl::debug("push to server success, size : %d", msgPack.getOpQueueAckSize());
 }
 
 void ConnectControl::loadFromServer() {
@@ -176,7 +179,7 @@ void ConnectControl::loadFromServer() {
     msgPack.setOpQueueAckSize(socketMsgList.size());
     socketServer->msgSend(msgPack);
 
-    LogCtrl::info("pull from server success, size : %d", msgPack.getOpQueueAckSize());
+    LogCtrl::debug("pull from server success, size : %d", msgPack.getOpQueueAckSize());
 }
 
 std::string ConnectControl::getClientIPAddr() {

@@ -70,7 +70,7 @@ void SqliteControl::addTodoOpRecords(std::vector<struct SocketMsgOpPack> &todoOp
             // 按照操作的顺序对服务端数据库数据进行更新
             addRecordToTodoRecords(todoRecords, it);
         }else{
-            LogCtrl::error("muti trans op pack");
+            LogCtrl::warn("muti trans op pack");
         }
     }
 

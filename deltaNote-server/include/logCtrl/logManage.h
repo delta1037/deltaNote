@@ -43,6 +43,12 @@ private:
     // log to screen
     void logMsgToScreen(short level, std::string &message);
 
+    // get log file name
+    std::string getLogFilePath();
+
+    // get two bits num
+    std::string getTwoBitsNumber(int i);
+
 private:
     static LogManage* _instance;
 

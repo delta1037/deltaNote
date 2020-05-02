@@ -140,7 +140,8 @@ enum DeviceType {
     LINUX_DEVICE,
     ANDROID_DEVICE,
     CHROME_DEVICE,
-    UNKNOWN_DEVICE = 99
+    SERVER_DEVICE = 9,
+    UNKNOWN_DEVICE = 10
 };
 
 enum MsgType {
