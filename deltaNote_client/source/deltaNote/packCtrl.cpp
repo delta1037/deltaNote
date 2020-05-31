@@ -85,7 +85,9 @@ bool DynamicPackCtrl::msgRecv(MsgPack &msgPack) {
     /* check pack version */
     if(msgPack.getMsgType() != UPDATE_GET_LINK_TYPE
             && msgPack.getTodoVersion() != VERSION_ID){
-        LogCtrl::debug("pack control recv pack version check error");
+        LogCtrl::debug("pack control recv pack version check error, %d != %d",
+                       msgPack.getTodoVersion(),
+                       VERSION_ID);
         msgPack.setMsgState(VersionError);
         return false;
     }

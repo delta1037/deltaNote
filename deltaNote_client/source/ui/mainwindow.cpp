@@ -291,6 +291,7 @@ void MainWindow::on_setting_clicked()
 // 刷新内容
 void MainWindow::on_refresh_clicked()
 {
+    // 控制刷新频率
     if(refreshTime != 0 && std::time(nullptr) - refreshTime <= 3){
         return;
     }
@@ -407,12 +408,12 @@ void MainWindow::paintEvent(QPaintEvent *event)
 void MainWindow::refreshBackground(){
     // refresh block
     setStyleSheet("background-color:transparent;");
-#ifdef WINDOW_CLIENT
+
     ui->setting->setStyleSheet("background-color:transparent");
     ui->refresh->setStyleSheet("background-color:transparent");
     ui->lock->setStyleSheet("background-color:transparent");
     ui->history->setStyleSheet("background-color:transparent");
-#endif
+
     // change text color
     for(int index = ui->ToDoListWin->count() - 1; index >= 0; --index){
         QListWidgetItem *item = ui->ToDoListWin->item(index);

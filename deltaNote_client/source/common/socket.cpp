@@ -46,19 +46,64 @@ bool SocketClient::initSocket(char *initServerIP, int initServerPort){
 }
 
 bool SocketClient::sendMsg(void *buf, size_t size) {
-    long sendSize = send(clientSocketFd, (char *)buf, size, 0);
-    if(sendSize != long(size)){
-        LogCtrl::error("Send Size is Error:%d != %d", sendSize, size);
+    // 检查连接
+    if(INVALID_SOCKET == clientSocketFd){
         return false;
+    }
+
+    // 发送数据
+    int needSendSize = size;
+    bool bigDataFlag = false;
+    while(size > 0){
+        long sendSize = send(clientSocketFd, (char *)buf, size, 0);
+        //ssize_t sendSize = write(clientSocketFd, buf, size);
+
+        if(sendSize == -1){
+            LogCtrl::info("client socket closed, stop send");
+            close(clientSocketFd);
+            clientSocketFd = -1;
+            return false;
+        }
+
+        size -= sendSize;
+        buf = (uint8_t *)buf + sendSize;
+
+        if(size != 0 || (size == 0 && bigDataFlag == true)){
+            bigDataFlag = true;
+            LogCtrl::info("big data sending : %d / %d", (int)(needSendSize - size), (int)needSendSize);
+        }
     }
     return true;
 }
 
 bool SocketClient::recvMsg(void *buf, size_t size) {
-    long recvSize = recv(clientSocketFd, (char *)buf, size, 0);
-    if(recvSize != long(size)){
-        LogCtrl::error("recvMsg receive Size is Error: %d != %d", recvSize, size);
+    // 检查连接
+    if(INVALID_SOCKET == clientSocketFd){
         return false;
+    }
+
+    // 接收数据
+    int needRecvSize = size;
+    bool bigDataFlag = false;
+    while(size > 0){
+        long recvSize = recv(clientSocketFd, (char *)buf, size, 0);
+        //ssize_t recvSize=read(clientSocketFd, buf, size);
+
+        if(recvSize == -1){
+            //  当接收到的大小小于等于0时判断为对端关闭连接
+            LogCtrl::info("client socket closed, stop receive");
+            close(clientSocketFd);
+            clientSocketFd = -1;
+            return false;
+        }
+
+        size -= recvSize;
+        buf = (uint8_t *)buf + recvSize;
+        if(size != 0 || (size == 0 && bigDataFlag == true)){
+            bigDataFlag = true;
+            LogCtrl::info("big data receiving : %d / %d", (int)(needRecvSize - size), (int)needRecvSize);
+        }
     }
     return true;
 }
+

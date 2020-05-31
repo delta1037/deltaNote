@@ -33,7 +33,7 @@ using namespace std;
 class SocketClient{
 public:
     SocketClient();
-    ~SocketClient();
+    virtual ~SocketClient();
 
     bool initSocket(char *, int);
     bool sendMsg(void *buf,size_t size);

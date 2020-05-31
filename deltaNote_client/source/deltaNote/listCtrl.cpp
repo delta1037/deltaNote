@@ -51,19 +51,6 @@ void ListControl::todoListModify(MsgOpPack & msg_pack){
         m_undoList[it->second].data = msg_pack.data;
         opListAdd(m_undoList[it->second]);
     }
-    /*
-    for(auto it : (msg_pack.isCheck == Checked ? m_doneList : m_undoList)){
-        if( it.createTime == msg_pack.createTime ){
-            it.operateTime = std::time(nullptr);
-            it.operation = msg_pack.operation;
-            it.isCheck = msg_pack.isCheck;
-            it.operation = TODO_ALTER;
-            it.data = msg_pack.data;
-            opListAdd(it);
-            break;
-        }
-    }
-    */
 }
 
 void ListControl::undoMoveToDone(MsgOpPack & msg_pack){
@@ -74,14 +61,6 @@ void ListControl::undoMoveToDone(MsgOpPack & msg_pack){
 
     auto it = m_undoListMap.find(msg_pack.createTime);
     m_undoList.erase(m_undoList.begin() + it->second);
-    /*
-    for(auto it = m_undoList.begin(); it != m_undoList.end(); ++it){
-        if(it->createTime == msg_pack.createTime){
-            m_undoList.erase(it);
-            break;
-        }
-    }
-    */
     opListAdd(msg_pack);
 }
 
@@ -93,15 +72,6 @@ void ListControl::doneMoveToUndo(MsgOpPack & msg_pack){
 
     auto it = m_doneListMap.find(msg_pack.createTime);
     m_doneList.erase(m_doneList.begin() + it->second);
-    /*
-    for(auto it = m_doneList.begin(); it != m_doneList.end(); ++it){
-        if(it->createTime == msg_pack.createTime){
-            m_doneList.erase(it);
-            break;
-        }
-    }
-    */
-
     opListAdd(msg_pack);
 }
 
@@ -163,6 +133,7 @@ void ListControl::loadFromServer(){
     std::vector<SocketMsgOpPack> loadPacks;
     MsgStatus loadStatus = loadControl.loadFromServer(loadPacks);
     if(loadStatus != PullSuccess){
+        LogCtrl::error("list control load from server fail, status code : %d", (int)loadStatus);
         return;
     }
 
@@ -214,7 +185,7 @@ bool ListControl::uploadToServer(){
         m_opList.clear();
         return true;
     }else{
-        LogCtrl::error("list control upload to server fail, status code : %c", uploadStatus);
+        LogCtrl::error("list control upload to server fail, status code : %d", (int)uploadStatus);
         return false;
     }
 }

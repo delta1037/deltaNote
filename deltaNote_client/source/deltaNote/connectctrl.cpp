@@ -11,14 +11,15 @@ ConnectCtrl::~ConnectCtrl() {
 }
 
 bool ConnectCtrl::initSocket(){
-    inited = socketClient->initSocket(g_server, g_port);
+    if(!inited){
+        inited = socketClient->initSocket(g_server, g_port);
+    }
     return inited;
 }
 
 MsgStatus ConnectCtrl::checkUpdate(string& downloadLink, string& downLoadMessage){
     // init socket
-    isLogin = false;
-    if(!inited && !initSocket()){
+    if(!initSocket()){
         LogCtrl::error("connect control do update, socket init error");
         return ConnectError;
     }
@@ -51,9 +52,10 @@ MsgStatus ConnectCtrl::loginToServer() {
     if(!checkUserIDValied()){
         return UserIDNull;
     }
+
     // init socket
     isLogin = false;
-    if(!inited && !initSocket()){
+    if(!initSocket()){
         LogCtrl::error("connect control do login, socket init error");
         return ConnectError;
     }
@@ -65,12 +67,14 @@ MsgStatus ConnectCtrl::loginToServer() {
 
     // send request
     if(!socketClient->msgSend(msgPack)){
-        return ConnectError;
+        LogCtrl::error("login send request error");
+        return msgPack.getMsgState();;
     }
 
     // get ack
     if(!socketClient->msgRecv(msgPack)){
-        return ConnectError;
+        LogCtrl::error("login get ack error");
+        return msgPack.getMsgState();;
     }
 
     if(msgPack.getMsgState() == LoginSuccess){
@@ -86,8 +90,7 @@ MsgStatus ConnectCtrl::createNewUser() {
         return UserIDNull;
     }
     // init socket
-    if(!inited && !initSocket()){
-        isLogin = false;
+    if(!initSocket()){
         LogCtrl::error("connect control create user, socket init error");
         return ConnectError;
     }
@@ -96,20 +99,18 @@ MsgStatus ConnectCtrl::createNewUser() {
     // send request
     if(!socketClient->msgSend(msgPack)){
         LogCtrl::debug("connect control send request error");
-        return ConnectError;
+        return msgPack.getMsgState();;
     }
 
     // get ack
     if(!socketClient->msgRecv(msgPack)){
         LogCtrl::debug("connect control get ack error");
-        return ConnectError;
+        return msgPack.getMsgState();;
     }
 
     if(msgPack.getMsgState() == CreateUserSuccess){
         LogCtrl::debug("connect control create user success");
         isLogin = true;
-    }else{
-        isLogin = false;
     }
 
     return msgPack.getMsgState();
@@ -119,27 +120,29 @@ MsgStatus ConnectCtrl::uploadToServer(std::vector<struct SocketMsgOpPack>& packs
     if(!checkUserIDValied()){
         return UserIDNull;
     }
+
     // init socket
-    if(!inited && !initSocket()){
+    if(!initSocket()){
         isLogin = false;
         LogCtrl::error("connect control upload to server, socket init error");
         return ConnectError;
     }
 
-    LogCtrl::debug("upload to server");
+    LogCtrl::debug("connect control upload to server");
 
     msgPack.setMSgType(OP_PUSH_TYPE);
     msgPack.setOperationQueue(packs);
 
     // send request
     if(!socketClient->msgSend(msgPack)){
-        return ConnectError;
+        return msgPack.getMsgState();;
     }
 
     // get ack
     if(!socketClient->msgRecv(msgPack)){
-        return ConnectError;
+        return msgPack.getMsgState();;
     }
+
     if(msgPack.getOpQueueAckSize() != packs.size()){
         return PushError;
     }
@@ -152,7 +155,8 @@ MsgStatus ConnectCtrl::loadFromServer(std::vector<struct SocketMsgOpPack>& packs
         return UserIDNull;
     }
     // init socket
-    if(!inited && !initSocket()){
+    if(!initSocket()){
+        isLogin = false;
         LogCtrl::error("connect control load from server, socket init error");
         return ConnectError;
     }
@@ -160,17 +164,17 @@ MsgStatus ConnectCtrl::loadFromServer(std::vector<struct SocketMsgOpPack>& packs
     msgPack.setMSgType(OP_PULL_TYPE);
     // send request
     if(!socketClient->msgSend(msgPack)){
-        return ConnectError;
+        return msgPack.getMsgState();;
     }
 
     // get result
     if(!socketClient->msgRecv(msgPack)){
-        return ConnectError;
+        return msgPack.getMsgState();;
     }
 
     // get ack
     if(!socketClient->msgRecv(msgPack)){
-        return ConnectError;
+        return msgPack.getMsgState();;
     }
 
     // set result
@@ -234,7 +238,7 @@ void ConnectCtrl::parserServerPort(char *serverPort){
 
 bool ConnectCtrl::checkUserIDValied(){
     if(strlen(g_username) == 0 || strlen(g_passwd) == 0){
-        //LogCtrl::warn("username or password is null");
+        LogCtrl::warn("username or password is null");
         return false;
     }
     return true;

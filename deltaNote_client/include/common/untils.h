@@ -142,7 +142,8 @@ enum DeviceType {
     LINUX_DEVICE,
     ANDROID_DEVICE,
     CHROME_DEVICE,
-    UNKNOWN_DEVICE = 99
+    SERVER_DEVICE = 9,
+    UNKNOWN_DEVICE = 10
 };
 
 enum MsgType {
@@ -164,7 +165,7 @@ enum MsgType {
 
 struct MsgHead {
     uint16_t    todoVersion;                        /* 版本 */
-    MsgType    msgType;                             /* 包的类型 */
+    MsgType     msgType;                            /* 包的类型 */
     uint32_t    msgBodySize;                        /* 除去包头需要接收的大小 */
 
     MsgHead(){
@@ -285,10 +286,10 @@ public:
 #define SETTING_VALUE_SIZE 32
 
 /* 定时器 */
-#define TIMER_REFRESH   1000*60*10
-#define TIMER_UPLOAD    1000*60
+#define TIMER_REFRESH   (1000*60*10)
+#define TIMER_UPLOAD    (1000*60*2)
 #ifdef LINUX_CLIENT
-#define TIMER_SAVE_DATA 1000*5
+#define TIMER_SAVE_DATA (1000*5)
 #endif
 /* 客户端版本： 3.1 */
 #define MAIN_VERSION 3
