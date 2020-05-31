@@ -79,8 +79,8 @@ bool BlacklistControl::loadBlacklist(char filePath[], std::unordered_map<std::st
     return true;
 }
 
-bool BlacklistControl::saveTmpBlacklist() {
-    return saveBlacklist(blacklistPathTmp, s_tmpBlacklistMap);
+bool BlacklistControl::saveAllBlacklist() {
+    return saveBlacklist(blacklistPath, s_blacklistMap) && saveBlacklist(blacklistPathTmp, s_tmpBlacklistMap);
 }
 
 bool BlacklistControl::saveBlacklist(char filePath[], std::unordered_map<std::string, int> &blacklistMap) {
@@ -132,7 +132,7 @@ bool BlacklistControl::addBlacklistItem(std::string &ipStr) {
         if(it->second > 5){
             if(!inBlacklist(ipStr)){
                 LogCtrl::info("add new black ip:%s", ipStr.c_str());
-                s_blacklistMap.insert(make_pair(ipStrToNum(ipStr), ipStr));
+                s_blacklistMap.insert(make_pair(ipStr, it->second));
             }
             s_tmpBlacklistMap.erase(s_tmpBlacklistMap.find(ipStr));
         }
@@ -140,6 +140,6 @@ bool BlacklistControl::addBlacklistItem(std::string &ipStr) {
     }
 
     // 永久存储
-    saveTmpBlacklist();
+    saveAllBlacklist();
     return true;
 }

@@ -22,19 +22,19 @@ bool DynamicPackCtrl::msgSend(MsgPack &msgPack) {
         msgPack.setMsgBodySize(MSG_BODY_ACK_SIZE);
 
         // send head
-        LogCtrl::debug("send head addr:%p", &msgPack.getMsgHead());
+        //LogCtrl::debug("send head addr:%p", &msgPack.getMsgHead());
         if(!sendMsg(&msgPack.getMsgHead(), MSG_HEAD_SIZE)){
             LogCtrl::error("pack control send head error");
             return false;
         }
 
         // send ack
-        LogCtrl::debug("send ack addr:%p size : %d", &msgPack.getMsgBodyAck(), sizeof(&msgPack.getMsgBodyAck()));
+        //LogCtrl::debug("send ack addr:%p size : %d", &msgPack.getMsgBodyAck(), sizeof(&msgPack.getMsgBodyAck()));
         if(!sendMsg(&msgPack.getMsgBodyAck(), MSG_BODY_ACK_SIZE)){
             LogCtrl::error("pack control send ack error");
             return false;
         }
-        LogCtrl::debug("send ack addr:%p success", &msgPack.getMsgBodyAck());
+        //LogCtrl::debug("send ack addr:%p success", &msgPack.getMsgBodyAck());
     }else if(msgPack.getMsgType() == OP_PULL_TYPE){
         // set head
         msgPack.setMsgBodySize(MSG_BODY_OP_SIZE + msgPack.getOpQueueSize() * MSG_OP_PACK_SIZE);
@@ -93,8 +93,8 @@ bool DynamicPackCtrl::msgSend(MsgPack &msgPack) {
 }
 
 bool DynamicPackCtrl::msgRecv(MsgPack &msgPack) {
-    LogCtrl::debug("recv head addr:%p", &msgPack.getMsgHead());
-    LogCtrl::debug("recv ack addr:%p", &msgPack.getMsgBodyAck());
+    //LogCtrl::debug("recv head addr:%p", &msgPack.getMsgHead());
+    //LogCtrl::debug("recv ack addr:%p", &msgPack.getMsgBodyAck());
 
     /* get pack head */
     if(!recvMsg(&msgPack.getMsgHead(), MSG_HEAD_SIZE)){

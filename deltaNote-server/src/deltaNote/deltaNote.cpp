@@ -32,9 +32,9 @@ void * clientHandler(void *pVoid){
     LogCtrl::debug("new thread %d detach and running", (int)pthread_self());
 
     if(pVoid != nullptr){
-        ConnectControl testClass;
+        ConnectControl ConnectControlClass;
         auto *serverControl = (ConnectControl *)pVoid;
-        if(typeid(testClass) == typeid(*serverControl)){
+        if(typeid(ConnectControlClass) == typeid(*serverControl)){
             serverControl->processingClientRequest();
             delete serverControl;
             serverControl = nullptr;
@@ -93,6 +93,7 @@ void RunAPP(const char server[], int port){
         }
 
         // 连接成功，开启线程进行处理
+        // 存储到处理队列，之后对超时的连接进行销毁
         controlQueue.emplace_back(std::time(nullptr), serverControl);
         pthread_t thread_handles;
         int ret = pthread_create(&thread_handles, nullptr, clientHandler, (void *)serverControl);
@@ -105,6 +106,9 @@ void RunAPP(const char server[], int port){
             // 超过六十秒清理掉
             if(std::time(nullptr) - controlQueue[i].first > 60){
                 LogCtrl::debug("clean control queue index：%d", i);
+                //if(controlQueue[i].second != nullptr){
+                //    delete controlQueue[i].second;
+                //}
                 controlQueue.erase(controlQueue.begin() + i);
             }
         }
@@ -146,7 +150,7 @@ int main(int argc, char* argv[]){
     std::string logFile(logFilePath);
     LogManage::instance()->setOutput(OUTPUT_FILE);
     LogManage::instance()->setLogFileName(logFile);
-    LogManage::instance()->setLoglevel(LOG_INFO);
+    LogManage::instance()->setLoglevel(LOG_DEBUG);
 
     LogCtrl::info("log pre path:%s", logFilePath);
     LogCtrl::info("database path:%s", dbFilePath);
@@ -155,6 +159,6 @@ int main(int argc, char* argv[]){
 
     RunAPP(serverIP, serverPort);
 
-    BlacklistControl::instance()->saveTmpBlacklist();
+    BlacklistControl::instance()->saveAllBlacklist();
     return 0;
 }

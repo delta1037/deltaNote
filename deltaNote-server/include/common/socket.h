@@ -20,7 +20,7 @@ public:
 
 public:
     Socket();
-    ~Socket();
+    virtual ~Socket();
 
     bool acceptConn();                      // new client connect
     bool sendMsg(void* buf,size_t size);    // send msg to client

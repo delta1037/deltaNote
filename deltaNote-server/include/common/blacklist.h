@@ -36,7 +36,7 @@ public:
     bool loadAllBlacklist();
     bool loadBlacklist(char filePath[], std::unordered_map<std::string, int> &);
 
-    bool saveTmpBlacklist();
+    bool saveAllBlacklist();
     bool saveBlacklist(char filePath[], std::unordered_map<std::string, int> &);
 
     bool inBlacklist(char ipStr[]);

@@ -1,8 +1,10 @@
 #include "../../include/common/socket.h"
 
+#include <cstdio>
+
 int Socket::serverSocketFd;
 Socket::Socket(){
-    clientSocketFd = 0;
+    clientSocketFd = -1;
 }
 
 Socket::~Socket(){
@@ -47,29 +49,91 @@ bool Socket::acceptConn(){
 }
 
 bool Socket::sendMsg(void *buf, size_t size) {
+    // 检查连接
     if(clientSocketFd == -1){
-        // 对端关闭连接
         return false;
     }
-    ssize_t sendSize = send(clientSocketFd, buf, size, 0);
-    if(sendSize != size){
-        LogCtrl::error("Send Size is error : send:%d != needSend:%d", (int)sendSize, (int)size);
-        return false;
+
+    // 发送数据
+    int needSendSize = size;
+    bool bigDataFlag = false;
+    while(size > 0){
+        ssize_t sendSize = write(clientSocketFd, buf, size);
+
+        if(sendSize == -1){
+            LogCtrl::info("client socket closed, stop send");
+            close(clientSocketFd);
+            clientSocketFd = -1;
+            return false;
+        }
+
+        size -= sendSize;
+        buf = (uint8_t *)buf + sendSize;
+
+        if(size != 0 || (size == 0 && bigDataFlag == true)){
+            bigDataFlag = true;
+            LogCtrl::info("big data sending : %d / %d", (int)(needSendSize - size), (int)needSendSize);
+        }
     }
     return true;
 }
 
+char numToHex(int num){
+    if(num >= 0 && num < 10){
+        return num + '0';
+    }else if(num >= 10 && num < 16){
+        return num + 'a' - 10;
+    }else{
+        return '\0';
+    }
+}
+
+void printMemery(char *buf, int size){
+    if(size <= 0){
+        return;
+    }
+
+    char *newbuf = (char*)malloc(2 * size + 1);
+    for(int i = 0; i < size; ++i){
+        int bufNum = (int)(buf[i] & 0xff);
+        newbuf[2*i] = numToHex(bufNum & 0x0f);
+        newbuf[2*i+1] = numToHex((bufNum >> 4) & 0x0f);
+    }
+    newbuf[2*size] = '\0';
+
+    FILE *pLogFile = fopen("pack.log", "a+");
+    fprintf(pLogFile, "%s\n", newbuf);
+    fclose(pLogFile);
+
+    free(newbuf);
+}
+
 bool Socket::recvMsg(void *buf, size_t size) {
-    ssize_t recvSize=read(clientSocketFd, buf, size);
-    if(recvSize != size){
-        LogCtrl::error("Receive Size is error: recv:%d != needRecv:%d", (int)recvSize, (int)size);
-        if(recvSize <= 0){
+    // 检查连接
+    if(clientSocketFd == -1){
+        return false;
+    }
+
+    // 接收数据
+    int needRecvSize = size;
+    bool bigDataFlag = false;
+    while(size > 0){
+        ssize_t recvSize=read(clientSocketFd, buf, size);
+
+        if(recvSize == -1){
             //  当接收到的大小小于等于0时判断为对端关闭连接
-            LogCtrl::debug("close client socket");
+            LogCtrl::info("client socket closed, stop receive");
             close(clientSocketFd);
             clientSocketFd = -1;
+            return false;
         }
-        return false;
+
+        size -= recvSize;
+        buf = (uint8_t *)buf + recvSize;
+        if(size != 0 || (size == 0 && bigDataFlag == true)){
+            bigDataFlag = true;
+            LogCtrl::info("big data receiving : %d / %d", (int)(needRecvSize - size), (int)needRecvSize);
+        }
     }
     return true;
 }
