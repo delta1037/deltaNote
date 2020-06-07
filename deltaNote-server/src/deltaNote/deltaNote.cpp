@@ -49,6 +49,7 @@ void * clientHandler(void *pVoid){
     LogCtrl::debug("thread is exited");
     pthread_exit(nullptr);
 }
+
 void RunAPP(const char server[], int port){
     LogCtrl::info("APP start: server:%s port:%d", server, port);
 
@@ -74,25 +75,22 @@ void RunAPP(const char server[], int port){
             break;
         }
 
-        auto *serverControl = new ConnectControl();
+        auto *serverControl = new ConnectControl(); // 在线程中被销毁
         if(!serverControl->acceptNewConnect()){
-            // 处理异常连接,添加到黑名单中
+            LogCtrl::error("accept new connect error");
+            delete serverControl;
+            continue;
+        }else{
+            // 连接成功，如果在黑名单中，拒绝连接
             std::string blackIP = serverControl->getClientIPAddr();
-            BlacklistControl::instance()->addBlacklistItem(blackIP);
-            LogCtrl::error("accept:%s error, add to blacklist", blackIP.c_str());
-            delete serverControl;
-            continue;
+            if (BlacklistControl::instance()->inBlacklist(blackIP)){
+                LogCtrl::info("ip %s is in black list", blackIP.c_str());
+                delete serverControl;
+                continue;
+            }
         }
 
-        // 如果在黑名单中，拒绝连接
-        std::string blackIP = serverControl->getClientIPAddr();
-        if (BlacklistControl::instance()->inBlacklist(blackIP)){
-            LogCtrl::info("ip %s is in black list", blackIP.c_str());
-            delete serverControl;
-            continue;
-        }
-
-        // 连接成功，开启线程进行处理
+        // 开启线程进行处理
         // 存储到处理队列，之后对超时的连接进行销毁
         controlQueue.emplace_back(std::time(nullptr), serverControl);
         pthread_t thread_handles;
@@ -106,9 +104,6 @@ void RunAPP(const char server[], int port){
             // 超过六十秒清理掉
             if(std::time(nullptr) - controlQueue[i].first > 60){
                 LogCtrl::debug("clean control queue index：%d", i);
-                //if(controlQueue[i].second != nullptr){
-                //    delete controlQueue[i].second;
-                //}
                 controlQueue.erase(controlQueue.begin() + i);
             }
         }
@@ -143,22 +138,26 @@ int main(int argc, char* argv[]){
         serverPort = 8888;
     }
 
+    // 黑名单控制初始化
     BlacklistControl::instance()->setBlacklistPath(blacklistFilePath);
     BlacklistControl::instance()->setTmpBlacklistPath(blacklistTmpFilePath);
     BlacklistControl::instance()->loadAllBlacklist();
 
+    // 日志控制初始化
     std::string logFile(logFilePath);
     LogManage::instance()->setOutput(OUTPUT_FILE);
     LogManage::instance()->setLogFileName(logFile);
-    LogManage::instance()->setLoglevel(LOG_DEBUG);
+    LogManage::instance()->setLoglevel(LOG_INFO);
 
     LogCtrl::info("log pre path:%s", logFilePath);
     LogCtrl::info("database path:%s", dbFilePath);
     LogCtrl::info("blacklist path:%s", blacklistFilePath);
     LogCtrl::info("temp blacklist path:%s", blacklistTmpFilePath);
 
+    // 运行主程序
     RunAPP(serverIP, serverPort);
 
+    // 保存黑名单
     BlacklistControl::instance()->saveAllBlacklist();
     return 0;
 }

@@ -13,12 +13,15 @@ bool ConnectControl::initServerConnect(const char *initServerIP, int initServerP
 }
 
 bool ConnectControl::acceptNewConnect() {
-    return socketServer->acceptConn();
+    bool accResult = socketServer->acceptConn();
+    if(accResult == true){
+        socketServer->getClientIPAddr(this->clientIPAddr);
+    }
+    // 异常连接是没有客户端地址的
+    return accResult;
 }
 
 void ConnectControl::processingClientRequest() {
-    socketServer->getClientIPAddr(this->clientIPAddr);
-
     if(!socketServer->msgRecv(msgPack)){
         // 记录黑名单
         LogCtrl::error("receive first operation pack error, ip: %s", clientIPAddr);

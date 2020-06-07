@@ -44,7 +44,11 @@ bool Socket::acceptConn(){
     struct sockaddr_in clientAddr{};
     socklen_t clientAddrSize = sizeof(clientAddr);
     clientSocketFd = accept(serverSocketFd, (struct sockaddr*)&clientAddr, &clientAddrSize);
-    sprintf(clientIPAddr, "%s", inet_ntoa(clientAddr.sin_addr));
+    
+    if(clientSocketFd > 0){
+        sprintf(clientIPAddr, "%s", inet_ntoa(clientAddr.sin_addr));
+    }
+    
     return clientSocketFd > 0;
 }
 
@@ -120,7 +124,7 @@ bool Socket::recvMsg(void *buf, size_t size) {
     while(size > 0){
         ssize_t recvSize=read(clientSocketFd, buf, size);
 
-        if(recvSize == -1){
+        if(recvSize <= 0 ){
             //  当接收到的大小小于等于0时判断为对端关闭连接
             LogCtrl::info("client socket closed, stop receive");
             close(clientSocketFd);

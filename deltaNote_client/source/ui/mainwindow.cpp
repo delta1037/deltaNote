@@ -138,7 +138,7 @@ void MainWindow::closeEvent(QCloseEvent *e){
     dataCtrl.saveLocalList(listBuffer);
     LogCtrl::info("deltaNote close save all todo - size:%d", listBuffer.size());
 
-    e->ignore();
+    e->accept();
 }
 
 void MainWindow::updateMessage(){

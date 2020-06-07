@@ -62,7 +62,7 @@ void initLogSetting(char logPath[]){
     std::string logFile(logPath);
     LogManage::instance()->setOutput(OUTPUT_FILE);
     LogManage::instance()->setLogFileName(logFile);
-    LogManage::instance()->setLoglevel(LOG_DEBUG);
+    LogManage::instance()->setLoglevel(LOG_INFO);
 }
 
 void initDatabaseSetting(char dbPath[]){

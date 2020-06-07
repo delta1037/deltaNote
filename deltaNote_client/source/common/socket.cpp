@@ -58,7 +58,7 @@ bool SocketClient::sendMsg(void *buf, size_t size) {
         long sendSize = send(clientSocketFd, (char *)buf, size, 0);
         //ssize_t sendSize = write(clientSocketFd, buf, size);
 
-        if(sendSize == -1){
+        if(sendSize <= 0){
             LogCtrl::info("client socket closed, stop send");
             close(clientSocketFd);
             clientSocketFd = -1;
@@ -89,7 +89,7 @@ bool SocketClient::recvMsg(void *buf, size_t size) {
         long recvSize = recv(clientSocketFd, (char *)buf, size, 0);
         //ssize_t recvSize=read(clientSocketFd, buf, size);
 
-        if(recvSize == -1){
+        if(recvSize <= 0){
             //  当接收到的大小小于等于0时判断为对端关闭连接
             LogCtrl::info("client socket closed, stop receive");
             close(clientSocketFd);

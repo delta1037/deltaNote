@@ -128,18 +128,16 @@ bool BlacklistControl::addBlacklistItem(std::string &ipStr) {
     }else{
         //LOG_INFO("black ip time add 1")
         it->second++;
-        /*
-        if(it->second > 5){
+        if(it->second > 10){
             if(!inBlacklist(ipStr)){
                 LogCtrl::info("add new black ip:%s", ipStr.c_str());
                 s_blacklistMap.insert(make_pair(ipStr, it->second));
             }
             s_tmpBlacklistMap.erase(s_tmpBlacklistMap.find(ipStr));
         }
-        */
     }
 
-    // 永久存储
+    // 存储到文件中
     saveAllBlacklist();
     return true;
 }
