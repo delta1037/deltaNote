@@ -28,8 +28,6 @@ typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 #endif
 
-using namespace std;
-
 class SocketClient{
 public:
     SocketClient();

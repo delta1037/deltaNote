@@ -7,6 +7,8 @@
 #include <cstdio>
 #include "common/socket.h"
 
+using namespace std;
+
 #define CALLBACK_ARGC_1 1
 #define CALLBACK_ARGC_2 2
 #define CALLBACK_ARGC_4 4

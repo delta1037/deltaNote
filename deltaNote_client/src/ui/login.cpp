@@ -1,6 +1,8 @@
 #include "ui/login.h"
 #include "ui_login.h"
 
+using namespace std;
+
 login::login(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::login)
@@ -77,7 +79,7 @@ void login::paintEvent(QPaintEvent *event)
     painter.fillRect(this->rect(), QColor(255, 255, 255, 255 - transparentPos));
     //setStyleSheet("background-color:transparent");
     QPalette pal = palette();
-    pal.setColor(QPalette::Background, QColor(255, 255, 255, 255 - transparentPos));
+    pal.setColor(QPalette::Window, QColor(255, 255, 255, 255 - transparentPos));
     setPalette(pal);
 
     // 主界面位置
@@ -145,6 +147,7 @@ void login::refreshBackground(){
     QFont font = ui->server_port->font();
     font.setPixelSize(fontSize-2);
     palette.setColor(QPalette::Text, fontColor);
+    palette.setColor(QPalette::PlaceholderText, fontColor);
     ui->server_port->setPalette(palette);
     ui->server_port->setFont(font);
     ui->username->setPalette(palette);
@@ -162,6 +165,7 @@ void login::refreshBackground(){
     //ui->fontSizeLabel->setFont(font);
     ui->mainWinWidthLabel->setPalette(labelPal);
     //ui->mainWinWidthLabel->setFont(font);
+    ui->auto_start->setPalette(labelPal);
 }
 
 void login::doLogin(){

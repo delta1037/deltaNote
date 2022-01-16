@@ -1,6 +1,8 @@
 #include "deltaNote/connectctrl.h"
 #include "deltaNote/listCtrl.h"
 
+using namespace std;
+
 ConnectCtrl::ConnectCtrl() {
     socketClient = new DynamicPackCtrl();
     inited =false;

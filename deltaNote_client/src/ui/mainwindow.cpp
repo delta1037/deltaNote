@@ -1,6 +1,8 @@
 #include "ui/mainwindow.h"
 #include "ui_mainwindow.h"
 
+using namespace std;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -139,6 +141,7 @@ void MainWindow::closeEvent(QCloseEvent *e){
     LogCtrl::info("deltaNote close save all todo - size:%d", listBuffer.size());
 
     e->accept();
+    qApp->quit();
 }
 
 void MainWindow::updateMessage(){
@@ -276,10 +279,7 @@ void MainWindow::on_setting_clicked()
     login loginWindow(this);
     loginWindow.exec();
 
-    if(isLogin){
-        on_refresh_clicked();
-    }
-
+    on_refresh_clicked();
     // refreshBackground
     QTimer::singleShot(1, this, SLOT(refreshBackground()));
 
@@ -418,6 +418,7 @@ void MainWindow::refreshBackground(){
     for(int index = ui->ToDoListWin->count() - 1; index >= 0; --index){
         QListWidgetItem *item = ui->ToDoListWin->item(index);
         ToDoListItem *todo = qobject_cast<ToDoListItem*>(ui->ToDoListWin->itemWidget(item));
+        //cout << "refresh item" << endl;
         todo->refreshItem();
     }
 
@@ -490,29 +491,29 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     }
     if (event->buttons() & Qt::LeftButton){
         if(resizeDir == nodir){
-            if(event->globalX()-m_nMouseClick_X_Coordinate > desktopRect.width() - 20
-                    || event->globalX()-m_nMouseClick_X_Coordinate <= 0
-                    || event->globalY()-m_nMouseClick_Y_Coordinate > desktopRect.height() - 50
-                    || event->globalY()-m_nMouseClick_Y_Coordinate <= 0){
+            if(event->globalPosition().x()-m_nMouseClick_X_Coordinate > desktopRect.width() - 20
+                    || event->globalPosition().x()-m_nMouseClick_X_Coordinate <= 0
+                    || event->globalPosition().y()-m_nMouseClick_Y_Coordinate > desktopRect.height() - 50
+                    || event->globalPosition().y()-m_nMouseClick_Y_Coordinate <= 0){
                 return;
             }
-            move(event->globalX()-m_nMouseClick_X_Coordinate, event->globalY()-m_nMouseClick_Y_Coordinate);
+            move(event->globalPosition().x()-m_nMouseClick_X_Coordinate, event->globalPosition().y()-m_nMouseClick_Y_Coordinate);
             xPos = this->geometry().x();
             yPos = this->geometry().y();
 #ifdef LINUX_CLIENT
             settingChange = true;
 #endif
         }else{
-            int pbottom = frameGeometry().bottom();
-            int ptop = frameGeometry().top();
+            qreal pbottom = frameGeometry().bottom();
+            qreal ptop = frameGeometry().top();
             if(height() == minimumHeight()){
-                pbottom = max(event->globalY(), ptop);
+                pbottom = max(event->globalPosition().y(), ptop);
             }
             else if(height() == maximumHeight()){
-                pbottom = min(event->globalY(), ptop);
+                pbottom = min(event->globalPosition().y(), ptop);
             }
             else{
-                pbottom = event->globalY();
+                pbottom = event->globalPosition().y();
             }
             frameHeight = this->geometry().height();
             setGeometry(QRect(QPoint(frameGeometry().left(), ptop),QPoint(frameGeometry().right(), pbottom)));
@@ -536,8 +537,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)  //每当按下鼠标左键就记录一下位置
     {
-        m_nMouseClick_X_Coordinate = event->x();
-        m_nMouseClick_Y_Coordinate = event->y();
+        m_nMouseClick_X_Coordinate = event->position().x();
+        m_nMouseClick_Y_Coordinate = event->position().y();
     }
 }
 

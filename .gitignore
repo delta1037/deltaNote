@@ -36,3 +36,5 @@
 *.xml
 *.name
 *.iml
+build-*
+*.user

@@ -10,8 +10,6 @@
 #include "common/untils.h"
 #include "sqlite/sqlite3.h"
 
-using namespace std;
-
 class Sqlite {
 public:
     static bool createTable(const char *, const char *);                  // 初始化设置表

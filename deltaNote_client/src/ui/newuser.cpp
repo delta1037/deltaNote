@@ -86,6 +86,7 @@ void newUser::refreshBackground(){
 
     QPalette palette;
     palette.setColor(QPalette::Text, fontColor);
+    palette.setColor(QPalette::PlaceholderText, fontColor);
     ui->server_port->setPalette(palette);
     ui->username->setPalette(palette);
     ui->passwd->setPalette(palette);

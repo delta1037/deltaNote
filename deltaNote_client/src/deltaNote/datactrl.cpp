@@ -1,5 +1,7 @@
 #include "deltaNote/datactrl.h"
 
+using namespace std;
+
 char DataCtrl::databaseName[DATABASE_NAME_SIZE];
 char DataCtrl::userLocalListTableName[DATABASE_TABLE_NAME_SIZE]{};
 char DataCtrl::userLocalOpListTableName[DATABASE_TABLE_NAME_SIZE]{};

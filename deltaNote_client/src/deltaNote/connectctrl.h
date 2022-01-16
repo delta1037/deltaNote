@@ -13,7 +13,7 @@ public:
     MsgStatus createNewUser();               // processing : client create new user
     MsgStatus loadFromServer(std::vector<struct SocketMsgOpPack>&);              // processing : client load data from server
     MsgStatus uploadToServer(std::vector<struct SocketMsgOpPack>&);              // processing : client upload data to server
-    MsgStatus checkUpdate(string&, string&);
+    MsgStatus checkUpdate(std::string&, std::string&);
     void parserServerPort(char *);
 private:
     bool isIPAddr(const char*);

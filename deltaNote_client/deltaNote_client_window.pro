@@ -4,8 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg xml
-
+QT       += core gui svgwidgets xml core5compat
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
 
 TARGET = deltaNote_client
@@ -25,47 +24,47 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES +=                                      \
-        source/deltaNote/connectctrl.cpp        \
-        source/deltaNote/listCtrl.cpp           \
-        source/log/logCtrl.cpp                  \
-        source/log/logManage.cpp                \
-        source/common/untils.cpp                \
-        source/common/socket.cpp                \
-        source/common/sqlite.cpp                \
-        source/common/graphicscolorsvgitem.cpp  \
-        source/widget/todolistwidget.cpp        \
-        source/ui/checkupdate.cpp               \
-        source/ui/choosecolor.cpp               \
-        source/ui/notify.cpp                    \
-        source/ui/newuser.cpp                   \
-        source/ui/login.cpp                     \
-        source/ui/todolistitem.cpp              \
-        source/ui/mainwindow.cpp                \
-        source/deltaNote/packCtrl.cpp           \
-        source/deltaNote/datactrl.cpp           \
-        source/deltaNote/main.cpp
+        src/deltaNote/connectctrl.cpp        \
+        src/deltaNote/listCtrl.cpp           \
+        src/log/logCtrl.cpp                  \
+        src/log/logManage.cpp                \
+        src/common/untils.cpp                \
+        src/common/socket.cpp                \
+        src/common/sqlite.cpp                \
+        src/common/graphicscolorsvgitem.cpp  \
+        src/widget/todolistwidget.cpp        \
+        src/ui/checkupdate.cpp               \
+        src/ui/choosecolor.cpp               \
+        src/ui/notify.cpp                    \
+        src/ui/newuser.cpp                   \
+        src/ui/login.cpp                     \
+        src/ui/todolistitem.cpp              \
+        src/ui/mainwindow.cpp                \
+        src/deltaNote/packCtrl.cpp           \
+        src/deltaNote/datactrl.cpp           \
+        src/deltaNote/main.cpp
 
 HEADERS +=                                      \
-        include/common/language.h               \
-        include/deltaNote/connectctrl.h         \
-        include/deltaNote/listCtrl.h            \
-        include/log/logCtrl.h                   \
-        include/log/logManage.h                 \
-        include/sqlite/sqlite3.h                \
-        include/common/untils.h                 \
-        include/common/socket.h                 \
-        include/common/sqlite.h                 \
-        include/common/graphicscolorsvgitem.h   \
-        include/widget/todolistwidget.h         \
-        include/ui/checkupdate.h                \
-        include/ui/choosecolor.h                \
-        include/ui/notify.h                     \
-        include/ui/newuser.h                    \
-        include/ui/login.h                      \
-        include/ui/todolistitem.h               \
-        include/ui/mainwindow.h                 \
-        include/deltaNote/packCtrl.h            \
-        include/deltaNote/datactrl.h
+        src/common/language.h               \
+        src/deltaNote/connectctrl.h         \
+        src/deltaNote/listCtrl.h            \
+        src/log/logCtrl.h                   \
+        src/log/logManage.h                 \
+        src/sqlite/sqlite3.h                \
+        src/common/untils.h                 \
+        src/common/socket.h                 \
+        src/common/sqlite.h                 \
+        src/common/graphicscolorsvgitem.h   \
+        src/widget/todolistwidget.h         \
+        src/ui/checkupdate.h                \
+        src/ui/choosecolor.h                \
+        src/ui/notify.h                     \
+        src/ui/newuser.h                    \
+        src/ui/login.h                      \
+        src/ui/todolistitem.h               \
+        src/ui/mainwindow.h                 \
+        src/deltaNote/packCtrl.h            \
+        src/deltaNote/datactrl.h
 
 
 LIBS += -LH:\deltaNote\deltaNote_client\lib -lsqlite3 -lws2_32

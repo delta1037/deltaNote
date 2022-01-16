@@ -7,12 +7,14 @@ ToDoListItem::ToDoListItem(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QPalette palette;
-    palette.setColor(QPalette::Text, fontColor);
-    ui->dataLine->setPalette(palette);
     ui->dataLine->setFont(QFont("黑体",fontSize));
     ui->dataLine->setPlaceholderText("TODO");
     //ui->dataLine->setStyleSheet("QToolTip{background-color:transparent}");
+
+    QPalette palette;
+    palette.setColor(QPalette::Text, fontColor);
+    palette.setColor(QPalette::PlaceholderText, fontColor);
+    ui->dataLine->setPalette(palette);
 
     GraphicsColorSvgItem svg_check(":/resource/unChoose.svg");
     ui->choose->setIcon(svg_check.setColor(iconColor));
@@ -30,13 +32,16 @@ QString ToDoListItem::getTextData(){
 }
 
 void ToDoListItem::refreshItem(){
-    QPalette palette;
-    palette.setColor(QPalette::Text, fontColor);
-    ui->dataLine->setPalette(palette);
     ui->dataLine->setFont(QFont("黑体",fontSize));
     ui->dataLine->setText(itemData.data);
     //std::time_t op_time = itemData.createTime;
     //ui->dataLine->setToolTip(std::asctime(std::localtime(&op_time)));
+
+    QPalette palette;
+    //std::cout << fontColor.Rgb << std::endl;
+    palette.setColor(QPalette::Text, fontColor);
+    palette.setColor(QPalette::PlaceholderText, fontColor);
+    ui->dataLine->setPalette(palette);
 
     if(itemData.isCheck == Checked){
         GraphicsColorSvgItem svg_check(":/resource/choose.svg");
