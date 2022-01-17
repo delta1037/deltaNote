@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES +=                                      \
+SOURCES +=                                   \
         src/deltaNote/connectctrl.cpp        \
         src/deltaNote/listCtrl.cpp           \
         src/log/logCtrl.cpp                  \
@@ -44,7 +44,7 @@ SOURCES +=                                      \
         src/deltaNote/datactrl.cpp           \
         src/deltaNote/main.cpp
 
-HEADERS +=                                      \
+HEADERS +=                                  \
         src/common/language.h               \
         src/deltaNote/connectctrl.h         \
         src/deltaNote/listCtrl.h            \
@@ -67,13 +67,13 @@ HEADERS +=                                      \
         src/deltaNote/datactrl.h
 
 
-LIBS += -LH:\deltaNote\deltaNote_client\lib -lsqlite3 -lws2_32
+LIBS += -LH:\GitHubRepo\deltaNote\deltaNote_client\lib -lsqlite3 -lws2_32
 
 DEFINES += WINDOW_CLIENT
 
 INCLUDEPATH += \
-        include/ \
-        include/widget \
+        src/ \
+        src/widget \
         ui/
 
 FORMS += \
