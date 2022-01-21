@@ -71,7 +71,7 @@ add_executable(note_client_clion
         ui/newuser.ui
         ui/notify.ui
         ui/todolistitem.ui
-        src/sqlite/sql_base.cpp src/sqlite/sql_base.h src/common/inter_var.h src/sqlite/sql_setting.cpp src/sqlite/sql_setting.h src/sqlite/sql_todo_list.cpp src/sqlite/sql_todo_list.h src/common/inter_var.cpp)
+        src/sqlite/sql_base.cpp src/sqlite/sql_base.h src/common/inter_var.h src/sqlite/sql_setting.cpp src/sqlite/sql_setting.h src/sqlite/sql_todo_list.cpp src/sqlite/sql_todo_list.h src/common/inter_var.cpp src/deltaNote/sync_data.cpp src/deltaNote/sync_data.h src/deltaNote/setting_ctrl.cpp src/deltaNote/setting_ctrl.h src/deltaNote/data_ctrl.cpp src/deltaNote/data_ctrl.h)
 
 target_link_libraries(note_client_clion
         Qt::Core

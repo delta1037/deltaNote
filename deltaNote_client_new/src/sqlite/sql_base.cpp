@@ -31,6 +31,10 @@ bool SqlBase::check_status(){
 }
 
 int SqlBase::open_db(ErrorCode &error_code){
+    if(db_handle != nullptr){
+        sqlite_info("database %s already init", db_name.c_str())
+        return RET_SUCCESS;
+    }
     int ret = sqlite3_open(db_name.c_str(), &db_handle);
     if(ret == SQLITE_ERROR){
         sqlite_error("open db %s error: %s", db_name.c_str(), db_err_msg)

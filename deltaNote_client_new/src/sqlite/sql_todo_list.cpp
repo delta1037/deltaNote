@@ -67,9 +67,9 @@ void SqlTodoList::turn_to_struct(const SqlRetList &sql_ret_list, TodoList &ret_s
     }
 }
 
-int SqlTodoList::add(OpType op_type, IsCheck is_check, const std::string &data, ErrorCode &error_code) {
+int SqlTodoList::add(const std::string &create_key, const std::string &edit_key, OpType op_type, IsCheck is_check, const std::string &data, ErrorCode &error_code) {
     // 生成时间戳
-    string time_key = std::to_string(get_time_of_ms());
+    // string time_key = std::to_string(get_time_of_ms());
 
     static const std::string add_sql =
             "INSERT INTO %Q (create_key, edit_key, op_type, is_check, data) "\
@@ -79,8 +79,8 @@ int SqlTodoList::add(OpType op_type, IsCheck is_check, const std::string &data, 
             sqlite3_mprintf(
                     add_sql.c_str(),
                     table_name.c_str(),
-                    time_key.c_str(),
-                    time_key.c_str(),
+                    create_key.c_str(),
+                    edit_key.c_str(),
                     op_type_str(op_type).c_str(),
                     is_check_str(is_check).c_str(),
                     data.c_str()),

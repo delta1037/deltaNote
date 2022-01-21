@@ -21,7 +21,7 @@ public:
     ~SqlTodoList();
 
     // 新增一条数据
-    int add(OpType op_type, IsCheck is_check, const std::string &data, ErrorCode &error_code);
+    int add(const std::string &create_key, const std::string &edit_key, OpType op_type, IsCheck is_check, const std::string &data, ErrorCode &error_code);
     // 删除指定的数据
     int del(const std::string &create_key, const std::string &edit_key, ErrorCode &error_code);
     // 清空表
