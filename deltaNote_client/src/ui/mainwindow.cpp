@@ -1,5 +1,6 @@
 #include "ui/mainwindow.h"
 #include "ui_mainwindow.h"
+#include "log.h"
 
 using namespace std;
 
@@ -325,6 +326,7 @@ void MainWindow::uploadLocalTodo(){
 // 窗口锁定
 void MainWindow::on_lock_clicked()
 {
+    delta_note_error("%s", "show error log test");
     // lock location
     if (isLocked){
         GraphicsColorSvgItem svg_lock(":/resource/lock.svg");

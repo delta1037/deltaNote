@@ -20,6 +20,7 @@
 #include "deltaNote/datactrl.h"
 #include "deltaNote/listCtrl.h"
 
+
 namespace Ui {
 class MainWindow;
 }

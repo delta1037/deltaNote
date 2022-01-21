@@ -48,9 +48,9 @@ HEADERS +=                                  \
         src/common/language.h               \
         src/deltaNote/connectctrl.h         \
         src/deltaNote/listCtrl.h            \
+        src/log/log.h                       \
         src/log/logCtrl.h                   \
         src/log/logManage.h                 \
-        src/sqlite/sqlite3.h                \
         src/common/untils.h                 \
         src/common/socket.h                 \
         src/common/sqlite.h                 \
@@ -66,8 +66,17 @@ HEADERS +=                                  \
         src/deltaNote/packCtrl.h            \
         src/deltaNote/datactrl.h
 
+# delta note include
+INCLUDEPATH += $$PWD/src/log/
 
-LIBS += -LH:\GitHubRepo\deltaNote\deltaNote_client\lib -lsqlite3 -lws2_32
+# 3rdparty
+INCLUDEPATH += $$PWD/3rdparty/sqlite/include
+LIBS += -L$$PWD/3rdparty/sqlite/bin -lsqlite3
+INCLUDEPATH += $$PWD/3rdparty/dlog/include
+LIBS += -L$$PWD/3rdparty/dlog/bin -ldlog
+
+
+LIBS += -lws2_32
 
 DEFINES += WINDOW_CLIENT
 

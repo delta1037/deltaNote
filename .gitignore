@@ -14,7 +14,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -38,3 +37,5 @@
 *.iml
 build-*
 *.user
+**CMakeFiles/
+**cmake-build-release/

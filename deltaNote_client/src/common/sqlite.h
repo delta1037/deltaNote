@@ -8,7 +8,7 @@
 
 #include "log/logCtrl.h"
 #include "common/untils.h"
-#include "sqlite/sqlite3.h"
+#include "sqlite3.h"
 
 class Sqlite {
 public:

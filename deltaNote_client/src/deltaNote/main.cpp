@@ -60,9 +60,9 @@ void initTodoList(){
 
 void initLogSetting(char logPath[]){
     std::string logFile(logPath);
-    LogManage::instance()->setOutput(OUTPUT_FILE);
+    LogManage::instance()->setOutput(OUTPUT_FILE_O);
     LogManage::instance()->setLogFileName(logFile);
-    LogManage::instance()->setLoglevel(LOG_INFO);
+    LogManage::instance()->setLoglevel(LOG_INFO_O);
 }
 
 void initDatabaseSetting(char dbPath[]){
