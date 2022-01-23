@@ -39,3 +39,5 @@ build-*
 *.user
 **CMakeFiles/
 **cmake-build-release/
+bak/
+**cmake-build-debug

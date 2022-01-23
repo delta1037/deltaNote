@@ -1,9 +1,9 @@
-#ifndef LOG_LOG_H
-#define LOG_LOG_H
+#ifndef D_LOG_H
+#define D_LOG_H
 
 #include <string>
 
-#define LOGGER_CONFIG "./log.properties"
+#define LOGGER_CONFIG "log.properties"
 
 // 注册日志模块，返回实例
 #define LOG_MODULE_INIT(module) log_module_init(#module)
@@ -37,4 +37,4 @@ extern void *log_module_init(const char *module_name);
 /* log内容接口 */
 extern void log(void *logger, LOG_LEVEL logLevel, const char *format = "", ... );
 
-#endif //LOG_LOG_H
+#endif //D_LOG_H

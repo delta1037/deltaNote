@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	DISCARDABLE	"H:\\GitHubRepo\\deltaNote\\note_client_clion\\src\\ui\\deltaNote.ico"
+IDI_ICON1	ICON	DISCARDABLE	"deltaNote.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0

@@ -1,0 +1,19 @@
+{
+    "username": "name",
+    "password": "passwd",
+    "todo_list": [
+        {
+            "create_key": "key",
+            "edit_key": "key",
+            "op_type": "add/alt/del",
+            "is_check": "false/true",
+            "data": "data"
+        },{
+            "create_key": "key",
+            "edit_key": "key",
+            "op_type": "add/alt/del",
+            "is_check": "false/true",
+            "data": "data"
+        }
+    ]
+}

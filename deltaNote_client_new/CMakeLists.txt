@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 project(note_client_clion)
-project(sqlite_test)
+# project(sqlite_test)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
@@ -12,24 +12,28 @@ set(CMAKE_PREFIX_PATH "E:/Qt/6.2.2/mingw_64")
 link_directories(
         ${CMAKE_SOURCE_DIR}/3rdparty/sqlite/bin
         ${CMAKE_SOURCE_DIR}/3rdparty/dlog/bin
+        ${CMAKE_SOURCE_DIR}/3rdparty/jsoncpp/bin
+        ${CMAKE_SOURCE_DIR}/3rdparty/base64/bin
 )
 include_directories(
         ${CMAKE_SOURCE_DIR}/3rdparty/sqlite/include
         ${CMAKE_SOURCE_DIR}/3rdparty/dlog/include
+        ${CMAKE_SOURCE_DIR}/3rdparty/httplib/include
+        ${CMAKE_SOURCE_DIR}/3rdparty/jsoncpp/include
+        ${CMAKE_SOURCE_DIR}/3rdparty/base64/include
 )
 
 # project include
 include_directories(
-        src/common
-        src/deltaNote
-        src/ui
-        src/widget
         src/log
+        src/utils
         src/sqlite
-        src
-        ui/
+        src/network
+        src/logic
+        src/ui/main
+        src/ui/setting
+        src/ui/info
 )
-
 
 find_package(Qt6 COMPONENTS
         Core
@@ -43,35 +47,36 @@ find_package(Qt6 COMPONENTS
 
 find_library(sqlite_lib NAMES sqlite PATHS ./3rdparty/sqlite/bin)
 find_library(dlog_lib NAMES dlog PATHS ${CMAKE_SOURCE_DIR}/3rdparty/dlog/bin)
+find_library(jsoncpp_lib NAMES jsoncpp PATHS ${CMAKE_SOURCE_DIR}/3rdparty/jsoncpp/bin)
+find_library(base64_lib NAMES base64 PATHS ${CMAKE_SOURCE_DIR}/3rdparty/base64/bin)
 
 add_executable(note_client_clion
-        src/deltaNote/main.cpp
-        src/deltaNote/packCtrl.cpp
-        src/deltaNote/listCtrl.cpp
-        src/deltaNote/datactrl.cpp
-        src/deltaNote/connectctrl.cpp
-        src/common/graphicscolorsvgitem.cpp
-        src/common/socket.cpp
-        src/sqlite/sqlite.cpp
-        src/common/untils.cpp
-        src/ui/checkupdate.cpp
-        src/ui/choosecolor.cpp
-        src/ui/login.cpp
-        src/ui/mainwindow.cpp
-        src/ui/newuser.cpp
-        src/ui/notify.cpp
-        src/ui/todolistitem.cpp
-        src/widget/todolistwidget.cpp
-        ui/deltaNote_client_resource.rc
-        ui/icon.qrc
-        ui/checkupdate.ui
-        ui/choosecolor.ui
-        ui/login.ui
-        ui/mainwindow.ui
-        ui/newuser.ui
-        ui/notify.ui
-        ui/todolistitem.ui
-        src/sqlite/sql_base.cpp src/sqlite/sql_base.h src/common/inter_var.h src/sqlite/sql_setting.cpp src/sqlite/sql_setting.h src/sqlite/sql_todo_list.cpp src/sqlite/sql_todo_list.h src/common/inter_var.cpp src/deltaNote/sync_data.cpp src/deltaNote/sync_data.h src/deltaNote/setting_ctrl.cpp src/deltaNote/setting_ctrl.h src/deltaNote/data_ctrl.cpp src/deltaNote/data_ctrl.h)
+        src/ui/main/mainwindow.cpp
+        src/ui/main/mainwindow.ui
+        src/ui/main/todolistwidget.cpp
+        src/ui/main/todolistitem.cpp
+        src/ui/main/todolistitem.ui
+        src/ui/setting/login.cpp
+        src/ui/setting/login.ui
+        src/ui/setting/choosecolor.cpp
+        src/ui/setting/choosecolor.ui
+        src/ui/setting/newuser.cpp
+        src/ui/setting/newuser.ui
+        src/ui/info/notify.cpp
+        src/ui/info/notify.ui
+        src/ui/deltaNote_client_resource.rc
+        src/ui/icon.qrc
+        src/utils/svg_color.cpp
+        src/utils/inter_var.cpp
+        src/sqlite/sql_base.cpp
+        src/sqlite/sql_setting.cpp
+        src/sqlite/sql_todo_list.cpp
+        src/network/network.cpp
+        src/logic/setting_ctrl.cpp
+        src/logic/data_ctrl.cpp
+        src/logic/sync_data.cpp
+        src/logic/main.cpp
+        )
 
 target_link_libraries(note_client_clion
         Qt::Core
@@ -84,20 +89,22 @@ target_link_libraries(note_client_clion
         ws2_32
         sqlite3
         dlog
+        jsoncpp
+        base64
         )
 
-add_executable(sqlite_test
-        test/sql_test.cpp
-        src/sqlite/sql_base.cpp
-        src/sqlite/sql_setting.cpp
-        src/sqlite/sql_todo_list.cpp
-        src/common/inter_var.cpp
-        )
-target_link_libraries(sqlite_test
-        Qt::Core
-        sqlite3
-        dlog
-        )
+#add_executable(sqlite_test
+#        test/sql_test.cpp
+#        src/sqlite/sql_base.cpp
+#        src/sqlite/sql_setting.cpp
+#        src/sqlite/sql_todo_list.cpp
+#        src/utils/inter_var.cpp
+#        )
+#target_link_libraries(sqlite_test
+#        Qt::Core
+#        sqlite3
+#        dlog
+#        )
 
 
 ADD_DEFINITIONS(-DWINDOW_CLIENT)

@@ -1,32 +1,32 @@
-#ifndef LOG_H
-#define LOG_H
+#ifndef DELTA_NOTE_LOG_H
+#define DELTA_NOTE_LOG_H
 
 #include "dlog.h"
 
 #define FORMAT_PREFIX "<%s, %s, %d> "
 #define __FILENAME__ ( __builtin_strrchr(__FILE__, '\\') ? __builtin_strrchr(__FILE__, '\\') + 1 : __FILE__ )
-#define delta_note_error(format, ...) log(LOG_MODULE_INIT(delta_note), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define delta_note_info(format, ...)  log(LOG_MODULE_INIT(delta_note), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define delta_note_warn(format, ...) log(LOG_MODULE_INIT(delta_note), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define delta_note_debug(format, ...) log(LOG_MODULE_INIT(delta_note), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_logic_error(format, ...) log(LOG_MODULE_INIT(d_logic), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_logic_info(format, ...)  log(LOG_MODULE_INIT(d_logic), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_logic_warn(format, ...) log(LOG_MODULE_INIT(d_logic), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_logic_debug(format, ...) log(LOG_MODULE_INIT(d_logic), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 
-#define sqlite_error(format, ...) log(LOG_MODULE_INIT(sqlite), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define sqlite_info(format, ...)  log(LOG_MODULE_INIT(sqlite), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define sqlite_warn(format, ...) log(LOG_MODULE_INIT(sqlite), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define sqlite_debug(format, ...) log(LOG_MODULE_INIT(sqlite), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_sql_error(format, ...) log(LOG_MODULE_INIT(d_sql), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_sql_info(format, ...)  log(LOG_MODULE_INIT(d_sql), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_sql_warn(format, ...) log(LOG_MODULE_INIT(d_sql), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_sql_debug(format, ...) log(LOG_MODULE_INIT(d_sql), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 
-#define ui_error(format, ...) log(LOG_MODULE_INIT(ui), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define ui_info(format, ...)  log(LOG_MODULE_INIT(ui), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define ui_debug(format, ...) log(LOG_MODULE_INIT(ui), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_ui_error(format, ...) log(LOG_MODULE_INIT(d_ui), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_ui_info(format, ...)  log(LOG_MODULE_INIT(d_ui), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_ui_debug(format, ...) log(LOG_MODULE_INIT(d_ui), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 
-#define network_error(format, ...) log(LOG_MODULE_INIT(network), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define network_info(format, ...)  log(LOG_MODULE_INIT(network), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define network_warn(format, ...) log(LOG_MODULE_INIT(network), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define network_debug(format, ...) log(LOG_MODULE_INIT(network), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_net_error(format, ...) log(LOG_MODULE_INIT(d_net), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_net_info(format, ...)  log(LOG_MODULE_INIT(d_net), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_net_warn(format, ...) log(LOG_MODULE_INIT(d_net), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_net_debug(format, ...) log(LOG_MODULE_INIT(d_net), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 
-#define test_error(format, ...) log(LOG_MODULE_INIT(test), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define test_info(format, ...)  log(LOG_MODULE_INIT(test), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define test_warn(format, ...) log(LOG_MODULE_INIT(test), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
-#define test_debug(format, ...) log(LOG_MODULE_INIT(test), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_test_error(format, ...) log(LOG_MODULE_INIT(d_test), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_test_info(format, ...)  log(LOG_MODULE_INIT(d_test), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_test_warn(format, ...) log(LOG_MODULE_INIT(d_test), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_test_debug(format, ...) log(LOG_MODULE_INIT(d_test), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 
-#endif
+#endif //DELTA_NOTE_LOG_H

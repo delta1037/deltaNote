@@ -12,7 +12,7 @@ SqlSetting::SqlSetting(const std::string &db_name, const std::string &table_name
 
     this->sql_base = new SqlBase(this->db_name);
     if(RET_SUCCESS != init_table()){
-        sqlite_error("%s", "init table error!!");
+        d_sql_error("%s", "init table error!!");
     }
 }
 
@@ -24,17 +24,17 @@ int SqlSetting::init_table() {
     static const std::string create_table_sql =
             "CREATE TABLE IF NOT EXISTS %Q (name VARCHAR(64) PRIMARY Key, value VARCHAR(128))";
     SqlRetList sql_ret_list;
-    ErrorCode error_code = NO_ERROR;
+    ErrorCode error_code = CODE_NO_ERROR;
     int ret = sql_base->exec(
             sqlite3_mprintf(create_table_sql.c_str(), table_name.c_str()),
             sql_ret_list,
             error_code
     );
     if(ret == SQLITE_ERROR){
-        sqlite_error("SqlSetting %s exec %s error", db_name.c_str(), create_table_sql.c_str())
+        d_sql_error("SqlSetting %s exec %s error", db_name.c_str(), create_table_sql.c_str())
         return RET_FAILED;
     }else{
-        sqlite_debug("SqlSetting %s exec %s success", db_name.c_str(), create_table_sql.c_str())
+        d_sql_debug("SqlSetting %s exec %s success", db_name.c_str(), create_table_sql.c_str())
         return RET_SUCCESS;
     }
 }
@@ -44,9 +44,9 @@ void SqlSetting::turn_to_struct(const SqlRetList &sql_ret_list, SettingList &ret
         ret_struct_list.emplace_back(SettingItem(
                 (ret_it)["name"],
                 (ret_it)["value"]));
-        sqlite_debug("name:%s, value:%s",
-                     (ret_it)["name"].c_str(),
-                     (ret_it)["value"].c_str())
+        d_sql_debug("name:%s, value:%s",
+                    (ret_it)["name"].c_str(),
+                    (ret_it)["value"].c_str())
     }
 }
 
@@ -60,10 +60,10 @@ int SqlSetting::add(const std::string &setting_name, const std::string &setting_
             error_code
             );
     if(ret == SQLITE_ERROR){
-        sqlite_error("SqlSetting %s exec %s error", db_name.c_str(), add_sql.c_str())
+        d_sql_error("SqlSetting %s exec %s error", db_name.c_str(), add_sql.c_str())
         return RET_FAILED;
     }else{
-        sqlite_debug("SqlSetting %s exec %s success", db_name.c_str(), add_sql.c_str())
+        d_sql_debug("SqlSetting %s exec %s success", db_name.c_str(), add_sql.c_str())
         return RET_SUCCESS;
     }
 }
@@ -78,10 +78,10 @@ int SqlSetting::del(const std::string &setting_name, ErrorCode &error_code) {
             error_code
     );
     if(ret == SQLITE_ERROR){
-        sqlite_error("SqlSetting %s exec %s error", db_name.c_str(), add_sql.c_str())
+        d_sql_error("SqlSetting %s exec %s error", db_name.c_str(), add_sql.c_str())
         return RET_FAILED;
     }else{
-        sqlite_debug("SqlSetting %s exec %s success", db_name.c_str(), add_sql.c_str())
+        d_sql_debug("SqlSetting %s exec %s success", db_name.c_str(), add_sql.c_str())
         return RET_SUCCESS;
     }
 }
@@ -96,13 +96,13 @@ int SqlSetting::sel(const std::string &setting_name, std::string &setting_value,
             error_code
     );
     if(ret == SQLITE_ERROR){
-        sqlite_error("SqlSetting %s exec %s error", db_name.c_str(), sel_sql.c_str())
+        d_sql_error("SqlSetting %s exec %s error", db_name.c_str(), sel_sql.c_str())
         return RET_FAILED;
     }
-    sqlite_debug("SqlSetting %s exec %s success", db_name.c_str(), sel_sql.c_str())
+    d_sql_debug("SqlSetting %s exec %s success", db_name.c_str(), sel_sql.c_str())
     // 获取数值
     if(sql_ret_list.size() != 1){
-        sqlite_warn("ret list size = %d, setting_name=%s", sql_ret_list.size(), setting_name.c_str())
+        d_sql_warn("ret list size = %d, setting_name=%s", sql_ret_list.size(), setting_name.c_str())
     }
     // 只取第一行的值
     if(!sql_ret_list.empty()){
@@ -121,10 +121,10 @@ int SqlSetting::sel(SettingList &setting_list, ErrorCode &error_code) {
             error_code
     );
     if(ret == SQLITE_ERROR){
-        sqlite_error("SqlSetting %s exec %s error", db_name.c_str(), sel_sql.c_str())
+        d_sql_error("SqlSetting %s exec %s error", db_name.c_str(), sel_sql.c_str())
         return RET_FAILED;
     }
-    sqlite_debug("SqlSetting %s exec %s success", db_name.c_str(), sel_sql.c_str())
+    d_sql_debug("SqlSetting %s exec %s success", db_name.c_str(), sel_sql.c_str())
     turn_to_struct(sql_ret_list, setting_list);
     return RET_SUCCESS;
 }
@@ -139,10 +139,10 @@ int SqlSetting::alt(const std::string &setting_name, const std::string &setting_
             error_code
     );
     if(ret == SQLITE_ERROR){
-        sqlite_error("SqlSetting %s exec %s error", db_name.c_str(), alt_sql.c_str())
+        d_sql_error("SqlSetting %s exec %s error", db_name.c_str(), alt_sql.c_str())
         return RET_FAILED;
     }else{
-        sqlite_debug("SqlSetting %s exec %s success", db_name.c_str(), alt_sql.c_str())
+        d_sql_debug("SqlSetting %s exec %s success", db_name.c_str(), alt_sql.c_str())
         return RET_SUCCESS;
     }
 }

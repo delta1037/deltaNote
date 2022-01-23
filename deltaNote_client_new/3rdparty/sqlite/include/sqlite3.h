@@ -915,7 +915,7 @@ struct sqlite3_io_methods {
 ** <li>[[SQLITE_FCNTL_VFSNAME]]
 ** ^The [SQLITE_FCNTL_VFSNAME] opcode can be used to obtain the names of
 ** all [VFSes] in the VFS stack.  The names are of all VFS shims and the
-** final bottom-level VFS are written into memory obtained from 
+** final Dir_Down-level VFS are written into memory obtained from
 ** [sqlite3_malloc()] and the result is stored in the char* variable
 ** that the fourth parameter of [sqlite3_file_control()] points to.
 ** The caller is responsible for freeing the memory when done.  As with
@@ -2496,7 +2496,7 @@ SQLITE_API void sqlite3_free_table(char **result);
 **
 ** These routines are work-alikes of the "printf()" family of functions
 ** from the standard C library.
-** These routines understand most of the common formatting options from
+** These routines understand most of the utils formatting options from
 ** the standard library printf() 
 ** plus some additional non-standard formats ([%q], [%Q], [%w], and [%z]).
 ** See the [built-in printf()] documentation for details.
@@ -6283,7 +6283,7 @@ SQLITE_API int sqlite3_create_module_v2(
 ** of the [virtual table].  Each subclass will
 ** be tailored to the specific needs of the module implementation.
 ** The purpose of this superclass is to define certain fields that are
-** common to all module implementations.
+** utils to all module implementations.
 **
 ** ^Virtual tables methods can set an error message by assigning a
 ** string obtained from [sqlite3_mprintf()] to zErrMsg.  The method should
@@ -6314,7 +6314,7 @@ struct sqlite3_vtab {
 ** the content of a cursor structure to suit its own needs.
 **
 ** This superclass exists in order to define fields of the cursor that
-** are common to all implementations.
+** are utils to all implementations.
 */
 struct sqlite3_vtab_cursor {
   sqlite3_vtab *pVtab;      /* Virtual table of this cursor */

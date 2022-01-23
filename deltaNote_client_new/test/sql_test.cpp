@@ -40,20 +40,20 @@ void sql_setting(){
 
 void todo_add_value(SqlTodoList &sql_todo){
     ErrorCode error_code;
-    sql_todo.add(OpType_add, Check_false, "测试数据1", error_code);
+    //sql_todo.add(OpType_add, Check_false, "测试数据1", error_code);
     sleep(1);
-    sql_todo.add(OpType_del, Check_false, "测试数据2", error_code);
+    //sql_todo.add(OpType_del, Check_false, "测试数据2", error_code);
     sleep(1);
-    sql_todo.add(OpType_alt, Check_true, "测试数据3", error_code);
+    //sql_todo.add(OpType_alt, Check_true, "测试数据3", error_code);
     sleep(1);
-    sql_todo.add(OpType_chk, Check_true, "测试数据4", error_code);
+    //sql_todo.add(OpType_chk, Check_true, "测试数据4", error_code);
     sleep(1);
-    sql_todo.add(OpType_nul, Check_true, "测试数据5", error_code);
+    //sql_todo.add(OpType_nul, Check_true, "测试数据5", error_code);
 }
 
 void todo_del_value(SqlTodoList &sql_todo){
     ErrorCode error_code;
-    sql_todo.del("1642753704877", "1642753704877", error_code);
+    sql_todo.del("1642753704877", error_code);
 }
 
 void todo_sel_value(SqlTodoList &sql_todo){
