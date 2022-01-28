@@ -7,7 +7,7 @@
 #include <QBitmap>
 
 #include "notify.h"
-#include "../utils/svg_color.h"
+#include "svg_color.h"
 #include "setting_ctrl.h"
 #include "c_sync_data.h"
 

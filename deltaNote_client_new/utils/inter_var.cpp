@@ -1,30 +1,5 @@
 #include "inter_var.h"
 
-NoteSetting::NoteSetting() {
-    username = "";
-    password = "";
-
-    server = "127.0.0.1:8888"; // ip:port
-
-    is_login = false;
-    is_lock = false;
-    is_auto_start = false;
-
-    font_size = 11; // 字体大小配置
-    tran_pos = 200;  // 透明度记录
-
-    // 颜色名称记录
-    font_color = "#ffff00";
-    bg_color = "#ffff00";
-    icon_color = "#ffff00";
-
-    // 窗体定位信息
-    x_pos = 600;
-    y_pos = 300;
-    height = 560;
-    width = 300;
-}
-
 std::string is_check_str(IsCheck is_check){
     if(is_check == Check_true){
         return "true";
@@ -92,7 +67,7 @@ TodoItem::TodoItem(){
     this->edit_key = "";
     this->op_type = OpType_nul;
     this->is_check = Check_false;
-    this->tag_type = TagType_nul;
+    this->tag_type = TagType_low;
     this->reminder = "";
     this->data = "";
 }
@@ -129,4 +104,37 @@ bool check_item_valid(const TodoItem &item){
         return false;
     }
     return true;
+}
+
+int time_int_s(std::string s_time){
+    tm tm_{};
+    int year, month, day, hour, minute,second;
+    sscanf(s_time.c_str(),"%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
+    tm_.tm_year  = year-1900;
+    tm_.tm_mon   = month-1;
+    tm_.tm_mday  = day;
+    tm_.tm_hour  = hour;
+    tm_.tm_min   = minute;
+    tm_.tm_sec   = second;
+    tm_.tm_isdst = 0;
+
+    time_t t_ = mktime(&tm_); //已经减了8个时区
+    return t_; //秒时间
+}
+
+/* 获取MS时间 -3 */
+uint64_t get_time_of_ms(){
+    struct timeval tv{};
+    gettimeofday(&tv, nullptr);
+    return tv.tv_sec * (uint64_t)1000 + tv.tv_usec / 1000;
+}
+
+uint64_t get_time_of_s(){
+    struct timeval tv{};
+    gettimeofday(&tv, nullptr);
+    return tv.tv_sec;
+}
+
+std::string get_time_key(){
+    return std::to_string(get_time_of_ms());
 }

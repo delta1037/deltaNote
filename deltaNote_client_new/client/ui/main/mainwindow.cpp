@@ -17,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_setting_ctrl.load_all_setting();
     m_sync_data = new CSyncData(&m_setting_ctrl, &m_data_ctrl);
 
+    // 初始化一些子界面
+    m_login_window = new login(this, &m_setting_ctrl, m_sync_data);
+
     // 程序刚刚启动,不现实历史TODO列表，刷新时间默认为0
     m_is_show_history = false;
     m_location_change = false;
@@ -80,10 +83,6 @@ void MainWindow::set_menu(){
     trayIcon->setContextMenu(trayIconMenu);
 }
 
-void MainWindow::message_ctrl(){
-    d_ui_info("%s", "click message ctrl, do nothing")
-}
-
 void MainWindow::event_connect(){
     // 系统托盘图标事件连接
     action_official = new QAction(MAIN_WIN_OFFICIAL_SITE, this);
@@ -102,7 +101,7 @@ void MainWindow::event_connect(){
 
     // 定时刷新
     refreshTimer = new QTimer(this);
-    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(on_refresh_clicked()));
+    connect(refreshTimer, &QTimer::timeout, [this](){ sync_todo_list(true, true); });
     refreshTimer->start(TIMER_REFRESH);
 
     // 定时更新
@@ -114,6 +113,12 @@ void MainWindow::event_connect(){
     remind_timer = new QTimer(this);
     connect(remind_timer, SIGNAL(timeout()), this, SLOT(sync_reminder()));
     remind_timer->start(TIMER_REMINDER);
+
+    // 设置界面刷新界面宽度
+    connect(m_login_window, SIGNAL(refresh_width()), this, SLOT(refresh_width()));
+    connect(m_login_window, SIGNAL(refresh_icon_color()), this, SLOT(refresh_icon_color()));
+    connect(m_login_window, SIGNAL(refresh_font_color()), this, SLOT(refresh_font_color()));
+    connect(m_login_window, SIGNAL(refresh_bg_color()), this, SLOT(update()));
 }
 
 void MainWindow::set_background(){
@@ -167,8 +172,8 @@ void MainWindow::sync_reminder() {
         if(m_reminder->check_and_notify()){
             // 发起过通知才更新列表
             sync_todo_list();
+            d_ui_debug("%s", "sync_reminder do _sync_todo_list")
         }
-        d_ui_debug("%s", "sync_reminder do _sync_todo_list")
     }
 }
 
@@ -176,25 +181,28 @@ void MainWindow::on_setting_clicked(){
     d_ui_debug("main desktop w:%d h:%d", m_desktop_rect.width(), m_desktop_rect.height())
 
     // 显示setting界面
-    login login_window(this, &m_setting_ctrl, m_sync_data);
-    login_window.exec();
+    //login m_login_window(this, &m_setting_ctrl, m_sync_data);
+    m_login_window->exec();
 
-    // 列表内容重绘（根据本地内容重绘，不涉及到网络同步）
-    d_ui_debug("%s", "on_setting_clicked do _sync_todo_list")
-    sync_todo_list();
+    // 列表内容重绘，这里可能在设置里做了登录操作，所以需要做完整的刷新操作
+    d_ui_debug("%s", "on_setting_clicked do _on_refresh_clicked")
+    on_refresh_clicked();
 
     // 新的配置过来可能需要刷新界面
-    refresh_background();
+    // refresh_background();
     // QTimer::singleShot(1, this, SLOT(refresh_background()));
 }
 
 void MainWindow::on_refresh_clicked(){
+    d_ui_debug("%s", "do refresh auto or click")
     // change icon
     if(m_is_show_history){
         SvgColor svg_clear(":/resource/history_close.svg");
         ui->history->setIcon(svg_clear.setColor(m_setting_ctrl.get_color(SETTING_ICON_COLOR)));
     }
     m_is_show_history = false;
+    // 刷新重置状态
+    set_edit_status(false);
 
     // 刷新界面:先做本地同步刷新，再做网络异步刷新
     d_ui_debug("%s", "on_refresh_clicked do _sync_todo_list")
@@ -202,8 +210,8 @@ void MainWindow::on_refresh_clicked(){
     sync_todo_list(true, true);
 }
 
+// 锁定操作
 void MainWindow::on_lock_clicked(){
-    // 锁定操作
     // 如果窗口进行了移动操作
     if(m_location_change){
         m_location_change = false;
@@ -239,9 +247,18 @@ void MainWindow::on_history_clicked(){
         ui->history->setIcon(svg_clear.setColor(m_setting_ctrl.get_color(SETTING_ICON_COLOR)));
     }
 
-    // 重绘显示内容
-    d_ui_debug("%s", "on_history_clicked do _sync_todo_list")
-    sync_todo_list();
+    // 如果停留在历史页面，就禁止刷新了
+    if(m_is_show_history){
+        // 重绘显示内容，如果与自动刷新冲突，就要等一会
+        d_ui_debug("%s", "on_history_clicked do _sync_todo_list")
+        sync_todo_list(false, false, true);
+        set_edit_status(true);
+    }else{
+        set_edit_status(false);
+        // 重绘显示内容，如果与自动刷新冲突，就要等一会
+        d_ui_debug("%s", "on_history_clicked do _sync_todo_list")
+        sync_todo_list(false, false, true);
+    }
 }
 
 void MainWindow::do_add_clicked(){
@@ -272,33 +289,46 @@ void MainWindow::do_add_clicked(){
     }
 }
 
-void MainWindow::sync_todo_list(bool async, bool net_sync, bool hard_refresh){
+void MainWindow::sync_todo_list(bool async, bool net_sync, bool is_wait){
     // 正在编辑不允许刷新
-    if(is_editing && !hard_refresh){
+    if(is_editing){
         d_logic_warn("%s", "item is editing now")
         return;
     }
 
-    // 准入控制，防止多个刷新同时进行，造成混乱
+    // 准入控制，防止多个刷新同时进行，造成混乱（这是由于自动刷新是另一个线程）
+    /**
+     * 刷新的三个线程
+     * 1、主进程
+     * 2、自动刷新进程
+     * 3、通知进程
+     */
     static bool is_sync = false;
     if(is_sync){
-        while(is_sync){
-            d_ui_info("%s", "sync is doing, wait 1s")
-            sleep(1);
+        d_ui_info("%s", "sync is doing, wait for another sync")
+        if(!is_wait){
+            // 不等就直接返回
+            return;
+        }
+        // 如果选择等待，等一秒之后还没等到，就不等了
+        d_ui_warn("%s", "sync is doing, wait for 1s")
+        sleep(1);
+        if(is_sync){
+            return;
         }
     }
     is_sync = true;
     // 如果需要异步则转异步处理
     if(async){
         is_sync = false;
-        d_ui_info("%s", "use async !!!")
-        QTimer::singleShot(1, this, [net_sync,hard_refresh,this](){ sync_todo_list(false, net_sync, hard_refresh); });
+        d_ui_debug("%s", "use async !!!")
+        QTimer::singleShot(1, this, [net_sync,is_wait,this](){ sync_todo_list(false, net_sync, is_wait); });
         return;
     }
 
     // 如果需要网络刷新先进行网络刷新
     if(net_sync){
-        d_ui_info("%s", "do net sync !!!")
+        d_ui_debug("%s", "do net sync !!!")
         // 网络刷新刷新频率
         if(last_refresh_time != 0 && std::time(nullptr) - last_refresh_time <= 3){
             d_ui_debug("%s", "net sync too fast")
@@ -321,7 +351,9 @@ void MainWindow::sync_todo_list(bool async, bool net_sync, bool hard_refresh){
 
     // 删除旧的显示
     ui->ToDoListWin->clear();
+    m_list_map_lock.lock();
     m_list_map.clear();
+    m_list_map_lock.unlock();
     m_reminder->clear_registered(); // 通知模块也全都清理掉，注册新的内容
     // 更新界面
     for(auto it : ret_list){
@@ -338,8 +370,10 @@ void MainWindow::sync_todo_list(bool async, bool net_sync, bool hard_refresh){
 // 内容编辑完成处理
 void MainWindow::ui_alt_todo(const std::string& key, AltType alt_type){
     if(alt_type == Alt_add){
-        d_logic_debug("alt type : %d", alt_type)
+        d_ui_debug("alt type : %d", alt_type)
+        m_list_map_lock.lock();
         TodoItem item_data = m_list_map[key]->get_item_data();
+        m_list_map_lock.unlock();
         ErrorCode error_code;
         int ret = m_data_ctrl.add_todo(item_data, error_code);
         if(ret != RET_SUCCESS){
@@ -349,7 +383,9 @@ void MainWindow::ui_alt_todo(const std::string& key, AltType alt_type){
         d_ui_debug("add new todo %s:%s success", item_data.create_key.c_str(), item_data.data.c_str())
     }else if(alt_type == Alt_alt || alt_type == Alt_chk){
         d_logic_debug("alt type : %d", alt_type)
+        m_list_map_lock.lock();
         TodoItem item_data = m_list_map[key]->get_item_data();
+        m_list_map_lock.unlock();
         ErrorCode error_code;
         int ret = m_data_ctrl.alt_todo(item_data, error_code);
         if(ret != RET_SUCCESS){
@@ -363,7 +399,9 @@ void MainWindow::ui_alt_todo(const std::string& key, AltType alt_type){
     }
     // 重绘前端
     d_ui_debug("%s", "ui_alt_todo do _sync_todo_list")
-    sync_todo_list(false, false, true); // 强制刷新，不管是否正在编辑，因为这个时候编辑结束了
+    set_edit_status(false); // 重置编辑状态
+    // 这里重绘是：可能有check操作；修改操作可能修改了优先级；新增操作可能新增了高优先级的
+    sync_todo_list(false, false, true);
 }
 
 // 删除单条内容
@@ -381,11 +419,11 @@ void MainWindow::add_new_todo_item(TodoItem *item_data){
     d_ui_debug("%s", "add_new_todo_item")
     // 点击空白准备新建
     auto *widget = new ToDoListItem(this, &m_setting_ctrl);
+    m_list_map_lock.lock();
     if(item_data != nullptr){
         // 从已有创建
         widget->set_item_data(*item_data);
         m_list_map[item_data->create_key] = widget;
-
         // 注册reminder，由reminder做提醒控制
         if(!item_data->reminder.empty() && item_data->is_check == Check_false){
             m_reminder->register_notify(item_data->create_key, item_data->reminder);
@@ -397,6 +435,7 @@ void MainWindow::add_new_todo_item(TodoItem *item_data){
         widget->set_item_data(t_item_data, Item_new);
         m_list_map[t_item_data.create_key] = widget;
     }
+    m_list_map_lock.unlock();
     // 添加状态修改通知
     connect(widget, SIGNAL(todo_alt_signal(std::string, AltType)), this, SLOT(ui_alt_todo(std::string, AltType)));
     // 添加正在编辑的通知
@@ -433,8 +472,10 @@ void MainWindow::do_clear_done(){
         ui->history->setIcon(svg_clear.setColor(m_setting_ctrl.get_color(SETTING_ICON_COLOR)));
     }
     m_is_show_history = false;
+    // 重设状态
+    set_edit_status(false);
 
-    // 从数据库加载数据并刷新界面
+    // 从数据库加载数据并刷新界面（从本地刷新即可）
     d_ui_debug("%s", "do_clear_done do _sync_todo_list")
     sync_todo_list();
 }
@@ -443,28 +484,34 @@ void MainWindow::do_open_official(){
     QDesktopServices :: openUrl(QUrl(QLatin1String("http://www.delta1037.cn/2019/11/23/deltaNoteSite/")));
 }
 
-
 void MainWindow::do_check_update(){
 
 }
 
 void MainWindow::refresh_background(){
     // refresh block
-    setStyleSheet("background-color:transparent;");
+    //setStyleSheet("background-color:transparent;");
 
-    ui->setting->setStyleSheet("background-color:transparent");
-    ui->refresh->setStyleSheet("background-color:transparent");
-    ui->lock->setStyleSheet("background-color:transparent");
-    ui->history->setStyleSheet("background-color:transparent");
-/*
-    // change text color
-    for(int index = ui->ToDoListWin->count() - 1; index >= 0; --index){
-        // QListWidgetItem *item_data = ui->ToDoListWin->item_data(index);
-        // ToDoListItem *todo = qobject_cast<ToDoListItem*>(ui->ToDoListWin->itemWidget(item_data));
-        // cout << "refresh item_data" << endl;
-        // todo->refresh_item();
-    }
-    */
+    //ui->setting->setStyleSheet("background-color:transparent");
+    //ui->refresh->setStyleSheet("background-color:transparent");
+    //ui->lock->setStyleSheet("background-color:transparent");
+    //ui->history->setStyleSheet("background-color:transparent");
+
+    // 图标颜色修改
+    refresh_icon_color();
+
+    // 宽度修改的时候
+    refresh_width();
+}
+
+void MainWindow::refresh_width(){
+    // 宽度修改的时候
+    setGeometry(QRect(QPoint(frameGeometry().left(), frameGeometry().top()),
+                      QPoint(frameGeometry().left() + m_setting_ctrl.get_int(SETTING_WIDTH), frameGeometry().bottom())));
+
+}
+
+void MainWindow::refresh_icon_color(){
     // change icon color
     SvgColor svg_refresh(":/resource/refresh.svg");
     ui->refresh->setIcon(svg_refresh.setColor(m_setting_ctrl.get_color(SETTING_ICON_COLOR)));
@@ -493,12 +540,17 @@ void MainWindow::refresh_background(){
     } else {
         setStyleSheet("");
     }
+}
 
-    // 宽度修改的时候
-    setGeometry(QRect(QPoint(frameGeometry().left(), frameGeometry().top()),
-                      QPoint(frameGeometry().left() + m_setting_ctrl.get_int(SETTING_WIDTH), frameGeometry().bottom())));
-
- }
+void MainWindow::refresh_font_color(){
+    set_edit_status(true);
+    m_list_map_lock.lock();
+    for(const auto &it : m_list_map){
+        it.second->update_render();
+    }
+    m_list_map_lock.unlock();
+    set_edit_status(false);
+}
 
 #if 0
 void MainWindow::updateMessage(){
@@ -584,12 +636,15 @@ void MainWindow::closeEvent(QCloseEvent *e){
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-    event->ignore();
+    if(event != nullptr){
+        event->ignore();
+    }
+
     QColor bg_color = m_setting_ctrl.get_color(SETTING_BG_COLOR);
     QPainter painter(this);
     painter.fillRect(
-        this->rect(),
-        QColor(bg_color.red(), bg_color.green(), bg_color.blue(), 255 - m_setting_ctrl.get_int(SETTING_TRAN_POS))
+            this->rect(),
+            QColor(bg_color.red(), bg_color.green(), bg_color.blue(), 255 - m_setting_ctrl.get_int(SETTING_TRAN_POS))
     );
 }
 

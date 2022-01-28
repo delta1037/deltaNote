@@ -29,6 +29,7 @@ TodoDetail::TodoDetail(QWidget *parent, SettingCtrl *setting_ctrl) :
     // DDL 设置为现在的时间（相当于没有设置）
     ui->ddl->setDateTime(QDateTime::currentDateTime());
     ui->ddl->setFont(QFont("黑体", setting_ctrl->get_int(SETTING_FONT_SIZE)));
+    ui->ddl->setSelectedSection(QDateTimeEdit::DaySection);
     // 保存当前时间字符串作为对比，如果编辑结束还是当前时间，就认为该项未编辑，返回空内容
     init_time = ui->ddl->dateTime().toString(REMINDER_FORMAT);
 
@@ -39,7 +40,7 @@ TodoDetail::TodoDetail(QWidget *parent, SettingCtrl *setting_ctrl) :
     auto *tag_list = new QListView(ui->tag);
     tag_list->setFont(QFont("黑体", setting_ctrl->get_int(SETTING_FONT_SIZE)));
     tag_list->setSpacing(setting_ctrl->get_int(SETTING_FONT_SIZE)/4);
-    tag_list->setStyleSheet("background-color:#F0F8FF;border-radius: 0px;");
+    tag_list->setStyleSheet("background-color:#F0F8FF;selection-background-color: #FFB7DD;border-radius: 0px;");
     ui->tag->setView(tag_list);
 
     // 设置透明
@@ -70,10 +71,10 @@ TodoDetail::~TodoDetail() {
     delete ui;
 }
 
-void TodoDetail::set_item_data(const TodoItem &todo_item, ItemStatus status){
+void TodoDetail::set_item_data(const TodoItem &todo_item){
     this->item_data = todo_item;
     // 刷新该条目
-    render_text(status);
+    render_text();
 }
 
 TodoItem TodoDetail::get_item_data(){
@@ -89,9 +90,10 @@ QString TodoDetail::tag_to_string(TagType tag_type){
         return "低";
     }
 }
-void TodoDetail::render_text(ItemStatus status){
+
+void TodoDetail::render_text(){
     ui->text_line->setFont(QFont("黑体", setting_ctrl->get_int(SETTING_FONT_SIZE)));
-    if(status == Item_old){
+    if(!item_data.data.empty()){
         ui->text_line->setText(QString::fromStdString(item_data.data));
     }else{
         ui->text_line->setPlaceholderText("TODO");
@@ -100,6 +102,7 @@ void TodoDetail::render_text(ItemStatus status){
     ui->tag->setCurrentText(tag_to_string(item_data.tag_type));
     if(!item_data.reminder.empty()){
         ui->ddl->setDateTime(QDateTime::fromString(QString::fromStdString(item_data.reminder), REMINDER_FORMAT));
+        ui->ddl->setSelectedSection(QDateTimeEdit::DaySection);
     }
 }
 
@@ -108,7 +111,6 @@ void TodoDetail::on_cancel_clicked() {
 }
 
 void TodoDetail::on_accept_clicked() {
-    // TODO 收集必要的数据
     // 内容
     item_data.data = ui->text_line->text().toStdString();
     // 标签

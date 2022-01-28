@@ -7,7 +7,7 @@
 QT       += core gui svgwidgets xml core5compat
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
 
-TARGET = deltaNote_client
+TARGET = deltaNote
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES +=                                      \
+    client/utils/c_inter_var.cpp                \
     client/ui/main/mainwindow.cpp               \
     client/ui/main/todo_detail.cpp              \
     client/ui/main/todolistwidget.cpp           \
@@ -45,6 +46,8 @@ SOURCES +=                                      \
     client/logic/main.cpp
 
 HEADERS +=                                      \
+    client/utils/c_language.h                   \
+    client/utils/c_inter_var.h                  \
     client/ui/main/mainwindow.h                 \
     client/ui/main/todo_detail.h                \
     client/ui/main/todolistwidget.h             \
@@ -69,6 +72,7 @@ INCLUDEPATH +=                                  \
     $$PWD/utils                                 \
     $$PWD/sqlite                                \
     $$PWD/http                                  \
+    $$PWD/client/utils                          \
     $$PWD/client/logic                          \
     $$PWD/client/ui/main                        \
     $$PWD/client/ui/setting                     \

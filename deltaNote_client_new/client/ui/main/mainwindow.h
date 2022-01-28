@@ -13,6 +13,7 @@
 #include <QCloseEvent>
 #include <QTimer>
 #include <QProcess>
+#include <QMutex>
 
 #include "login.h"
 #include "todolistitem.h"
@@ -57,10 +58,15 @@ private slots:
     void on_ToDoListWin_customContextMenuRequested(const QPoint &pos);
 
     // 同步列表(使用异步网络刷新)（可能通过信号刷新）
-    void sync_todo_list(bool async=false, bool net_sync=false, bool hard_refresh=false);
+    void sync_todo_list(bool async=false, bool net_sync=false, bool is_wait=false);
     void sync_reminder();
 
     void set_edit_status(bool);
+
+    // 设置界面过来的刷新信号
+    void refresh_width();
+    void refresh_icon_color();
+    void refresh_font_color();
 
 protected:
     // 关闭
@@ -91,20 +97,25 @@ private:
     // 刷新背景
     void refresh_background();
 
-    Ui::MainWindow *ui;
-
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
 
+    // 一些动作
     QAction *action_official;
     QAction *action_setting;
     QAction *action_quit;
     QAction *action_clear;
     QAction *action_update;
 
+    // 一些定时器
     QTimer *refreshTimer;
     QTimer *uploadTimer;
     QTimer *remind_timer;
+
+    // 主界面
+    Ui::MainWindow *ui;
+    // 子界面
+    login *m_login_window;
 
 private:
     // 数据控制
@@ -114,6 +125,7 @@ private:
     bool m_history_switch;
     // 列表控制（方便检索，用map类型）
     std::map<std::string, ToDoListItem*> m_list_map;
+    QMutex m_list_map_lock;
 
     // 配置控制
     SettingCtrl m_setting_ctrl;

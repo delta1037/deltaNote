@@ -16,6 +16,7 @@
 #define d_sql_debug(format, ...) log(LOG_MODULE_INIT(d_sql), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 
 #define d_ui_error(format, ...) log(LOG_MODULE_INIT(d_ui), LOG_ERROR, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
+#define d_ui_warn(format, ...) log(LOG_MODULE_INIT(d_ui), LOG_WARN, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 #define d_ui_info(format, ...)  log(LOG_MODULE_INIT(d_ui), LOG_INFO, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 #define d_ui_debug(format, ...) log(LOG_MODULE_INIT(d_ui), LOG_DEBUG, FORMAT_PREFIX#format, __FILENAME__, __FUNCTION__ , __LINE__, __VA_ARGS__);
 

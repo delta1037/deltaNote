@@ -1,5 +1,6 @@
 #ifndef CLIENT_REMINDER_H
 #define CLIENT_REMINDER_H
+#include <QMutex>
 #include <string>
 #include <map>
 #include <qsystemtrayicon.h>
@@ -23,6 +24,7 @@ private:
     SettingCtrl *m_setting_ctrl;
     QSystemTrayIcon *m_tray_icon;
     std::map<std::string, int> m_register_map; // 创建时间key值和时间戳
+    QMutex m_register_map_lock;
 };
 
 #endif //CLIENT_REMINDER_H

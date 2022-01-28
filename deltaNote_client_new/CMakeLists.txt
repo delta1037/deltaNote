@@ -30,6 +30,7 @@ include_directories(
         utils
         sqlite
         http
+        client/utils
         client/logic
         client/ui/main
         client/ui/setting
@@ -80,7 +81,8 @@ add_executable(note_client_clion
         client/logic/c_data_ctrl.cpp
         client/logic/c_sync_data.cpp
         client/logic/main.cpp
-        client/logic/reminder.cpp client/logic/reminder.h)
+        client/logic/reminder.cpp
+        client/utils/c_inter_var.cpp)
 
 target_link_libraries(note_client_clion
         Qt::Core

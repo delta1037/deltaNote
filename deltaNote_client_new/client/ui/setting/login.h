@@ -12,7 +12,7 @@
 
 #include "newuser.h"
 #include "choosecolor.h"
-#include "../utils/svg_color.h"
+#include "svg_color.h"
 #include "setting_ctrl.h"
 #include "c_sync_data.h"
 
@@ -44,15 +44,21 @@ private slots:
 
     void on_choose_bg_color_clicked();
 
-    void on_transparent_sliderMoved(int position);
-
     void on_radioButton_clicked(bool checked);
 
     void on_exit_clicked();
 
-    void on_fontSizeSlider_sliderMoved(int position);
+    void on_fontSizeSlider_valueChanged(int value);
 
-    void on_mainWinWidthSlider_sliderMoved(int position);
+    void on_mainWinWidthSlider_valueChanged(int value);
+
+    void on_transparent_valueChanged(int value);
+
+signals:
+    void refresh_width();
+    void refresh_icon_color();
+    void refresh_font_color();
+    void refresh_bg_color();
 
 private:
     Ui::login *ui;

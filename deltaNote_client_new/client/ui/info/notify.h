@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QBitmap>
 
-#include "inter_var.h"
+#include "c_inter_var.h"
 #include "setting_ctrl.h"
 
 namespace Ui {

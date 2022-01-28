@@ -283,6 +283,7 @@ void login::on_chooseFontColor_clicked() {
         d_ui_debug("%s", "setting font color success")
         m_setting_ctrl->set_color(SETTING_FONT_COLOR, c);
         ui->chooseFontColor->setStyleSheet("background-color:" + c.name()+ ";");
+        emit refresh_font_color();
     }
 
     setWindowOpacity(1);
@@ -301,6 +302,7 @@ void login::on_choose_bg_color_clicked()
         d_ui_debug("%s", "setting bg color success")
         m_setting_ctrl->set_color(SETTING_BG_COLOR, c);
         ui->choose_bg_color->setStyleSheet("background-color:" + c.name()+ ";");
+        emit refresh_bg_color();
     }
     setWindowOpacity(1);
 }
@@ -315,18 +317,11 @@ void login::on_chooseIconColor_clicked() {
         d_ui_debug("%s", "setting icon color success")
         m_setting_ctrl->set_color(SETTING_ICON_COLOR, c);
         ui->chooseIconColor->setStyleSheet("background-color:" + c.name()+ ";");
+        emit refresh_icon_color();
     }
 
     setWindowOpacity(1);
     refresh_icon();
-}
-
-void login::on_transparent_sliderMoved(int position)
-{
-    if(position >=0 && position <=255){
-        position -= 1;
-        m_setting_ctrl->set_int(SETTING_TRAN_POS, position > 0 ? position : 0);
-    }
 }
 
 void login::on_radioButton_clicked(bool checked)
@@ -346,21 +341,6 @@ void login::on_exit_clicked()
     accept();
 }
 
-void login::on_fontSizeSlider_sliderMoved(int position)
-{
-    if(position >= 9 && position <= 16){
-        m_setting_ctrl->set_int(SETTING_FONT_SIZE, position);
-    }
-    refresh_text();
-}
-
-void login::on_mainWinWidthSlider_sliderMoved(int position)
-{
-    if(position >= 280 && position <= 560){
-        m_setting_ctrl->set_int(SETTING_WIDTH, position);
-    }
-}
-
 void login::mouseMoveEvent(QMouseEvent *event)
 {
     event->ignore();
@@ -378,3 +358,32 @@ void login::mousePressEvent(QMouseEvent *event)
         m_mouse_click_y = event->position().y();
     }
 }
+
+void login::on_fontSizeSlider_valueChanged(int value)
+{
+    if(value >= 9 && value <= 16){
+        m_setting_ctrl->set_int(SETTING_FONT_SIZE, value);
+        emit refresh_font_color();
+    }
+    refresh_text();
+}
+
+
+void login::on_mainWinWidthSlider_valueChanged(int value)
+{
+    if(value >= 280 && value <= 560){
+        m_setting_ctrl->set_int(SETTING_WIDTH, value);
+        emit refresh_width();
+    }
+}
+
+
+void login::on_transparent_valueChanged(int value)
+{
+    if(value >=0 && value <=255){
+        value -= 1;
+        m_setting_ctrl->set_int(SETTING_TRAN_POS, value > 0 ? value : 0);
+        emit refresh_bg_color();
+    }
+}
+

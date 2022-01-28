@@ -6,7 +6,7 @@
 #define CLIENT_SETTING_CTRL_H
 
 #include <QColor>
-#include "inter_var.h"
+#include "c_inter_var.h"
 #include "sql_key_value.h"
 
 class SettingCtrl {

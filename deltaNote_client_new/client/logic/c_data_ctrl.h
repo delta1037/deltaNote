@@ -3,6 +3,7 @@
 #include <string>
 
 #include "sql_todo_list.h"
+#include "c_inter_var.h"
 
 enum ListType{
     ListType_NO,

@@ -13,6 +13,7 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 
@@ -23,7 +24,7 @@ class Ui_ToDoListItem
 public:
     QHBoxLayout *horizontalLayout;
     QPushButton *choose;
-    QPushButton *data_button;
+    QLineEdit *data;
 
     void setupUi(QWidget *ToDoListItem)
     {
@@ -65,17 +66,13 @@ public:
 
         horizontalLayout->addWidget(choose);
 
-        data_button = new QPushButton(ToDoListItem);
-        data_button->setObjectName(QString::fromUtf8("data_button"));
-        data_button->setMinimumSize(QSize(0, 36));
-        data_button->setMaximumSize(QSize(16777215, 36));
-        data_button->setContextMenuPolicy(Qt::DefaultContextMenu);
-        data_button->setStyleSheet(QString::fromUtf8("border-top-left-radius:10px;\n"
-"border-bottom-left-radius:10px;\n"
-"text-align: left;"));
-        data_button->setFlat(true);
+        data = new QLineEdit(ToDoListItem);
+        data->setObjectName(QString::fromUtf8("data"));
+        data->setMinimumSize(QSize(0, 36));
+        data->setMaximumSize(QSize(16777215, 36));
+        data->setContextMenuPolicy(Qt::CustomContextMenu);
 
-        horizontalLayout->addWidget(data_button);
+        horizontalLayout->addWidget(data);
 
 
         retranslateUi(ToDoListItem);
@@ -87,7 +84,6 @@ public:
     {
         ToDoListItem->setWindowTitle(QCoreApplication::translate("ToDoListItem", "Form", nullptr));
         choose->setText(QString());
-        data_button->setText(QCoreApplication::translate("ToDoListItem", "PushButton", nullptr));
     } // retranslateUi
 
 };

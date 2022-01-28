@@ -153,7 +153,9 @@ public:
         username->setObjectName(QString::fromUtf8("username"));
         username->setMinimumSize(QSize(175, 32));
         username->setMaximumSize(QSize(175, 32));
-        username->setFont(font);
+        QFont font1;
+        font1.setPointSize(12);
+        username->setFont(font1);
         username->setInputMethodHints(Qt::ImhNone);
         username->setMaxLength(8);
         username->setClearButtonEnabled(true);
@@ -168,8 +170,8 @@ public:
         horizontalLayout_2->setContentsMargins(-1, -1, 10, -1);
         P = new QPushButton(login);
         P->setObjectName(QString::fromUtf8("P"));
-        QFont font1;
-        P->setFont(font1);
+        QFont font2;
+        P->setFont(font2);
         P->setCursor(QCursor(Qt::ForbiddenCursor));
         QIcon icon3;
         icon3.addFile(QString::fromUtf8(":/resource/passwd.svg"), QSize(), QIcon::Normal, QIcon::Off);
@@ -183,7 +185,7 @@ public:
         password->setObjectName(QString::fromUtf8("password"));
         password->setMinimumSize(QSize(175, 32));
         password->setMaximumSize(QSize(175, 32));
-        password->setFont(font);
+        password->setFont(font1);
         password->setInputMethodHints(Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData);
         password->setMaxLength(12);
         password->setFrame(true);
@@ -261,14 +263,15 @@ public:
         horizontalLayout_4->setContentsMargins(15, -1, -1, -1);
         transparentLabel = new QLabel(login);
         transparentLabel->setObjectName(QString::fromUtf8("transparentLabel"));
-        QFont font2;
-        font2.setPointSize(9);
-        transparentLabel->setFont(font2);
+        QFont font3;
+        font3.setPointSize(9);
+        transparentLabel->setFont(font3);
 
         horizontalLayout_4->addWidget(transparentLabel);
 
         transparent = new QSlider(login);
         transparent->setObjectName(QString::fromUtf8("transparent"));
+        transparent->setMinimumSize(QSize(0, 40));
         transparent->setCursor(QCursor(Qt::PointingHandCursor));
         transparent->setStyleSheet(QString::fromUtf8("QSlider::groove:horizontal {\n"
 "background: rgba(0, 0, 0, 0);\n"
@@ -343,12 +346,13 @@ public:
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         fontSizeLabel = new QLabel(login);
         fontSizeLabel->setObjectName(QString::fromUtf8("fontSizeLabel"));
-        fontSizeLabel->setFont(font2);
+        fontSizeLabel->setFont(font3);
 
         horizontalLayout_5->addWidget(fontSizeLabel);
 
         fontSizeSlider = new QSlider(login);
         fontSizeSlider->setObjectName(QString::fromUtf8("fontSizeSlider"));
+        fontSizeSlider->setMinimumSize(QSize(0, 40));
         fontSizeSlider->setCursor(QCursor(Qt::PointingHandCursor));
         fontSizeSlider->setStyleSheet(QString::fromUtf8("QSlider::groove:horizontal {\n"
 "background: rgba(0, 0, 0, 0);\n"
@@ -406,11 +410,12 @@ public:
 "border: 1px solid #aaa;\n"
 "border-radius: 4px;\n"
 "}"));
-        fontSizeSlider->setMinimum(9);
-        fontSizeSlider->setMaximum(16);
-        fontSizeSlider->setPageStep(1);
-        fontSizeSlider->setValue(11);
-        fontSizeSlider->setSliderPosition(11);
+        fontSizeSlider->setMinimum(12);
+        fontSizeSlider->setMaximum(20);
+        fontSizeSlider->setSingleStep(2);
+        fontSizeSlider->setPageStep(2);
+        fontSizeSlider->setValue(15);
+        fontSizeSlider->setSliderPosition(15);
         fontSizeSlider->setOrientation(Qt::Horizontal);
 
         horizontalLayout_5->addWidget(fontSizeSlider);
@@ -422,12 +427,13 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         mainWinWidthLabel = new QLabel(login);
         mainWinWidthLabel->setObjectName(QString::fromUtf8("mainWinWidthLabel"));
-        mainWinWidthLabel->setFont(font2);
+        mainWinWidthLabel->setFont(font3);
 
         horizontalLayout->addWidget(mainWinWidthLabel);
 
         mainWinWidthSlider = new QSlider(login);
         mainWinWidthSlider->setObjectName(QString::fromUtf8("mainWinWidthSlider"));
+        mainWinWidthSlider->setMinimumSize(QSize(0, 40));
         mainWinWidthSlider->setCursor(QCursor(Qt::PointingHandCursor));
         mainWinWidthSlider->setStyleSheet(QString::fromUtf8("QSlider::groove:horizontal {\n"
 "background: rgba(0, 0, 0, 0);\n"
@@ -487,6 +493,7 @@ public:
 "}"));
         mainWinWidthSlider->setMinimum(280);
         mainWinWidthSlider->setMaximum(560);
+        mainWinWidthSlider->setSingleStep(10);
         mainWinWidthSlider->setValue(300);
         mainWinWidthSlider->setOrientation(Qt::Horizontal);
 
@@ -501,12 +508,11 @@ public:
         chooseFontColor->setObjectName(QString::fromUtf8("chooseFontColor"));
         chooseFontColor->setMinimumSize(QSize(60, 40));
         chooseFontColor->setMaximumSize(QSize(60, 40));
-        QFont font3;
-        font3.setPointSize(11);
-        chooseFontColor->setFont(font3);
+        QFont font4;
+        font4.setPointSize(11);
+        chooseFontColor->setFont(font4);
         chooseFontColor->setCursor(QCursor(Qt::PointingHandCursor));
-        chooseFontColor->setStyleSheet(QString::fromUtf8("border-radius:3px;\n"
-""));
+        chooseFontColor->setStyleSheet(QString::fromUtf8("border-radius:10px;"));
         chooseFontColor->setFlat(false);
 
         horizontalLayout_6->addWidget(chooseFontColor);
@@ -515,6 +521,7 @@ public:
         choose_bg_color->setObjectName(QString::fromUtf8("choose_bg_color"));
         choose_bg_color->setMinimumSize(QSize(60, 40));
         choose_bg_color->setMaximumSize(QSize(60, 40));
+        choose_bg_color->setStyleSheet(QString::fromUtf8("border-radius:10px;"));
         choose_bg_color->setFlat(false);
 
         horizontalLayout_6->addWidget(choose_bg_color);
@@ -523,9 +530,9 @@ public:
         chooseIconColor->setObjectName(QString::fromUtf8("chooseIconColor"));
         chooseIconColor->setMinimumSize(QSize(60, 40));
         chooseIconColor->setMaximumSize(QSize(60, 40));
-        chooseIconColor->setFont(font3);
+        chooseIconColor->setFont(font4);
         chooseIconColor->setCursor(QCursor(Qt::PointingHandCursor));
-        chooseIconColor->setStyleSheet(QString::fromUtf8("border-radius:3px;"));
+        chooseIconColor->setStyleSheet(QString::fromUtf8("border-radius:10px;"));
         chooseIconColor->setFlat(false);
 
         horizontalLayout_6->addWidget(chooseIconColor);
@@ -539,13 +546,17 @@ public:
         horizontalLayout_7->setContentsMargins(40, -1, 80, -1);
         auto_start = new QLabel(login);
         auto_start->setObjectName(QString::fromUtf8("auto_start"));
-        auto_start->setFont(font1);
+        auto_start->setFont(font2);
 
         horizontalLayout_7->addWidget(auto_start);
 
         radioButton = new QRadioButton(login);
         radioButton->setObjectName(QString::fromUtf8("radioButton"));
+        radioButton->setMinimumSize(QSize(0, 40));
+        radioButton->setFocusPolicy(Qt::StrongFocus);
+        radioButton->setContextMenuPolicy(Qt::NoContextMenu);
         radioButton->setLayoutDirection(Qt::RightToLeft);
+        radioButton->setAutoFillBackground(false);
 
         horizontalLayout_7->addWidget(radioButton);
 

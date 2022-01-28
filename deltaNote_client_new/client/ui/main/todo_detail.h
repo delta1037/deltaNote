@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QString>
 
-#include "inter_var.h"
+#include "c_inter_var.h"
 #include "setting_ctrl.h"
 
 namespace Ui {
@@ -33,10 +33,10 @@ public:
     explicit TodoDetail(QWidget *parent = nullptr, SettingCtrl *setting_ctrl = nullptr);
     ~TodoDetail();
 
-    void set_item_data(const TodoItem &data, ItemStatus status=Item_old);
+    void set_item_data(const TodoItem &data);
     TodoItem get_item_data();
 private:
-    void render_text(ItemStatus status);
+    void render_text();
     static QString tag_to_string(TagType tag_type);
 private slots:
 

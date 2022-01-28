@@ -226,7 +226,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>8</pointsize>
+             <pointsize>12</pointsize>
             </font>
            </property>
            <property name="inputMethodHints">
@@ -295,7 +295,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>8</pointsize>
+             <pointsize>12</pointsize>
             </font>
            </property>
            <property name="inputMethodHints">
@@ -489,6 +489,12 @@ background-color: rgb(188, 250, 109);</string>
          </item>
          <item>
           <widget class="QSlider" name="transparent">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
@@ -590,8 +596,17 @@ border-radius: 4px;
          </item>
          <item>
           <widget class="QSlider" name="fontSizeSlider">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
            </property>
            <property name="styleSheet">
             <string notr="true">QSlider::groove:horizontal {
@@ -651,19 +666,22 @@ border-radius: 4px;
 }</string>
            </property>
            <property name="minimum">
-            <number>9</number>
+            <number>12</number>
            </property>
            <property name="maximum">
-            <number>16</number>
+            <number>24</number>
+           </property>
+           <property name="singleStep">
+            <number>2</number>
            </property>
            <property name="pageStep">
-            <number>1</number>
+            <number>2</number>
            </property>
            <property name="value">
-            <number>11</number>
+            <number>15</number>
            </property>
            <property name="sliderPosition">
-            <number>11</number>
+            <number>15</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -688,6 +706,12 @@ border-radius: 4px;
          </item>
          <item>
           <widget class="QSlider" name="mainWinWidthSlider">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
@@ -754,6 +778,9 @@ border-radius: 4px;
            <property name="maximum">
             <number>560</number>
            </property>
+           <property name="singleStep">
+            <number>10</number>
+           </property>
            <property name="value">
             <number>300</number>
            </property>
@@ -789,8 +816,7 @@ border-radius: 4px;
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius:3px;
-</string>
+            <string notr="true">border-radius:10px;</string>
            </property>
            <property name="text">
             <string>字体</string>
@@ -813,6 +839,9 @@ border-radius: 4px;
              <width>60</width>
              <height>40</height>
             </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius:10px;</string>
            </property>
            <property name="text">
             <string>背景</string>
@@ -845,7 +874,7 @@ border-radius: 4px;
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius:3px;</string>
+            <string notr="true">border-radius:10px;</string>
            </property>
            <property name="text">
             <string>图标</string>
@@ -880,8 +909,23 @@ border-radius: 4px;
          </item>
          <item>
           <widget class="QRadioButton" name="radioButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+           </property>
            <property name="layoutDirection">
             <enum>Qt::RightToLeft</enum>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
            </property>
            <property name="text">
             <string/>

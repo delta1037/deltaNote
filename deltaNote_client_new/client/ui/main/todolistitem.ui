@@ -100,7 +100,7 @@ border-bottom-left-radius:10px</string>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="data_button">
+    <widget class="QLineEdit" name="data">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -114,18 +114,7 @@ border-bottom-left-radius:10px</string>
       </size>
      </property>
      <property name="contextMenuPolicy">
-      <enum>Qt::DefaultContextMenu</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-top-left-radius:10px;
-border-bottom-left-radius:10px;
-text-align: left;</string>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
+      <enum>Qt::CustomContextMenu</enum>
      </property>
     </widget>
    </item>
