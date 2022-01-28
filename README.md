@@ -1,5 +1,7 @@
 # deltaNote
 
+**本工程迁移到**[deltaNote_repo](https://github.com/delta1037/deltaNote_repo)
+
 ## 1.Linux server
 
 进入server文件夹根目录，执行./deltaNote
