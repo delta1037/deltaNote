@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.17)
 project(note_client_clion)
+project(note_server_clion)
 # project(sqlite_test)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -25,14 +26,15 @@ include_directories(
 
 # project include
 include_directories(
-        src/log
-        src/utils
-        src/sqlite
-        src/network
-        src/logic
-        src/ui/main
-        src/ui/setting
-        src/ui/info
+        log
+        utils
+        sqlite
+        http
+        client/logic
+        client/ui/main
+        client/ui/setting
+        client/ui/info
+        client/ui/utils
 )
 
 find_package(Qt6 COMPONENTS
@@ -51,32 +53,34 @@ find_library(jsoncpp_lib NAMES jsoncpp PATHS ${CMAKE_SOURCE_DIR}/3rdparty/jsoncp
 find_library(base64_lib NAMES base64 PATHS ${CMAKE_SOURCE_DIR}/3rdparty/base64/bin)
 
 add_executable(note_client_clion
-        src/ui/main/mainwindow.cpp
-        src/ui/main/mainwindow.ui
-        src/ui/main/todolistwidget.cpp
-        src/ui/main/todolistitem.cpp
-        src/ui/main/todolistitem.ui
-        src/ui/setting/login.cpp
-        src/ui/setting/login.ui
-        src/ui/setting/choosecolor.cpp
-        src/ui/setting/choosecolor.ui
-        src/ui/setting/newuser.cpp
-        src/ui/setting/newuser.ui
-        src/ui/info/notify.cpp
-        src/ui/info/notify.ui
-        src/ui/deltaNote_client_resource.rc
-        src/ui/icon.qrc
-        src/utils/svg_color.cpp
-        src/utils/inter_var.cpp
-        src/sqlite/sql_base.cpp
-        src/sqlite/sql_setting.cpp
-        src/sqlite/sql_todo_list.cpp
-        src/network/network.cpp
-        src/logic/setting_ctrl.cpp
-        src/logic/data_ctrl.cpp
-        src/logic/sync_data.cpp
-        src/logic/main.cpp
-        )
+        client/ui/main/mainwindow.cpp
+        client/ui/main/mainwindow.ui
+        client/ui/main/todo_detail.cpp
+        client/ui/main/todo_detail.ui
+        client/ui/main/todolistwidget.cpp
+        client/ui/main/todolistitem.cpp
+        client/ui/main/todolistitem.ui
+        client/ui/setting/login.cpp
+        client/ui/setting/login.ui
+        client/ui/setting/choosecolor.cpp
+        client/ui/setting/choosecolor.ui
+        client/ui/setting/newuser.cpp
+        client/ui/setting/newuser.ui
+        client/ui/info/notify.cpp
+        client/ui/info/notify.ui
+        client/ui/deltaNote_client_resource.rc
+        client/ui/icon.qrc
+        client/ui/utils/svg_color.cpp
+        utils/inter_var.cpp
+        sqlite/sql_base.cpp
+        sqlite/sql_key_value.cpp
+        sqlite/sql_todo_list.cpp
+        http/http.cpp
+        client/logic/setting_ctrl.cpp
+        client/logic/c_data_ctrl.cpp
+        client/logic/c_sync_data.cpp
+        client/logic/main.cpp
+        client/logic/reminder.cpp client/logic/reminder.h)
 
 target_link_libraries(note_client_clion
         Qt::Core
@@ -86,19 +90,35 @@ target_link_libraries(note_client_clion
         Qt::Xml
         Qt::Network
         Qt::Core5Compat
-        ws2_32
         sqlite3
         dlog
         jsoncpp
         base64
         )
 
+add_executable(note_server_clion
+        utils/inter_var.cpp
+        sqlite/sql_base.cpp
+        sqlite/sql_user.cpp
+        sqlite/sql_todo_list.cpp
+        http/http.cpp
+        server/logic/s_sync_data.cpp
+        server/logic/s_user_ctrl.cpp
+        server/logic/main.cpp
+        )
+target_link_libraries(note_server_clion
+        ws2_32
+        sqlite3
+        dlog
+        jsoncpp
+        base64
+        )
 #add_executable(sqlite_test
 #        test/sql_test.cpp
-#        src/sqlite/sql_base.cpp
-#        src/sqlite/sql_setting.cpp
-#        src/sqlite/sql_todo_list.cpp
-#        src/utils/inter_var.cpp
+#        client/sqlite/sql_base.cpp
+#        client/sqlite/sql_setting.cpp
+#        client/sqlite/sql_todo_list.cpp
+#        client/utils/inter_var.cpp
 #        )
 #target_link_libraries(sqlite_test
 #        Qt::Core

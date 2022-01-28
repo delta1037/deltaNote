@@ -2914,7 +2914,7 @@ inline const char *status_message(int status) {
   case 507: return "Insufficient Storage";
   case 508: return "Loop Detected";
   case 510: return "Not Extended";
-  case 511: return "Network Authentication Required";
+  case 511: return "HTTP Authentication Required";
 
   default:
   case 500: return "Internal Server Error";
@@ -3726,7 +3726,7 @@ public:
              const MultipartContentHeader &header_callback) {
 
     static const std::regex re_content_disposition(
-        "^Content-Disposition:\\s*form-data;\\s*name=\"(.*?)\"(?:;\\s*filename="
+        "^Content-Disposition:\\s*form-data;\\s*key=\"(.*?)\"(?:;\\s*filename="
         "\"(.*?)\")?\\s*$",
         std::regex_constants::icase);
     static const std::string dash_ = "--";
@@ -6642,7 +6642,7 @@ inline Result ClientImpl::Post(const char *path, const Headers &headers,
 
   for (const auto &item : items) {
     body += "--" + boundary + "\r\n";
-    body += "Content-Disposition: form-data; name=\"" + item.name + "\"";
+    body += "Content-Disposition: form-data; key=\"" + item.name + "\"";
     if (!item.filename.empty()) {
       body += "; filename=\"" + item.filename + "\"";
     }
@@ -7019,7 +7019,7 @@ inline SSL *ssl_new(socket_t sock, SSL_CTX *ctx, std::mutex &ctx_mutex,
 inline void ssl_delete(std::mutex &ctx_mutex, SSL *ssl,
                        bool shutdown_gracefully) {
   // sometimes we may want to skip this to try to avoid SIGPIPE if we know
-  // the remote has closed the network connection
+  // the remote has closed the http connection
   // Note that it is not always possible to avoid SIGPIPE, this is merely a
   // best-efforts.
   if (shutdown_gracefully) { SSL_shutdown(ssl); }
@@ -7588,9 +7588,9 @@ inline bool SSLClient::verify_host(X509 *server_cert) const {
 
      Matching is performed using the matching rules specified by
      [RFC2459].  If more than one identity of a given type is present in
-     the certificate (e.g., more than one dNSName name, a match in any one
+     the certificate (e.g., more than one dNSName key, a match in any one
      of the set is considered acceptable.) Names may contain the wildcard
-     character * which is considered to match any single domain name
+     character * which is considered to match any single domain key
      component or component fragment. E.g., *.a.com matches foo.a.com but
      not bar.foo.a.com. f*.com matches foo.com but not bar.com.
 
@@ -7635,15 +7635,15 @@ SSLClient::verify_host_with_subject_alt_name(X509 *server_cert) const {
     for (decltype(count) i = 0; i < count && !dsn_matched; i++) {
       auto val = sk_GENERAL_NAME_value(alt_names, i);
       if (val->type == type) {
-        auto name = (const char *)ASN1_STRING_get0_data(val->d.ia5);
+        auto key = (const char *)ASN1_STRING_get0_data(val->d.ia5);
         auto name_len = (size_t)ASN1_STRING_length(val->d.ia5);
 
         switch (type) {
-        case GEN_DNS: dsn_matched = check_host_name(name, name_len); break;
+        case GEN_DNS: dsn_matched = check_host_name(key, name_len); break;
 
         case GEN_IPADD:
-          if (!memcmp(&addr6, name, addr_len) ||
-              !memcmp(&addr, name, addr_len)) {
+          if (!memcmp(&addr6, key, addr_len) ||
+              !memcmp(&addr, key, addr_len)) {
             ip_mached = true;
           }
           break;
@@ -7662,12 +7662,12 @@ inline bool SSLClient::verify_host_with_common_name(X509 *server_cert) const {
   const auto subject_name = X509_get_subject_name(server_cert);
 
   if (subject_name != nullptr) {
-    char name[BUFSIZ];
+    char key[BUFSIZ];
     auto name_len = X509_NAME_get_text_by_NID(subject_name, NID_commonName,
-                                              name, sizeof(name));
+                                              key, sizeof(key));
 
     if (name_len != -1) {
-      return check_host_name(name, static_cast<size_t>(name_len));
+      return check_host_name(key, static_cast<size_t>(name_len));
     }
   }
 

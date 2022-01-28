@@ -1,0 +1,4 @@
+#ifndef SERVER_USER_CTRL_H
+#define SERVER_USER_CTRL_H
+
+#endif //SERVER_USER_CTRL_H

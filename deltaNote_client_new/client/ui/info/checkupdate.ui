@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CheckUpdate</class>
+ <widget class="QDialog" key="CheckUpdate">
+  <property key="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>372</width>
+    <height>271</height>
+   </rect>
+  </property>
+  <property key="minimumSize">
+   <size>
+    <width>372</width>
+    <height>271</height>
+   </size>
+  </property>
+  <property key="maximumSize">
+   <size>
+    <width>372</width>
+    <height>271</height>
+   </size>
+  </property>
+  <property key="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" key="verticalLayout">
+   <property key="spacing">
+    <number>10</number>
+   </property>
+   <property key="leftMargin">
+    <number>10</number>
+   </property>
+   <property key="topMargin">
+    <number>25</number>
+   </property>
+   <property key="rightMargin">
+    <number>10</number>
+   </property>
+   <property key="bottomMargin">
+    <number>10</number>
+   </property>
+   <item_data>
+    <widget class="QProgressBar" key="progressBar">
+     <property key="cursor">
+      <cursorShape>ArrowCursor</cursorShape>
+     </property>
+     <property key="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property key="styleSheet">
+      <string notr="true">
+
+ QProgressBar::chunk {
+     background-color: #05B8CC;
+     width: 20px;
+}
+
+QProgressBar {
+	 background-color: rgba(255, 255, 255, 0);
+     border: 1px solid #50ff3d;
+     border-radius: 5px;
+     text-align: center;
+}</string>
+     </property>
+     <property key="value">
+      <number>0</number>
+     </property>
+     <property key="invertedAppearance">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item_data>
+   <item_data>
+    <widget class="QTextBrowser" key="message">
+     <property key="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property key="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property key="frameShape">
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property key="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property key="lineWidth">
+      <number>0</number>
+     </property>
+    </widget>
+   </item_data>
+   <item_data>
+    <layout class="QHBoxLayout" key="horizontalLayout">
+     <item_data>
+      <widget class="QPushButton" key="cancel">
+       <property key="minimumSize">
+        <size>
+         <width>61</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property key="maximumSize">
+        <size>
+         <width>61</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property key="font">
+        <font>
+         <family>Adobe 黑体 Std R</family>
+        </font>
+       </property>
+       <property key="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property key="styleSheet">
+        <string notr="true">border-radius:10px;
+background-color: rgb(188, 250, 109);</string>
+       </property>
+       <property key="text">
+        <string>取消</string>
+       </property>
+       <property key="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item_data>
+     <item_data>
+      <widget class="QPushButton" key="abort">
+       <property key="minimumSize">
+        <size>
+         <width>61</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property key="maximumSize">
+        <size>
+         <width>61</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property key="font">
+        <font>
+         <family>Adobe 黑体 Std R</family>
+        </font>
+       </property>
+       <property key="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property key="styleSheet">
+        <string notr="true">border-radius:10px;
+background-color: rgb(188, 250, 109);</string>
+       </property>
+       <property key="text">
+        <string>终止</string>
+       </property>
+       <property key="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item_data>
+     <item_data>
+      <widget class="QPushButton" key="yes">
+       <property key="minimumSize">
+        <size>
+         <width>61</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property key="maximumSize">
+        <size>
+         <width>61</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property key="font">
+        <font>
+         <family>Adobe 黑体 Std R</family>
+        </font>
+       </property>
+       <property key="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property key="styleSheet">
+        <string notr="true">border-radius:10px;
+background-color: rgb(188, 250, 109);</string>
+       </property>
+       <property key="text">
+        <string>更新</string>
+       </property>
+       <property key="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item_data>
+    </layout>
+   </item_data>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

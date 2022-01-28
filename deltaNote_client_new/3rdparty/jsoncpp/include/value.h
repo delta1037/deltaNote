@@ -113,7 +113,7 @@ enum ValueType {
   stringValue,   ///< UTF-8 string value
   booleanValue,  ///< bool value
   arrayValue,    ///< array value (ordered list)
-  objectValue    ///< object value (collection of name/value pairs).
+  objectValue    ///< object value (collection of key/value pairs).
 };
 
 enum CommentPlacement {
@@ -135,7 +135,7 @@ enum PrecisionType {
  *
  * Value constructor and objectValue member assignment takes advantage of the
  * StaticString and avoid the cost of string duplication when storing the
- * string or the member name.
+ * string or the member key.
  *
  * Example of usage:
  * \code
@@ -167,7 +167,7 @@ private:
  * - boolean
  * - 'null'
  * - an ordered list of Value
- * - collection of name/value pairs (javascript object)
+ * - collection of key/value pairs (javascript object)
  *
  * The type of the held value is represented by a #ValueType and
  * can be obtained using type().
@@ -470,24 +470,24 @@ public:
   bool insert(ArrayIndex index, const Value& newValue);
   bool insert(ArrayIndex index, Value&& newValue);
 
-  /// Access an object value by name, create a null member if it does not exist.
+  /// Access an object value by key, create a null member if it does not exist.
   /// \note Because of our implementation, keys are limited to 2^30 -1 chars.
   /// Exceeding that will cause an exception.
   Value& operator[](const char* key);
-  /// Access an object value by name, returns null if there is no member with
-  /// that name.
+  /// Access an object value by key, returns null if there is no member with
+  /// that key.
   const Value& operator[](const char* key) const;
-  /// Access an object value by name, create a null member if it does not exist.
+  /// Access an object value by key, create a null member if it does not exist.
   /// \param key may contain embedded nulls.
   Value& operator[](const String& key);
-  /// Access an object value by name, returns null if there is no member with
-  /// that name.
+  /// Access an object value by key, returns null if there is no member with
+  /// that key.
   /// \param key may contain embedded nulls.
   const Value& operator[](const String& key) const;
-  /** \brief Access an object value by name, create a null member if it does not
+  /** \brief Access an object value by key, create a null member if it does not
    * exist.
    *
-   * If the object has no entry for that name, then the member name used to
+   * If the object has no entry for that key, then the member key used to
    * store the new entry is not duplicated.
    * Example of use:
    *   \code
@@ -610,9 +610,9 @@ private:
   // struct MemberNamesTransform
   //{
   //   typedef const char *result_type;
-  //   const char *operator()( const CZString &name ) const
+  //   const char *operator()( const CZString &key ) const
   //   {
-  //      return name.c_str();
+  //      return key.c_str();
   //   }
   //};
 
@@ -709,10 +709,10 @@ private:
  * Syntax:
  * - "." => root node
  * - ".[n]" => elements at index 'n' of root node (an array value)
- * - ".name" => member named 'name' of root node (an object value)
+ * - ".key" => member named 'key' of root node (an object value)
  * - ".name1.name2.name3"
  * - ".[0][1][2].name1[3]"
- * - ".%" => member name is provided as parameter
+ * - ".%" => member key is provided as parameter
  * - ".[%]" => index is provided as parameter
  */
 class JSON_API Path {
@@ -759,7 +759,7 @@ public:
     return other.computeDistance(*this);
   }
 
-  /// Return either the index or the member name of the referenced value as a
+  /// Return either the index or the member key of the referenced value as a
   /// Value.
   Value key() const;
 
@@ -767,18 +767,18 @@ public:
   /// arrayValue.
   UInt index() const;
 
-  /// Return the member name of the referenced Value, or "" if it is not an
+  /// Return the member key of the referenced Value, or "" if it is not an
   /// objectValue.
   /// \note Avoid `c_str()` on result, as embedded zeroes are possible.
   String name() const;
 
-  /// Return the member name of the referenced Value. "" if it is not an
+  /// Return the member key of the referenced Value. "" if it is not an
   /// objectValue.
   /// \deprecated This cannot be used for UTF-8 strings, since there can be
   /// embedded nulls.
-  JSONCPP_DEPRECATED("Use `key = name();` instead.")
+  JSONCPP_DEPRECATED("Use `key = key();` instead.")
   char const* memberName() const;
-  /// Return the member name of the referenced Value, or NULL if it is not an
+  /// Return the member key of the referenced Value, or NULL if it is not an
   /// objectValue.
   /// \note Better version than memberName(). Allows embedded nulls.
   char const* memberName(char const** end) const;

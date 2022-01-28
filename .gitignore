@@ -41,3 +41,4 @@ build-*
 **cmake-build-release/
 bak/
 **cmake-build-debug
+0-release/
